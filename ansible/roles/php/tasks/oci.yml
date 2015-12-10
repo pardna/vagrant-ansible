@@ -1,0 +1,57 @@
+---
+# file: roles/php/tasks/oci8.yml
+#
+# @see OCI8 Install: https://help.ubuntu.com/community/PHPOracle
+# Better:
+# @see PDO_OCI Install: https://drupal.org/comment/5572626#comment-5572626
+
+- name: "PHP | OCI | Enable OCI for PHP"
+  copy:
+    content='extension={{ item }}.so'
+    dest=/etc/php5/{{ php_conf_dir }}/{{ item }}.ini
+    owner=root
+    group=root
+    mode=0644
+  with_items:
+    - oci8
+    - pdo_oci
+
+- name: "PHP | OCI | Remove possible components in /tmp"
+  command: rm -Rf /tmp/{{ item }}
+  with_items:
+    - instantclient_11_2
+    - oracle_x64_11_2_0_3_0_oci8_so
+    - oracle_x64_11_2_0_3_0_pdo_oci_so
+
+- name: "PHP | OCI | Make available Oracle InstantClient"
+  command: scp -r {{ repository }}{{ item }} /tmp/
+  sudo: no
+  with_items:
+    - instantclient_11_2
+    - oracle_x64_11_2_0_3_0_oci8_so
+    - oracle_x64_11_2_0_3_0_pdo_oci_so
+
+- name: "PHP | OCI | Remove /usr/local/lib/instantclient_11_2"
+  command: rm -Rf /usr/local/lib/instantclient_11_2
+
+- name: "PHP | OCI | Move Oracle InstantClient to /usr/local/lib"
+  command: mv /tmp/instantclient_11_2 /usr/local/lib/
+
+- name: "PHP | OCI | Move oci8 to /usr/lib/php5"
+  command: mv /tmp/oracle_x64_11_2_0_3_0_oci8_so /usr/lib/php5/20090626/oci8.so
+
+- name: "PHP | OCI | Move pdo_oci to /usr/lib/php5"
+  command: mv /tmp/oracle_x64_11_2_0_3_0_pdo_oci_so /usr/lib/php5/20090626/pdo_oci.so
+
+- name: "PHP | OCI | Change ownership for Oracle InstantClient"
+  command: chown -R root:root {{ item }}
+  with_items:
+    - /usr/local/lib/instantclient_11_2
+    - /usr/lib/php5/20090626/oci8.so
+    - /usr/lib/php5/20090626/pdo_oci.so
+
+- name: "PHP | OCI | Make available libclntsh.so"
+  file:
+    src=/usr/local/lib/instantclient_11_2/libclntsh.so.11.1
+    dest=/usr/local/lib/instantclient_11_2/libclntsh.so
+    state=link

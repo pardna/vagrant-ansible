@@ -1,0 +1,2 @@
+- name: Install socket.io globally
+  npm: name=socket.io global=yes

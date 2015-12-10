@@ -1,0 +1,15 @@
+---
+# application tasks to be customized and to run after the main provision
+# sym link node_modules directory to overcome windows npm install issues
+- name: Check if path exists
+  stat: path=/vagrant/node_modules
+  register: check_path
+
+- name: "Create temporary node modules folder"
+  file: path=/var/app/pv-dashboard/node_modules owner=vagrant group=vagrant state=directory
+  sudo: yes
+  when: windows
+
+- name: "Set symbolic link "
+  file: dest=/vagrant/node_modules src=/var/app/pv-dashboard/node_modules owner=vagrant group=vagrant state=link force=yes
+  when: windows
