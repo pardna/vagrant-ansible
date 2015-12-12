@@ -1,0 +1,19 @@
+/* Footer
+-------------------------------------------------------------------------*/
+.footer {
+    background-color: $primary-colour;
+	color: #fff;
+	padding: 20px
+}
+
+.footer h1, .footer h2, .footer h3 {
+	color: #fff;
+}
+
+
+
+.footer__social--twitter:before,
+.footer__social--facebook:before,
+.footer__social--email:before {
+    margin-right: 20px;
+}

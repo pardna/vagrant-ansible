@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" ng-app="Pardna">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pardna Admin</title>
+  <!--<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic' rel='stylesheet' type='text/css'>-->
+  <!-- build:css lib/css/main.min.css -->
+  <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/animate.css/animate.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/build/loading-bar.css">
+  <!-- endbuild -->
+  <link rel="stylesheet" href="css/pardna.min.css">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+<body ng-controller="MasterCtrl" class="f16" layout="column">
+  <!--indigo bg-big -->
+
+  <div class="">
+  <div ui-view class="fade-in-down smooth"></div>
+  <div ui-view="unauthicated" class="fade-in-down smooth"></div>
+  <div ui-view="data"></div></div>
+
+
+</div>
+<!-- SCRIPTS -->
+<!-- build:js lib/js/main.min.js -->
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
+<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script type="text/javascript" src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<script type="text/javascript" src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
+<script type="text/javascript" src="bower_components/angular-messages/angular-messages.js"></script>
+<script type="text/javascript" src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+
+<!-- endbuild -->
+<!-- SCRIPTS -->
+<script type="text/javascript" src="js/pardna.min.js"></script>
+
+<script type="text/javascript" src="tpls/pardna-tpl.js"></script>
+</body>
+</html>

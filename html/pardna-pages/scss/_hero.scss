@@ -1,0 +1,30 @@
+/* Hero
+-------------------------------------------------------------------------*/
+.hero {
+	background: url('../img/background-home.jpg') no-repeat 50% 0;
+	height: 600px;
+    display: -webkit-box;
+    display: -moz-box; 
+    display: -ms-flexbox;
+    display: -webkit-flex;   
+	display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+	text-align: center;
+    background-position: 100% 0;
+}
+
+.hero__strapline {
+	align-self: center;
+	-webkit-align-self: center;
+}
+
+.hero__strapline h1,
+.hero__strapline h2 {
+	color: #fff;
+    text-shadow: #000 1px 1px;
+}
+
+.hero__strapline h1 {
+	margin-bottom: 0;
+}

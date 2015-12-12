@@ -1,0 +1,35 @@
+<div class="center-block w-xxl w-auto-xs p-v-md ng-scope">
+    <div class="navbar">
+      <div class="navbar-brand m-t-lg text-center">
+
+      </div>
+    </div>
+
+    <div class="p-lg panel md-whiteframe-z1 text-color m" ng-controller="LoginCtrl as controller">
+      <div class="m-b text-sm ng-binding">
+        Sign in to your Pardna Account
+      </div>
+      <form name="form" class="ng-pristine ng-valid-email ng-invalid ng-invalid-required" ng-submit="login()">
+        <div class="md-form-group float-label">
+          <input type="email" class="md-input ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-touched" ng-model="data.user.username" required="" tabindex="0" aria-required="true" aria-invalid="true" style="">
+          <label>Email</label>
+        </div>
+        <div class="md-form-group float-label">
+          <input type="password" class="md-input ng-pristine ng-untouched ng-invalid ng-invalid-required" ng-model="data.user.password" required="" tabindex="0" aria-required="true" aria-invalid="true">
+          <label>Password</label>
+        </div>
+        <div class="m-b-md">
+          <label class="md-check">
+            <input type="checkbox"><i class="indigo"></i> Keep me signed in
+          </label>
+        </div>
+        <button md-ink-ripple="" type="submit" class="md-btn md-raised pink btn-block p-h-md">Sign in</button>
+      </form>
+    </div>
+
+    <div class="p-v-lg text-center">
+
+      <div class="m-b"><button ui-sref="forgot-password" class="md-btn">Forgot password?</button></div>
+      <div>Do not have an account? <button ui-sref="signup" class="md-btn">Create an account</button></div>
+    </div>
+  </div>

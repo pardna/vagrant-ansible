@@ -7,5 +7,10 @@
     - server
     - vagrant_local
     - nodejs
+    - apache
+    - mysql
+    - php
+    - composer
+    - xdebug
+    - adminer
     - app
-    

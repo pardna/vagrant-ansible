@@ -1,0 +1,9 @@
+Alias /app "{{ app_install_dir }}"
+<Directory "{{ app_install_dir }}">
+{% if apache_version == "2.2" %}
+    Order allow,deny
+    Allow from all
+{% else %}
+    Require all granted
+{% endif %}
+</Directory>

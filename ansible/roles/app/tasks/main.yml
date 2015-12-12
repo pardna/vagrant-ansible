@@ -1,15 +1,23 @@
 ---
 # application tasks to be customized and to run after the main provision
-# sym link node_modules directory to overcome windows npm install issues
-- name: Check if path exists
-  stat: path=/vagrant/node_modules
-  register: check_path
+# Add Apache configuration (if configured).
+- name: Set the proper Apache configuration directory (Debian).
+  set_fact:
+    apache_extra_conf_dir: "{{ 'conf-enabled' if apache_version | version_compare('2.4', '>=') else 'conf.d' }}"
+  when: ansible_os_family == 'Debian'
 
-- name: "Create temporary node modules folder"
-  file: path=/var/app/pv-dashboard/node_modules owner=vagrant group=vagrant state=directory
-  sudo: yes
-  when: windows
+- name: Add Apache configuration file for app (Debian).
+  template:
+    src: app.conf.j2
+    dest: "{{ apache_conf_path }}/{{ apache_extra_conf_dir }}/app.conf"
+  when: ansible_os_family == 'Debian'
+  notify: restart apache
 
-- name: "Set symbolic link "
-  file: dest=/vagrant/node_modules src=/var/app/pv-dashboard/node_modules owner=vagrant group=vagrant state=link force=yes
-  when: windows
+- name: Add Apache configuration file for app (RedHat).
+  template:
+    src: app.conf.j2
+    dest: "{{ apache_conf_path }}/app.conf"
+  when: ansible_os_family == 'RedHat'
+  notify: restart apache
+
+- shell: composer install chdir={{ app_install_dir }}/api/

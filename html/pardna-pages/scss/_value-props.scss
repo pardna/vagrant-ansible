@@ -1,0 +1,36 @@
+/* Value proposition
+-------------------------------------------------------------------------*/
+.valueprop {
+	padding: 20px;	
+}
+
+.valueprop div {
+	text-align: center
+}
+
+.valueprop h3 {
+	margin: 1rem 0;
+}
+
+.valueprop__group .icon,
+.valueprop__secure .icon,
+.valueprop__rates .icon {
+	height: 60px;
+	height: 60px;
+	display: block;
+}
+
+.valueprop__group .icon {
+	background:url(../img/icon-group.svg) no-repeat 50%;
+	background-size: contain;
+}
+
+.valueprop__secure .icon {
+	background:url(../img/icon-padlock.svg) no-repeat 50%;
+	background-size: contain;
+}
+
+.valueprop__rates .icon {
+	background:url(../img/icon-percentage.svg) no-repeat 50%;
+	background-size: contain;
+}

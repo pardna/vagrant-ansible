@@ -24,14 +24,14 @@
 - include: configure.yml
 - include: pecl.yml
 
-- name: "PHP | Check OCI Requirement"
-  shell: ls /usr/lib/php5/20090626/pdo_oci.so
-  register: oci_available
-  when: php_needs_oci8
-  ignore_errors: yes
-  changed_when: oci_available.stdout != '/usr/lib/php5/20090626/pdo_oci.so'
-  notify:
-    - "PHP | Restart Apache"
+#- name: "PHP | Check OCI Requirement"
+#  shell: ls /usr/lib/php5/20090626/pdo_oci.so
+#  register: oci_available
+#  when: php_needs_oci8
+#  ignore_errors: yes
+#  changed_when: oci_available.stdout != '/usr/lib/php5/20090626/pdo_oci.so'
+#  notify:
+#    - "PHP | Restart Apache"
 
-- include: oci.yml
-  when: repository is defined and php_needs_oci8 and oci_available.stdout != '/usr/lib/php5/20090626/pdo_oci.so'
+#- include: oci.yml
+#  when: repository is defined and php_needs_oci8 and oci_available.stdout != '/usr/lib/php5/20090626/pdo_oci.so'

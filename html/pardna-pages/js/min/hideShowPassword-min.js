@@ -1,0 +1,1 @@
+var myApp=angular.module("myApp",[]);myApp.controller("mainCtrl",["$scope",function(p){p.inputType="password",p.hideShowPassword=function(){"password"==p.inputType?p.inputType="text":p.inputType="password"}}]);

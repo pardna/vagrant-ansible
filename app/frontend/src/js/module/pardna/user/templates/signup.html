@@ -1,0 +1,37 @@
+<div class="center-block w-xxl w-auto-xs p-v-md ng-scope">
+    <div class="navbar">
+      <div class="navbar-brand m-t-lg text-center">
+
+      </div>
+    </div>
+
+    <div class="p-lg panel md-whiteframe-z1 text-color m" ng-controller="SignupCtrl as controller">
+      <div class="m-b text-sm ng-binding">
+        Sign up to your Pardna Account
+      </div>
+      <form name="form" class="ng-pristine ng-invalid ng-invalid-required ng-valid-email" ng-submit="signup()">
+        <div class="md-form-group">
+          <input type="text" class="md-input ng-pristine ng-invalid ng-invalid-required ng-touched" ng-model="data.user.fullname" required="" tabindex="0" aria-required="true" aria-invalid="true" style="">
+          <label>Name</label>
+        </div>
+        <div class="md-form-group">
+          <input type="email" class="md-input ng-pristine ng-untouched ng-valid-email ng-invalid ng-invalid-required" ng-model="data.user.email" required="" tabindex="0" aria-required="true" aria-invalid="true">
+          <label>Email</label>
+        </div>
+        <div class="md-form-group">
+          <input type="password" class="md-input ng-pristine ng-untouched ng-invalid ng-invalid-required" ng-model="data.user.password" required="" tabindex="0" aria-required="true" aria-invalid="true">
+          <label>Password</label>
+        </div>
+        <div class="m-b-md">
+          <label class="md-check">
+            <input type="checkbox" ng-model="agree" required="" class="" tabindex="0" aria-checked="false" aria-required="true" aria-invalid="true"><i class="indigo"></i> Agree the <a href="">terms and policy</a>
+          </label>
+        </div>
+        <button md-ink-ripple="" type="submit" class="md-btn md-raised pink btn-block p-h-md">Sign up</button>
+      </form>
+    </div>
+
+    <div class="p-v-lg text-center">
+      <div>Already have an account? <button ui-sref="login" class="md-btn">Sign in</button></div>
+    </div>
+  </div>

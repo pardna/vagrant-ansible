@@ -1,0 +1,173 @@
+/* Typography
+-------------------------------------------------------------------------*/
+@font-face {
+    font-family: Aller Light;
+    src: url(../fonts/Aller_Lt.woff);
+}
+
+body {
+	font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: Aller Light;
+    color: $primary-colour;
+}
+
+h1 { font-size: 3.5rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 2.0rem; }
+
+
+/* Icons Fonts
+-------------------------------------------------------------------------*/
+@font-face {
+	font-family: "pardna-font-icon";
+	src:url("../fonts/pardna-font-icon.eot");
+	src:url("../fonts/pardna-font-icon.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/pardna-font-icon.woff") format("woff"),
+		url("../fonts/pardna-font-icon.ttf") format("truetype"),
+		url("../fonts/pardna-font-icon.svg#pardna-font-icon") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[data-icon]:before,
+[class^="icon-"]:before,
+[class*=" icon-"]:before,
+.footer__social--email:before,
+.footer__social--twitter:before,
+.footer__social--facebook:before,
+.rn-carousel-control.rn-carousel-control-prev:before,
+.rn-carousel-control.rn-carousel-control-next:before
+{
+	font-family: "pardna-font-icon" !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-variant: normal !important;
+	text-transform: none !important;
+	speak: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-angle-down:before {
+	content: "a";
+}
+
+.rn-carousel-control.rn-carousel-control-prev:before,
+.icon-angle-left:before {
+	content: "b";
+}
+.rn-carousel-control.rn-carousel-control-next:before,
+.icon-angle-right:before {
+	content: "c";
+}
+.icon-angle-up:before {
+	content: "d";
+}
+.icon-cog-gear:before {
+	content: "e";
+}
+.footer__social--email:before,
+.icon-email-envelope:before {
+	content: "f";
+}
+.footer__social--facebook:before,
+.icon-facebook:before {
+	content: "g";
+}
+.icon-home:before {
+	content: "h";
+}
+.icon-male:before {
+	content: "i";
+}
+.icon-lock:before {
+	content: "j";
+}
+.icon-pound:before {
+	content: "k";
+}
+.icon-quote-left:before {
+	content: "l";
+}
+.icon-quote-right:before {
+	content: "m";
+}
+.icon-smile:before {
+	content: "n";
+}
+.icon-smiley-frown:before {
+	content: "o";
+}
+.icon-smiley-meh:before {
+	content: "p";
+}
+.footer__social--twitter:before,
+.icon-twitter:before {
+	content: "q";
+}
+.icon-chevron-down:before {
+	content: "r";
+}
+.icon-chevron-left:before {
+	content: "s";
+}
+.icon-chevron-right:before {
+	content: "t";
+}
+.icon-chevron-up:before {
+	content: "u";
+}
+.icon-circle:before {
+	content: "v";
+}
+.icon-circle-line:before {
+	content: "w";
+}
+.icon-edit-write:before {
+	content: "x";
+}
+.icon-female:before {
+	content: "y";
+}
+.icon-pencil:before {
+	content: "z";
+}
+.icon-minus:before {
+	content: "A";
+}
+.icon-plus:before {
+	content: "B";
+}
+.icon-remove:before {
+	content: "C";
+}
+.icon-check-mark:before {
+	content: "D";
+}
+.icon-letter-mail:before {
+	content: "E";
+}
+.icon-comment:before {
+	content: "F";
+}
+.icon-comment-discussion:before {
+	content: "G";
+}
+.icon-gear:before {
+	content: "H";
+}
+.icon-primitive-square:before {
+	content: "I";
+}
+.icon-search:before {
+	content: "J";
+}
+.icon-three-bars:before {
+	content: "K";
+}
+.icon-vcard:before {
+	content: "L";
+}

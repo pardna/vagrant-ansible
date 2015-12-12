@@ -43,13 +43,13 @@ end
 Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
-        v.name = "pv-dashboard-frontend"
+        v.name = "pardna-dev"
         v.customize [
             "modifyvm", :id,
-            "--name", "pv-dashboard-frontend",
-            "--memory", 4096,
+            "--name", "pardna-dev",
+            "--memory", 2048,
             "--natdnshostresolver1", "on",
-            "--cpus", 4,
+            "--cpus", 2,
         ]
     end
 

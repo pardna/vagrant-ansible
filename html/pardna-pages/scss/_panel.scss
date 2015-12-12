@@ -1,0 +1,20 @@
+/* Panels
+-------------------------------------------------------------------------*/
+.panel {
+	padding: 20px;
+}
+
+.panel h1 {
+	text-align: center
+}
+
+
+/* Panel - The Trusted Way
+-------------------------------------------------------------------------*/
+.panel .world{
+	background-image: url(../img/world.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 50%;
+	height: 200px;
+}

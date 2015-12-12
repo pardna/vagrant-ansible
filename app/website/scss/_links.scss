@@ -1,0 +1,22 @@
+/* Links
+-------------------------------------------------------------------------*/
+a {
+  color: $link-colour;	
+  text-decoration: none;
+ }
+ 
+a:hover {
+  color:  $link-colour-hover; 
+}
+
+
+.footer {
+    a {
+      color: #fff;	
+      text-decoration: none;
+     }
+
+    a:hover {
+      color: $light-grey; 
+    }    
+}

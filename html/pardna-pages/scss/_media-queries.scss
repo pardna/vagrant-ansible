@@ -1,0 +1,78 @@
+/* Media Queries
+-------------------------------------------------------------------------*/
+
+
+/* MAX WIDTH 550
+-------------------------------------------------------------------------*/
+@media (max-width: 550px) {
+	.navigation {
+		position: absolute;
+	}
+}
+
+/* MAX WIDTH 768
+-------------------------------------------------------------------------*/
+@media (max-width: 768px) {
+	body {
+		margin-top: 85px
+	}
+
+	.container {
+		padding: 0;
+	}
+
+	.header {
+		position: fixed;
+		width: inherit;
+		background-color: #fff;
+		margin-top: -85px;
+	}
+	
+	.logo a {
+		background: url(../img/logo-p.svg) no-repeat 0 50% #fff;
+		background-size:25%
+	}
+
+	.hero {
+		height: 400px;
+	}
+    
+    .form {
+        padding: 20px;
+        display: block;
+    }
+
+    /* Menu
+    -------------------------------------------------------------------------*/
+    .responsive-menu label.expand-control {
+        display: inline-block;
+        cursor: pointer;
+        margin-right: 20px;
+        margin-bottom: 0;
+        z-index: 1;
+    }
+    .responsive-menu input[type="checkbox"].expand-control:checked + ul.navigation-list {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 85px;
+        z-index: 0;	
+    }
+    .responsive-menu ul.navigation-list {
+        display: none;
+        width: 100%
+    }
+    .responsive-menu ul.navigation-list li {
+        display: block;
+        float: none;
+        margin: 0;
+        background-color: #fff;
+        padding: 10px 20px;
+    }
+}
+
+
+/* MAX WIDTH 960
+-------------------------------------------------------------------------*/
+@media (max-width: 960px) {
+}

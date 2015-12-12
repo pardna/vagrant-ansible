@@ -1,0 +1,69 @@
+<!-- uiView: aside@ -->
+<script type="text/ng-template" id="send-code.tmpl.html">
+<form name="userForm" ng-submit="sendCode(userForm)">
+<md-dialog aria-label="Send Code"  ng-cloak>
+
+<md-dialog-content role="document" tabindex="-1" id="dialog_219" style="max-width:500px;" >
+<span class="send-code-text">We will text a verification code to your mobile phone to unlock your account features</span>
+<div class="md-dialog-content-body ng-isolate-scope" md-template="">
+<div class="md-layout-row md-layout-sm-column flex layout layout-row layout-align-space-between-center" flex="" layout="row" layout-align="space-between center">
+        <md-input-container style="" class="md-default-theme col-sm-12">
+            <label for="input_71">Enter mobile number </label>
+            <input required name="mobile" ng-model="user.mobile" id="input_71">
+            <div ng-messages="userForm.mobile.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
+          </md-input-container>
+
+      </div>
+
+</md-dialog-content>
+<div class="md-actions md-layout-row">
+<flex></flex>
+<span class="md-primary md-button md-default-theme"  ng-click="hide();  $event.preventDefault(); $event.stopPropagation();">
+<span class="ng-binding ng-scope">Cancel</span>
+</span>
+<button class="md-btn md-raised p-h-md pink md-ink-ripple" type="submit">
+<span class="ng-binding ng-scope">Send Code</span>
+
+</button>
+
+</div>
+
+</md-dialog>
+</form>
+</script>
+<script type="text/ng-template" id="verify-code.tmpl.html">
+<form name="verifyForm" ng-submit="verify(verifyForm)">
+<md-dialog aria-label="Confirm Code">
+
+<md-dialog-content role="document" tabindex="-1" id="dialog_219">
+
+<div class="md-dialog-content-body ng-isolate-scope" md-template="">
+
+<span class="send-code-text">Enter verification code sent to {{ user.mobile }} to unlock account features</span>
+
+<div  class="md-layout-row md-layout-sm-column flex layout layout-row layout-align-space-between-center" flex="" layout="row" layout-align="space-between center">
+        <md-input-container style="" class="md-default-theme col-sm-12">
+            <label for="input_71">Enter verification code </label>
+            <input required name="code" ng-model="user.code" class="" id="input_71" aria-invalid="false" style="">
+            <div ng-messages="verifyForm.code.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
+      </md-input-container>
+</div>
+
+</md-dialog-content>
+<div class="md-actions md-layout-row">
+<flex></flex>
+<span class="md-primary md-button md-default-theme"  ng-click="hide(); $event.preventDefault(); $event.stopPropagation();">
+<span class="ng-binding ng-scope">Cancel</span>
+</span>
+<button class="md-btn md-raised p-h-md pink md-ink-ripple" type="submit">
+<span class="ng-binding ng-scope">Confirm Code</span>
+</button>
+</div>
+
+</md-dialog>
+</form>
+</script>
