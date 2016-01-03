@@ -7,6 +7,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use App\Entity\PardnaGroupEntity;
+use App\Entity\PardnaGroupMemberEntity;
 use App\Entity\UserEntity;
 
 class UsersService extends BaseService implements UserProviderInterface
@@ -42,6 +44,14 @@ class UsersService extends BaseService implements UserProviderInterface
 
   public function validateResetPasswordToken($rPassToken){
 
+  }
+
+  public function getUserDetailsForMembers($pardnagroupdetails){
+    foreach ($pardnagroupdetails->getMembers() as $member) {
+      $user = $this->getByMembershipNumber($member->getMembershipNumber());
+      $member->setName($user["fullname"]);
+      $member->setEmail($user["email"]);
+    }
   }
 
   public function loadUserByUsername($username)
@@ -99,6 +109,11 @@ public function supportsClass($class)
   public function get($id)
   {
     return $this->db->fetchAssoc("SELECT * FROM users WHERE id = ? LIMIT 1", array($id));
+  }
+
+  public function getByMembershipNumber($membershipNumber)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM users WHERE membership_number = ? LIMIT 1", array($membershipNumber));
   }
 
   public function getByEmail($email)
