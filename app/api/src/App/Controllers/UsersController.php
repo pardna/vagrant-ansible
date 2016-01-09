@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UsersController
 {
@@ -73,6 +74,22 @@ class UsersController
         throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $vars['username']));
     }
     return $this->_login($vars["username"], $vars["password"]);
+  }
+
+  public function relationships(Request $request)
+  {
+
+      try {
+        
+        $data = $request->request->all();
+        $user = $this->getUser();
+        $service = $this->app['relationship.service'];
+        $relationships = $service->getUserRelationships($user->getId());
+        return new JsonResponse($relationships);
+      } catch(\Exception $e) {
+        throw new HttpException(409,"Error getting relationships : " . $e->getMessage());
+      }
+
   }
 
   private function _login($username, $password) {

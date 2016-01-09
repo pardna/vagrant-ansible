@@ -1,17 +1,26 @@
 angular.module('Pardna')
-.controller('HomeCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', 'jwtHelper', 'localStorageService', 'userService', HomeCtrl]);
+.controller('HomeCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'inviteService', HomeCtrl]);
 
-function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageService, userService) {
+function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageService, userService, groupService, inviteService) {
 
   $scope.user = userService.user;
-  console.log($scope.user);
-  /**
-  $mdToast.show(
-    $mdToast.simple()
-    .content('Welcome back!')
-    .position("top right")
-    .hideDelay(3000)
-  );**/
+  $scope.ui = {};
+  $scope.ui.list = [];
+  $scope.ui.groupInvitationList = [];
+  $scope.ui.userInvitationList = [];
+  $scope.ui.relationships = [];
+  $scope.acceptUserInvitation = acceptUserInvitation;
+  var originatorEv;
+
+  loadList();
+  loadGroupInvitations();
+  loadUserInvitations();
+  loadUserRelationships();
+
+  $scope.openMenu = function($mdOpenMenu, ev) {
+      originatorEv = ev;
+      $mdOpenMenu(ev);
+    };
 
   if(typeof $scope.user.login_count !== "undefined" && $scope.user.login_count === 0) {
 
@@ -74,6 +83,73 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
       $scope.user = userService.user;
     });
   };
+
+  function loadList() {
+    groupService.list({}).success(function(data) {
+      $scope.ui.list = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
+
+  function loadUserRelationships() {
+    userService.getRelationships({}).success(function(data) {
+      $scope.ui.relationships = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
+
+
+  function loadGroupInvitations() {
+    inviteService.getGroupInvitations({}).success(function(data) {
+      $scope.ui.groupInvitationList = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error getting group invitations')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
+
+  function loadUserInvitations() {
+    inviteService.getUserInvitations({}).success(function(data) {
+      $scope.ui.userInvitationList = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error getting user invitations')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
+
+  function acceptUserInvitation(id) {
+    inviteService.acceptUserInvitation({id : id}).success(function(data) {
+      loadUserInvitations();
+      loadUserRelationships(); 
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error accepting user invitation')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
 
   $scope.firstLogin = function(ev) {
     // Appending dialog to document.body to cover sidenav in docs app

@@ -1,59 +1,63 @@
 angular.module('Pardna')
-.controller('GroupAddCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', 'jwtHelper', 'localStorageService', 'userService', GroupAddCtrl]);
+.controller('GroupAddCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$state', 'jwtHelper', 'localStorageService', 'userService', 'groupService', GroupAddCtrl]);
 
-function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageService, userService) {
+function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, localStorageService, userService, groupService) {
 
   $scope.user = userService.user;
 
-
-  // Add new pardna
-  $scope.data = {
-    selectedIndex: 0,
-    secondLocked:  true,
-    secondLabel:   "Item Two",
-    bottom:        false
+  $scope.pardna = {
+    name : "",
+    amount: 10,
+    startdate: "",
+    frequency: "monthly",
+    emails: [{email: ""}, {email: ""}, {email: ""}]
   };
+
+  $scope.friends = [];
+  $scope.addEmail = addEmail;
+  $scope.add = add;
+
+  function addEmail() {
+    $scope.pardna.emails.push({email: ""});
+  }
+
+  function getPardna() {
+    var pardna = angular.copy($scope.pardna);
+    var emails = pardna.emails;
+    pardna.emails = [];
+    for(var i = 0; i < emails.length; i++) {
+      if(emails[i].email !== "") {
+        pardna.emails.push(emails[i].email);
+      }
+    }
+    return pardna;
+  }
+
+  function add() {
+    var pardna = getPardna();
+    groupService.add(pardna).success(function(data) {
+      $mdToast.simple()
+        .content('Pardna group created')
+        .position("top right")
+        .hideDelay(3000);
+
+      $state.go("home", {});
+
+
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Save failed')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
+
   $scope.next = function() {
     $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
   };
   $scope.previous = function() {
     $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
   };
-
-  $scope.color = {
-    red: Math.floor(Math.random() * 255),
-    green: Math.floor(Math.random() * 255),
-    blue: Math.floor(Math.random() * 255)
-  };
-  $scope.rating1 = 3;
-  $scope.rating2 = 2;
-  $scope.rating3 = 4;
-  $scope.disabled1 = 0;
-  $scope.disabled2 = 70;
-
-
-  $scope.view = {};
-  $scope.view.tabs = [
-    {
-      "icon_class": "fa fa-user",
-      "label": "Your Details",
-      "template": ""
-    },
-    {
-      "icon_class": "fa fa-gbp",
-      "label": "Pardna Details",
-      "template": ""
-    },
-    {
-      "icon_class": "fa fa-lock",
-      "label": "Direct Debit",
-      "template": ""
-    },
-    {
-      "icon_class": "fa fa-users",
-      "label": "Invite Friends",
-      "template": ""
-    },
-  ]
-
 }

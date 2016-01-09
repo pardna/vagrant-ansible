@@ -32,6 +32,21 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                 },
                 requiresLogin: true
             })
+            .state('invite', {
+                url: '/invite',
+
+                // templateUrl: 'module/pardna/app/templates/home.html',
+                views: {
+                  '': {
+                    controller: 'InviteCtrl',
+                    'templateUrl' : 'module/pardna/invite/templates/invite.html',
+                  },
+                  'nav@invite': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
             .state('group-add', {
                 data: {
                   'selectedTab': 0

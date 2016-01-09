@@ -26,6 +26,23 @@ class RoutesLoader
             return $controller;
         });
 
+        $this->app['invitation.controller'] = $this->app->share(function () {
+            $controller = new Controllers\InvitationController($this->app['invitation.service']);
+            $controller->setApp($this->app);
+            if($this->app['security.token_storage']->getToken()->getUser()) {
+              $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
+            }
+            return $controller;
+        });
+
+        $this->app['pardna.group.controller'] = $this->app->share(function () {
+            $controller = new Controllers\PardnaGroupController($this->app['pardna.group.service']);
+            if($this->app['security.token_storage']->getToken()->getUser()) {
+               $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
+            }
+            return $controller;
+        });
+
 
     }
     public function bindRoutesToControllers()
@@ -117,6 +134,17 @@ class RoutesLoader
         $api->post('/user/send-code', "users.controller:sendCode");
 
         $api->post('/user/verify', "users.controller:verify");
+        $api->get('/relationships', "users.controller:relationships");
+
+        $api->post('/pardna/group', "pardna.group.controller:save");
+        $api->get('/pardna/group', "pardna.group.controller:read");
+
+        $api->post('/invite', "invitation.controller:save");
+        $api->get('/invite/group', "invitation.controller:readGroupInvitations");
+        $api->get('/invite/user', "invitation.controller:readUserInvitations");
+
+        $api->post('/invite/accept/user', "invitation.controller:acceptUserInvitation");
+        $api->post('/invite/accept/group', "invitation.controller:acceptGroupInvitation");
 
         $api->post('/user/notifications', "users.controller:notifications");
 

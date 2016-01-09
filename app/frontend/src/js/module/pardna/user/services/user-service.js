@@ -36,6 +36,11 @@ function UserService($http, env, localStorageService, jwtHelper) {
               return $http.post(urlBase + '/user/send-code', params);
           };
 
+          dataFactory.getRelationships = function(params) {
+              return $http.get(urlBase + '/relationships', params);
+          };
+
+
           dataFactory.verify = function(params) {
               return $http.post(urlBase + '/user/verify', params);
           };

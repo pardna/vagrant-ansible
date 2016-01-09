@@ -17,6 +17,22 @@ class ServicesLoader
         return $service;
       });
 
+      $this->app['invitation.service'] = $this->app->share(function () {
+        $service = new Services\InvitationService($this->app["db"]);
+        return $service;
+      });
+
+      $this->app['relationship.service'] = $this->app->share(function () {
+        $service = new Services\RelationshipService($this->app["db"]);
+        return $service;
+      });
+
+      $this->app['pardna.group.service'] = $this->app->share(function () {
+        $service = new Services\PardnaGroupService($this->app["db"]);
+        $service->setInvitationService($this->app['invitation.service']);
+        return $service;
+      });
+
       $this->app['mail.service'] = $this->app->share(function (){
         $mailService = new Services\MailService($this->app["db"]);
         $mailService->setMailChimpsClient($this->app["mailChimps"]["API_KEY"]);

@@ -1,38 +1,20 @@
 <form class="ng-pristine ng-valid">
   <div class="row-">
     <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
-      
+
       <div class="flex md-layout-row layout-align-center-center add-friends-email" style="min-height: 200px">
           <h4>Add the close friends and family members you would like to save with in this Pardna group</h4>
           <div class="col-sm-6 add-new-members">
               <div>Add the email addresses of close friends and family members to invite them to join.</div>
-                <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
+                <div ng-repeat="email in pardna.emails track by $index" class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
                     <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
-                        <label for="email_1">Friend / family member's email address</label>
-                        <input class="ng-pristine ng-untouched ng-valid md-input" id="email_1" aria-invalid="false">
-                    </md-input-container>
-                </div>
-                <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
-                    <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
-                        <label for="email_2">Friend / family member's email address</label>
-                        <input class="ng-pristine ng-untouched ng-valid md-input" id="email_2" aria-invalid="false">
-                    </md-input-container>
-                </div>
-                <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
-                    <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
-                        <label for="email_3">Friend / family member's email address</label>
-                        <input class="ng-pristine ng-untouched ng-valid md-input" id="email_3" aria-invalid="false">
-                    </md-input-container>
-                </div>
-                <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
-                    <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
-                        <label for="email_4">Friend / family member's email address</label>
-                        <input class="ng-pristine ng-untouched ng-valid md-input" id="email_4" aria-invalid="false">
+                        <label for="email_{$index}">Friend / family member's email address</label>
+                        <input ng-model="email.email" class="ng-pristine ng-untouched ng-valid md-input" id="email_{$index}">
                     </md-input-container>
                 </div>
 
             <div class="col-sm-12 add-more-emails">
-          <button md-ink-ripple="" class="md-btn md-raised pull-left p-h-md blue" ng-click=""> Add More Emails </button>
+          <button md-ink-ripple="" class="md-btn md-raised pull-left p-h-md blue" ng-click="addEmail()"> Add More Emails </button>
                 </div>
             </div>
           <div class="col-sm-6 add-existing-members">
