@@ -2,13 +2,12 @@
 
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
-    DocumentRoot {{ apache.docroot }}
-    ServerName {{ apache.servername }}
+    DocumentRoot {{ app_install_dir }}
+    ServerName pardna-api-dev
 
-    <Directory {{ apache.docroot }}>
-        AllowOverride All
-        Options -Indexes FollowSymLinks
-        Order allow,deny
-        Allow from all
+    <Directory {{ app_install_dir }}>
+      Options Indexes FollowSymLinks
+      AllowOverride None
+      Require all granted
     </Directory>
 </VirtualHost>

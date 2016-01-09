@@ -158,17 +158,21 @@ class UsersController
   {
     $user = $this->getDataFromRequest($request);
     $userId = $this->usersService->save($user);
+
     //subscribe user to mail list
-    $fullname = $user['fullname'];
-    $names = explode(" ", $fullname, 2);
-    if (array_key_exists(1, $names)){
-      $firstname = $names[0];
-      $lastname = $names[1];
-    } else{
-      $firstname = "";
-      $lastname = $names[0];
+    if (isset($user)){
+      $fullname = $user['fullname'];
+      $names = explode(" ", $fullname, 2);
+      if (array_key_exists(1, $names)){
+        $firstname = $names[0];
+        $lastname = $names[1];
+      } else{
+        $firstname = "";
+        $lastname = $names[0];
+      }
+
+      $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
     }
-    $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
     return $this->_login($user["email"], $user["password"]);
   }
 
@@ -181,8 +185,19 @@ class UsersController
   public function changePassword(Request $request)
   {
     $user = $this->getDataFromRequest($request);
-    return new JsonResponse(array("id" => $this->usersService->changePassword($user["email"], $user["password"])));
+    if ($this->usersService->authenticate($user["email"], $user["currentPassword"])){
+      return new JsonResponse(array("id" => $this->usersService->changePassword($user["email"], $user["newPassword"])));
+    }
   }
+
+  public function resetPassword($t, Request $request)
+  {
+    $user = $this->getDataFromRequest($request);
+    if ($this->usersService->validateResetPasswordToken($t)){
+      return new JsonResponse(array("id" => $this->usersService->changePassword($user["email"], $user["newPassword"])));
+    }
+  }
+
 
   public function update($id, Request $request)
   {
