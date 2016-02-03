@@ -16,6 +16,8 @@ class UsersController
 
   protected $mailService;
 
+  protected $mandrillMailService;
+
   protected $notificationService;
 
   protected $user;
@@ -38,6 +40,14 @@ class UsersController
   public function getMailService(){
     return $this->mailService;
   }
+
+  public function setMandrillMailService($mandrillMailService){
+		$this->mandrillMailService = $mandrillMailService;
+	}
+
+  public function getMandrillMailService(){
+		return $this->mandrillMailService;
+	}
 
   public function setNotificationService($notificationService) {
     $this->notificationService = $notificationService;
@@ -80,7 +90,7 @@ class UsersController
   {
 
       try {
-        
+
         $data = $request->request->all();
         $user = $this->getUser();
         $service = $this->app['relationship.service'];
@@ -121,7 +131,6 @@ class UsersController
           //  'user' => $vars
         ];
     }
-
     $code = $response['success'] == true ? JsonResponse::HTTP_OK : JsonResponse::HTTP_BAD_REQUEST;
     return new JsonResponse($response, $code);
   }
@@ -170,7 +179,8 @@ class UsersController
         $firstname = "";
         $lastname = $names[0];
       }
-
+      $link = $this->generateVerifyEmailConfirmationLink();
+      $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
       $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
     }
     return $this->_login($user["email"], $user["password"]);
@@ -277,6 +287,10 @@ class UsersController
     } catch (Services_Twilio_RestException $e) {
       throw new HttpException(409,"Cannot send token" . $e->getMessage());
     }
+  }
+
+  public function generateVerifyEmailConfirmationLink(){
+    return "http://www.channel4.com/programmes/a-place-in-the-sun-2015-2016/on-demand/59661-042";
   }
 
   public function getDataFromRequest(Request $request)
