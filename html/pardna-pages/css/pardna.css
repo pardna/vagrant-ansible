@@ -260,9 +260,20 @@ a:hover {
   text-align: center;
   background-position: 100% 0; }
 
+.hero_darken {
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    width: 100%
+}
+
 .hero__strapline {
-  align-self: center;
-  -webkit-align-self: center; }
+    align-self: center;
+    -webkit-align-self: center;
+}
+
+.hero__strapline.columns {
+    margin: 0 auto;
+}
 
 .hero__strapline h1,
 .hero__strapline h2 {
@@ -487,3 +498,57 @@ hr {
     padding: 10px 20px; } }
 /* MAX WIDTH 960
 -------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+/* Pre-launch CSS to hide elements not needed yet
+-------------------------------------------------------------------------*/
+.hero:after {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 600px;
+    width: 100% 
+}
+
+.LR-content {
+    left: 0;
+    min-height: 200px !important
+}
+
+.LR-site-bg-color-container {
+    background: transparent !important;
+}
+
+.LR-box-inner {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.LR-sign-up-container-inner {
+    display: flex;
+    align-items: center;
+}
+
+.LR-sign-up-container-inner .signup-email {
+    height: 37px !important;
+    line-height: 37px !important;  
+    flex-grow: 2;
+}
+
+input[type="submit"].LR-sign-up-submit {
+    background-color: #c31c5e !important;
+    background-image: linear-gradient(to bottom, transparent, transparent) !important;
+}
+
+.valueprop {
+    border-bottom: solid 1px #ccc;
+}
+
+.hero__strapline {
+    align-self: flex-start;
+    margin-top: 170px !important;
+}
