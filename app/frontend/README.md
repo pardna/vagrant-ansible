@@ -27,3 +27,5 @@ Responsive Dashboard uses [LESS](http://lesscss.org/) for styling so we take adv
 #### Bootstrap + Font Awesome
 
 The grid layout and components are powered by [Bootstrap](http://getbootstrap.com/), also Font Awesome icons are ready to use.
+
+./node_modules/.bin/gulp --env=prod

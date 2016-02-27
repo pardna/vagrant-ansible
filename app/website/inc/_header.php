@@ -9,6 +9,6 @@
                 <li><a href="#">About us</a></li>
                 <li><a href="#">Blog</a></li>
             </ul>
-            <a href="../frontend/dist/#/login" class="button button-primary">Log in</a>
+            <a href="../frontend/prod/#/login" class="button button-primary">Log in</a>
         </div>
     </div>

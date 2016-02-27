@@ -38,7 +38,7 @@
 	<div class="hero__strapline eight columns">
 	    	<h1>Save up the easy way with close friends and family. Safe, secure and hassle free.</h1>
         <h2>Finance your dreams responsibly with a Pardna!</h2>
-    	<a href="../frontend/dist/#/signup" class="button button-primary">Get Started!</a>
+    	<a href="../frontend/prod/#/signup" class="button button-primary">Get Started!</a>
     </div>
 </div>
 
