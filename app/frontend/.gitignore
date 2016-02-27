@@ -46,4 +46,5 @@ Icon
 /src/bower_components
 
 /dist
+/prod
 .idea/
