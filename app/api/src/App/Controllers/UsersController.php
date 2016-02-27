@@ -180,11 +180,11 @@ class UsersController
         $lastname = $names[0];
       }
 
-      //$link = $this->generateVerifyEmailConfirmationLink();
-      //$this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
+      $link = $this->generateVerifyEmailConfirmationLink();
+      $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
       // $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
 
-      $this->mailChimpsService->subscribeUserToMailList($user['email'], $firstname, $lastname);
+      // $this->mailChimpsService->subscribeUserToMailList($user['email'], $firstname, $lastname);
     }
     return $this->_login($user["email"], $user["password"]);
   }
