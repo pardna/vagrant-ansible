@@ -12,5 +12,7 @@ $app = new Silex\Application();
 require __DIR__ . '/../resources/config/dev.php';
 require __DIR__ . '/../src/app.php';
 
+ini_set('display_errors', 1);
+error_reporting(~0);
 
 $app['http_cache']->run();

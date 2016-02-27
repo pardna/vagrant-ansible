@@ -14,7 +14,7 @@ class UsersController
 {
   protected $usersService;
 
-  protected $mailService;
+  protected $mailChimpsService;
 
   protected $mandrillMailService;
 
@@ -33,12 +33,12 @@ class UsersController
     return new JsonResponse($this->usersService->getAll());
   }
 
-  public function setMailService($mailService){
-    $this->mailService = $mailService;
+  public function setMailChimpsService($mailChimpsService){
+    $this->mailChimpsService = $mailChimpsService;
   }
 
-  public function getMailService(){
-    return $this->mailService;
+  public function getMailChimpsService(){
+    return $this->mailChimpsService;
   }
 
   public function setMandrillMailService($mandrillMailService){
@@ -179,9 +179,12 @@ class UsersController
         $firstname = "";
         $lastname = $names[0];
       }
-      $link = $this->generateVerifyEmailConfirmationLink();
-      $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
-      $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
+
+      //$link = $this->generateVerifyEmailConfirmationLink();
+      //$this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
+      // $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
+
+      $this->mailChimpsService->subscribeUserToMailList($user['email'], $firstname, $lastname);
     }
     return $this->_login($user["email"], $user["password"]);
   }

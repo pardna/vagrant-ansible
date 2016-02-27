@@ -132,6 +132,7 @@ CREATE TABLE `pardnagroup_roles` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 /* When we begin handling webhooks, we'll need to keep a logs of all payments details in this table */
 /* Details are as follows
   | source_id - The parent resource of the bill e.g. a subscription or pre-authorization

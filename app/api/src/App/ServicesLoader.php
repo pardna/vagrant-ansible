@@ -35,11 +35,30 @@ class ServicesLoader
 
       $this->app['mail.service'] = $this->app->share(function (){
         $mailService = new Services\MailService($this->app["db"]);
+      $this->app['groups.setup.service'] = $this->app->share(function () {
+        $service = new Services\groups\setup\GroupsSetupService($this->app["db"]);
+        return $service;
+      });
+
+      $this->app['groups.manage.service'] = $this->app->share(function () {
+        $service = new Services\groups\manage\GroupsManageService($this->app["db"]);
+        return $service;
+      });
+
+      $this->app['pardna.setup.service'] = $this->app->share(function () {
+        $service = new Services\pardna\setup\PardnaSetupService($this->app["db"]);
+        return $service;
+      });
+
+      $this->app['pardna.manage.service'] = $this->app->share(function () {
+        $service = new Services\pardna\manage\PardnaManageService($this->app["db"]);
+        return $service;
+      });
+
+      $this->app['email.mailchimps.service'] = $this->app->share(function (){
+        $mailService = new Services\common\email\MailChimpsService($this->app["db"]);
         $mailService->setMailChimpsClient($this->app["mailChimps"]["API_KEY"]);
         $mailService->setPardnaAccConfirmListId($this->app["mailChimps"]["pardna_acc_confirm_list_id"]);
-        //$mailChimpsClient->lists->subscribe("testid", array('email'=>"testemail"));
-        //var_dump($mailChimpsClient);
-        //var_dump($mailService);
         return $mailService;
       });
 
