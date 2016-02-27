@@ -292,7 +292,7 @@ class UsersController
     }
   }
 
-  public function generateVerifyEmailConfirmationLink(){
+  public function generateVerifyEmailConfirmationLink() {
     return "http://www.channel4.com/programmes/a-place-in-the-sun-2015-2016/on-demand/59661-042";
   }
 
