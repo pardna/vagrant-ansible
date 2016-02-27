@@ -1,7 +1,7 @@
 	<div class="row header">
     	<div class="four columns logo"><a href="index.php"></a></div>
 
-        <div class="eight columns navigation responsive-menu">
+        <div class="eight columns navigation responsive-menu display-none">
               <label for="hidden-checkbox1" class="expand-control button">Menu</label>
               <input type="checkbox" id="hidden-checkbox1" class="expand-control">
         	<ul class="navigation-list animated slideInDown ">
