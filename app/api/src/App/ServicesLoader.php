@@ -35,6 +35,8 @@ class ServicesLoader
 
       $this->app['mail.service'] = $this->app->share(function (){
         $mailService = new Services\MailService($this->app["db"]);
+
+      });
       $this->app['groups.setup.service'] = $this->app->share(function () {
         $service = new Services\groups\setup\GroupsSetupService($this->app["db"]);
         return $service;

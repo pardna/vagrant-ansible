@@ -14,8 +14,8 @@ class RoutesLoader
         $this->app['users.controller'] = $this->app->share(function () {
             $controller = new Controllers\UsersController($this->app['users.service']);
             $controller->setNotificationService($this->app['notification.service']);
-            $controller->setMailService($this->app['mail.service']);
-            $controller->setMandrillMailService($this->app['mandrill.mail.service']);
+            // $controller->setMailService($this->app['mail.service']);
+          //   $controller->setMandrillMailService($this->app['mandrill.mail.service']);
             $controller->setMailChimpsService($this->app['email.mailchimps.service']);
             $controller->setApp($this->app);
             if($this->app['security.token_storage']->getToken()->getUser()) {
