@@ -15,6 +15,7 @@ class RoutesLoader
             $controller = new Controllers\UsersController($this->app['users.service']);
             $controller->setNotificationService($this->app['notification.service']);
             $controller->setMailService($this->app['mail.service']);
+            $controller->setMandrillMailService($this->app['mandrill.mail.service']);
             $controller->setApp($this->app);
             if($this->app['security.token_storage']->getToken()->getUser()) {
               //var_dump($this->app['security.token_storage']->getToken()->getUser());

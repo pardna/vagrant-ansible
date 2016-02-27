@@ -18,7 +18,8 @@
                 </div>
             </div>
           <div class="col-sm-6 add-existing-members">
-              <div>Select from your exisiiting Pardna.com members.</div>
+              <div>Select from your existing Pardna.com members.</div>
+            <!--  
           <div class="card contacts">
             <div class="list-group list-group-lg no-bg">
               <a href="" class="list-group-item text-ellipsis">
@@ -59,6 +60,18 @@
               </a>
             </div>
           </div>
+              -->
+         <div class="card contacts">
+            <div class="list-group list-group-lg no-bg" style="max-height: 200px">
+              <a href="" class="list-group-item text-ellipsis" ng-repeat="r in ui.relationships">
+                <span class="pull-right">
+                  <i class="mdi-action-trending-up i-20 text-muted-dk"></i>
+                </span>
+                {{ r.fullname }}
+                </a>
+            </div>
+          </div>  
+              
           </div>
 
       </div>

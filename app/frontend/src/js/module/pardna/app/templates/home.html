@@ -5,31 +5,31 @@
   <div class="box-row" id="firstLogin">
     <div class="box-cell">
       <!-- uiView:  -->
-    <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
 
-    <div class="row">
-    <div class="col-lg-9 col-md-8 col-sm-8">
-      <div class="row no-gutter">
-        <div class="col-xs-12">
-          <div class="card">
-            <div class="card-heading">
-              <h2>Dashboard</h2>
-            </div>
-            <div class="card-tools">
-              <button ui-sref="group-add" md-ink-ripple="" class="md-btn md-raised pull-right p-h-md pink">Start New Pardna Group</button>
-            </div>
+    <div class="col-xs-12 user-details-container">
+          <div class="card card-user-details col-xs-8">
+
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-12">
-                  <div class="p-lg bg-white-overlay text-center r-t">
+                <div class="col-sm-12 user-details-row">
+                  <div class="r-t">
 
-                    <div class="m-b m-t-sm h2">
-                      <i class="fa fa-user fa-2x"></i>
-                        <span class=""><h2>{{ user.fullname }}</h2></span>
-                        <span class="small">Membership No. {{ user.membership_number }}</span>
+                    <div class="h2 fa-user-details">
+                      <i class="fa fa-user glyphicon glyphicon-user fa-2x"></i>
+                        <div class="fa-user-name-number">
+                            <span class="">
+                                <h2>{{ user.fullname }}
+                                    <span id="verified" class="fa fa-check" ng-show="user.verified == '1'"></span>
+                                    <span id="unverified" class="fa unverified" ng-show="user.verified != '1'">Unverified</span>
+                                    <span id="membership-no" class="small">Membership No. {{ user.membership_number }}</span>
+                                </h2>
+                            </span>
+
+                        </div>
+
                     </div>
                     <span class="verify" ng-show="user.verified != '1'">
-                       <span class="verify-text"><h3>Verify Your Account</h3>In order start your first Pardna, you need to verify your account. <br />Get your mobile phone to hand and click "Send Code" to begin.</span>
+                       <span class="verify-text"><h3>Verify Your Account</h3>In order start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
                     <a class="md-btn md-raised p-h-md pink md-ink-ripple" ng-click="sendCode($event)">Send Code</a>
                     <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="verifyCode($event)">Verify Account</a>
                     </span>
@@ -41,18 +41,34 @@
           </div>
         </div>
 
-        <div class="col-xs-12" ng-show="ui.list.length">
+    <div class="padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+
+    <div class="row">
+    <div class="col-lg-9 col-md-8 col-sm-8">
+      <div class="row no-gutter">
+
+
+        <div class="col-xs-12">
           <div class="card contacts">
             <div class="card-heading">
               <h2>Pardna Groups ({{ ui.list.length }})</h2>
+            <div class="card-tools">
+              <button ui-sref="group-add" md-ink-ripple="" class="md-btn md-raised pull-right p-h-md pink">Start New Pardna Group</button>
             </div>
-            <div class="list-group list-group-lg no-bg" style="max-height: 200px">
+            </div>
+            <div class="list-group list-group-lg no-bg" ng-show="ui.list.length" style="max-height: 200px">
               <table class="table table-striped">
+              <tr class="list-group-header">
+                  <td>Group Name</td>
+                  <td>Start Date</td>
+                  <td>Frequency</td>
+                  <td>Amount</td>
+              </tr>
                 <tr ng-repeat="group in ui.list" ui-sref="group-details({id: group.id})">
                   <td>{{ group.name }} </td>
                   <td>{{ group.startdate }} </td>
                   <td>{{ group.frequency }} </td>
-                  <td><span class="pull-right">{{ group.amount}} </span></td>
+                  <td><span class="pull-right">£{{ group.amount}} </span></td>
                 </tr>
               </table>
             </div>
@@ -62,10 +78,16 @@
         <div class="col-xs-12" ng-show="ui.groupInvitationList.length">
           <div class="card contacts">
             <div class="card-heading">
-              <h2>Pardna Groups Invitations ({{ ui.groupInvitationList.length }})</h2>
+              <h2>Pardna Group Invitations ({{ ui.groupInvitationList.length }})</h2>
             </div>
             <div class="list-group list-group-lg no-bg" style="max-height: 200px">
               <table class="table table-striped">
+            <tr class="list-group-header">
+                  <td>Group Name</td>
+                  <td>Start Date</td>
+                  <td>Frequency</td>
+                  <td>Amount</td>
+              </tr>
                 <tr ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">
                   <td>{{ group.name }} </td>
                   <td>{{ group.startdate }} </td>
@@ -117,7 +139,7 @@
                   <i class="mdi-action-trending-up i-20 text-muted-dk"></i>
                 </span>
                 {{ r.fullname }}
-              </a>
+                </a>
             </div>
           </div>
       </div>

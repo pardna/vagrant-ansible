@@ -43,6 +43,12 @@ class ServicesLoader
         return $mailService;
       });
 
+      $this->app['mandrill.mail.service'] = $this->app->share(function (){
+        $mandrillMailService = new Services\common\email\MandrillMailService($this->app["db"]);
+        $mandrillMailService->setMandrillMailClient($this->app["mandrill"]["API_KEY"]);
+        return $mandrillMailService;
+      });
+
       $this->app['notification.service'] = $this->app->share(function () {
         return new Services\NotificationService($this->app["db"]);
       });

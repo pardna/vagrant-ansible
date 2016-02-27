@@ -4,6 +4,9 @@ angular.module('Pardna')
 function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, localStorageService, userService, groupService) {
 
   $scope.user = userService.user;
+  $scope.ui = {};    
+  $scope.ui.relationships = [];  
+    
 
   $scope.pardna = {
     name : "",
@@ -17,6 +20,8 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
   $scope.addEmail = addEmail;
   $scope.add = add;
 
+ loadUserRelationships();    
+    
   function addEmail() {
     $scope.pardna.emails.push({email: ""});
   }
@@ -33,6 +38,20 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
     return pardna;
   }
 
+  function loadUserRelationships() {
+    userService.getRelationships({}).success(function(data) {
+      $scope.ui.relationships = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }    
+    
+    
   function add() {
     var pardna = getPardna();
     groupService.add(pardna).success(function(data) {
