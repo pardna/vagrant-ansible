@@ -10,6 +10,7 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   $scope.ui.userInvitationList = [];
   $scope.ui.relationships = [];
   $scope.acceptUserInvitation = acceptUserInvitation;
+  $scope.acceptGroupInvitation = acceptGroupInvitation;
   var originatorEv;
 
   loadList();
@@ -140,11 +141,25 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   function acceptUserInvitation(id) {
     inviteService.acceptUserInvitation({id : id}).success(function(data) {
       loadUserInvitations();
-      loadUserRelationships(); 
+      loadUserRelationships();
     }).error(function(error) {
       $mdToast.show(
             $mdToast.simple()
               .content('Application error accepting user invitation')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
+
+  function acceptGroupInvitation(id) {
+    inviteService.acceptGroupInvitation({id : id}).success(function(data) {
+      loadUserInvitations();
+      loadUserRelationships();
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error accepting group invitation')
               .position("top right")
               .hideDelay(3000)
           );

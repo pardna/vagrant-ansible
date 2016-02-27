@@ -14,6 +14,7 @@ class PardnaGroupService extends BaseService
 
   protected $table = "pardnagroups";
   protected $memberTable = "pardnagroup_members";
+  protected $paymentTable = "pardnagroup_payments";
   protected $invitationService;
 
   public function setInvitationService(InvitationService $invitationService) {
@@ -78,6 +79,14 @@ class PardnaGroupService extends BaseService
     return $group;
   }
 
+  public function details($id) {
+    $group = $this->findById($id);
+    $group["members"] = $this->getMembers($id);
+    $group["payments"] = $this->getPayments($id);
+    $group["invitations"] = $this->invitationService->getGroupInvitationsByGroupId($id);
+    return $group;
+  }
+
   public function getEmailsFromRequest($data) {
     $emails = array();
     if($data["emails"]) {
@@ -103,6 +112,18 @@ class PardnaGroupService extends BaseService
   public function findById($id)
   {
     return $this->db->fetchAssoc("SELECT * FROM {$this->table} WHERE id = ?  LIMIT 1", array($id));
+  }
+
+  public function getMembers($id)
+  {
+    $data = $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE group_id = ?  LIMIT 1", array($id));
+    return $data ? $data : array();
+  }
+
+  public function getPayments($id)
+  {
+    $data = $this->db->fetchAll("SELECT * FROM {$this->paymentTable} WHERE group_id = ?  LIMIT 1", array($id));
+    return $data ? $data : array();
   }
 
   public function findByMemberId($id)

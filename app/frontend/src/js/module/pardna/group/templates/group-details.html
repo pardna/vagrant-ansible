@@ -1,0 +1,25 @@
+<div id="content" class="app-content" role="">
+  <div class="box">
+    <div ui-view="nav"></div>
+    <!-- Content -->
+    <div class="box-row" id="firstLogin">
+      <div class="box-cell">
+        <!-- uiView:  -->
+        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="row no-gutter">
+                <div class="col-xs-12">
+                  Group details {{ ui.data.name }} 
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / -->
+    </div>
+  </div>
+</div>

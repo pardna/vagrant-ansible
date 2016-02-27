@@ -48,7 +48,7 @@
             </div>
             <div class="list-group list-group-lg no-bg" style="max-height: 200px">
               <table class="table table-striped">
-                <tr ng-repeat="group in ui.list">
+                <tr ng-repeat="group in ui.list" ui-sref="group-details({id: group.id})">
                   <td>{{ group.name }} </td>
                   <td>{{ group.startdate }} </td>
                   <td>{{ group.frequency }} </td>
@@ -66,7 +66,7 @@
             </div>
             <div class="list-group list-group-lg no-bg" style="max-height: 200px">
               <table class="table table-striped">
-                <tr ng-repeat="group in ui.groupInvitationList">
+                <tr ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">
                   <td>{{ group.name }} </td>
                   <td>{{ group.startdate }} </td>
                   <td>{{ group.frequency }} </td>
@@ -74,8 +74,8 @@
                   <td>
                     <span class="pull-right">
                       <a class="md-btn md-fab md-raised pink md-ink-ripple" ng-click="" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-close"></i></a>
-                      <a class="md-btn md-fab md-raised blue md-ink-ripple" ng-click="" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-check"></i></a>
-                  </span>
+                      <a class="md-btn md-fab md-raised blue md-ink-ripple" ng-click="acceptGroupInvitation(group.id)" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-check"></i></a>
+                    </span>
                   </td>
                 </tr>
               </table>

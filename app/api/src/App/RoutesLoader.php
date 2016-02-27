@@ -297,6 +297,47 @@ class RoutesLoader
 
         $api->post('/pardna/group', "pardna.group.controller:save");
         $api->get('/pardna/group', "pardna.group.controller:read");
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroupDetailsRequest"),
+         *      definition = "PardnaGroupDetailsRequest",
+         * 			required={"id"},
+         * 			@SWG\Property(property="id", type="integer", description="id")
+         * 	),
+         *  @SWG\Post(
+         *    path="/pardna/group/details",
+         *    tags={"user"},
+         *    operationId="sendCodeForMobilePhoneConfirmation",
+         *    summary="Sends code to a user mobile phone",
+         *    description="This service returns a parda groups details, members and oayment history",
+         *    consumes={"application/json", "application/xml"},
+         *    produces={"application/json", "application/xml"},
+         *    @SWG\Parameter(
+         *      name="VerifyUserPhoneNumberRequest",
+         *      in="body",
+         *      required = true,
+         *      description="Verify User PhoneNumber",
+         *      @SWG\Schema(ref="#/definitions/MobilePhoneRequest")
+         *    ),
+         *    @SWG\Response(
+         *      response="401",
+         *      description="Invalid username or password",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="User is successfuly registered",
+         *      @SWG\Schema(ref="#/definitions/TokenDefault")
+         *    ),
+         *    security={
+         *         {
+         *             "pardna_auth": {"write:pardna", "read:pardna"}
+         *         }
+         *    }
+         *  )
+         */
+
+        $api->get('/pardna/group/details/{id}', "pardna.group.controller:details");
 
         $api->post('/invite', "invitation.controller:save");
         $api->get('/invite/group', "invitation.controller:readGroupInvitations");

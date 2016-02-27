@@ -1,59 +1,59 @@
 <form class="ng-pristine ng-valid">
-    <div class="row col-sm-12">
-        <div class="col-sm-8">
-            <h4>Give this group a memorable name</h4>
-            <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
-                <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
-                    <label for="input_71">Type your group name here</label>
-                    <input ng-model="pardna.name" class="ng-pristine ng-untouched ng-valid md-input" id="input_71" aria-invalid="false">
-                </md-input-container>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <h4>Choose a start dates</h4>
-            <div class="md-layout-row md-layout-sm-column col-sm-12 padding-0" flex layout="row" layout-align="space-between center">
-
-              <md-datepicker ng-model="pardna.startdate" md-placeholder="Enter date" class="ng-pristine ng-valid ng-isolate-scope md-default-theme ng-touched col-sm-8" tabindex="-1" aria-invalid="false" style="">111
-                  <button class="md-datepicker-button md-icon-button md-button md-default-theme" ng-transclude="" type="button" tabindex="-1" aria-hidden="true" ng-click="ctrl.openCalendarPane($event)">222
-           <md-icon class="md-datepicker-calendar-icon ng-scope ng-isolate-scope md-default-theme" md-svg-icon="md-calendar" aria-label="md-calendar" role="img"><img src="svg/icon-calendar.svg" /><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"></path></svg></md-icon></button>
-                  <div class="md-datepicker-input-container" ng-class="{'md-datepicker-focused': ctrl.isFocused}" style=""><input class="md-datepicker-input" aria-haspopup="true" ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)" placeholder="Enter date" size="3"><button class="md-datepicker-triangle-button md-icon-button md-button md-default-theme" ng-transclude="" type="button" md-no-ink="" ng-click="ctrl.openCalendarPane($event)" aria-label="Open calendar"><div class="md-datepicker-expand-triangle ng-scope"></div></button></div></md-datepicker>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row col-sm-12">
-
+  <div class="row col-sm-12">
     <div class="col-sm-8">
-        <h4>Specify the regular amount to be saved</h4>
-        <div class="md-layout-row md-layout-sm-column col-sm-12" flex layout="row" layout-align="space-between center">
+      <h4>Give this group a memorable name</h4>
+      <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
+        <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
+          <label for="input_71">Type your group name here</label>
+          <input ng-model="pardna.name" class="ng-pristine ng-untouched ng-valid md-input" id="input_71" aria-invalid="false">
+        </md-input-container>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h4>Choose a start dates</h4>
+      <div class="md-layout-row md-layout-sm-column col-sm-12 padding-0" flex layout="row" layout-align="space-between center">
+
+        <md-datepicker ng-model="pardna.startdate" md-placeholder="Enter date" class="ng-pristine ng-valid ng-isolate-scope md-default-theme ng-touched col-sm-8" tabindex="-1" aria-invalid="false" style="">111
+          <button class="md-datepicker-button md-icon-button md-button md-default-theme" ng-transclude="" type="button" tabindex="-1" aria-hidden="true" ng-click="ctrl.openCalendarPane($event)">222
+            <md-icon class="md-datepicker-calendar-icon ng-scope ng-isolate-scope md-default-theme" md-svg-icon="md-calendar" aria-label="md-calendar" role="img"><img src="svg/icon-calendar.svg" /><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"></path></svg></md-icon></button>
+            <div class="md-datepicker-input-container" ng-class="{'md-datepicker-focused': ctrl.isFocused}" style=""><input class="md-datepicker-input" aria-haspopup="true" ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)" placeholder="Enter date" size="3"><button class="md-datepicker-triangle-button md-icon-button md-button md-default-theme" ng-transclude="" type="button" md-no-ink="" ng-click="ctrl.openCalendarPane($event)" aria-label="Open calendar"><div class="md-datepicker-expand-triangle ng-scope"></div></button></div></md-datepicker>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row col-sm-12">
+
+        <div class="col-sm-8">
+          <h4>Specify the regular amount to be saved</h4>
+          <div class="md-layout-row md-layout-sm-column col-sm-12" flex layout="row" layout-align="space-between center">
             <div class="col-sm-8 col-xs-8">
               <md-slider flex md-discrete min="0" max="500" ng-model="pardna.amount" aria-label="red" id="red-slider">
               </md-slider>
             </div>
             <md-input-container md-no-float="" class="col-sm-4 col-xs-4 md-input-has-placeholder md-default-theme">
-            <md-icon class="fa fa-gbp ng-isolate-scope md-default-theme" aria-hidden="true">
+              <md-icon class="fa fa-gbp ng-isolate-scope md-default-theme" aria-hidden="true">
                 <i class=""></i>
-            </md-icon>
+              </md-icon>
               <input ng-model="pardna.amount" type="text" placeholder="" class="ng-pristine ng-untouched ng-valid md-input" aria-label="Amount" id="input_189" aria-invalid="false">
             </md-input-container>
+          </div>
+
+          <div>
+
+          </div>
         </div>
 
-        <div>
 
+
+        <div class="col-sm-4">
+          <h4>Weekly or monthly</h4>
+          <md-radio-group ng-model="pardna.frequency">
+            <md-radio-button value="monthly" class="md-primary"> Monthly </md-radio-button>
+            <md-radio-button value="weekly"> Weekly </md-radio-button>
+          </md-radio-group>
         </div>
-    </div>
-
-
-
-    <div class="col-sm-4">
-        <h4>Weekly or monthly</h4>
-            <md-radio-group ng-model="pardna.frequency">
-                <md-radio-button value="monthly" class="md-primary"> Monthly </md-radio-button>
-                <md-radio-button value="weekly"> Weekly </md-radio-button>
-            </md-radio-group>
-     </div>
-    </div>
+      </div>
 
       <div class="col-xs-12">
         <hr />

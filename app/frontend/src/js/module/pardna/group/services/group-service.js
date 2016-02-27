@@ -8,9 +8,14 @@ function GroupService($http, env) {
   dataFactory.add = function(params) {
     return $http.post(urlBase + '/pardna/group', params);
   };
-   
+
   dataFactory.list = function(params) {
     return $http.get(urlBase + '/pardna/group', params);
+  };
+
+  dataFactory.details = function(params) {
+    console.log(params);
+    return $http.get(urlBase + '/pardna/group/details/' + params.id); 
   };
 
   return dataFactory;

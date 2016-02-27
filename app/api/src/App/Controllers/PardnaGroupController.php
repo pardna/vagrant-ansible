@@ -41,6 +41,20 @@ class PardnaGroupController extends AppController
 
     }
 
+    public function details($id)
+    {
+
+        try {
+          // $data = $request->request->all();
+          $user = $this->getUser();
+          $group = $this->service->details($id);
+          return new JsonResponse($group);
+        } catch(\Exception $e) {
+          throw new HttpException(409,"Error getting list : " . $e->getMessage());
+        }
+
+    }
+
     public function addMember(Request $request)
     {
 

@@ -72,7 +72,13 @@ class InvitationService extends BaseService
   public function getGroupInvitations($email)
   {
     $invitations = $this->db->fetchAll("SELECT g.*, i.type_id, i.id AS invitation_id FROM {$this->table} i RIGHT JOIN {$this->groupTable} g ON i.type_id = g.id WHERE i.email = ? AND i.type = 'PARDNAGROUP'", array($email));
-    return $invitations;
+    return $invitations ? $invitations : array();
+  }
+
+  public function getGroupInvitationsByGroupId($id)
+  {
+    $invitations = $this->db->fetchAll("SELECT g.*, i.type_id, i.id AS invitation_id FROM {$this->table} i RIGHT JOIN {$this->groupTable} g ON i.type_id = g.id WHERE g.id = ? AND i.type = 'PARDNAGROUP'", array($id));
+    return $invitations ? $invitations : array();
   }
 
   public function acceptGroupInvitation() {
@@ -87,7 +93,7 @@ class InvitationService extends BaseService
         "user_2" => $invitation["type_id"],
         "status" => "ACCEPTED"
       );
-      
+
       $this->getRelationshipService()->save($relationship);
       $this->delete($invitationId);
 
