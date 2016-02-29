@@ -14,8 +14,6 @@ class UsersController
 {
   protected $usersService;
 
-  protected $mailChimpsService;
-
   protected $mandrillMailService;
 
   protected $notificationService;
@@ -31,10 +29,6 @@ class UsersController
   public function getAll()
   {
     return new JsonResponse($this->usersService->getAll());
-  }
-
-  public function setMailChimpsService($mailChimpsService){
-    $this->mailChimpsService = $mailChimpsService;
   }
 
   public function getMailChimpsService(){
