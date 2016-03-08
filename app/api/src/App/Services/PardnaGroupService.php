@@ -79,6 +79,15 @@ class PardnaGroupService extends BaseService
     return $group;
   }
 
+  public function groupDetailsForUser($user, $groupId) {
+    //var_dump($user->getId());
+    //var_dump($groupId);
+    if($this->memberExists($groupId, $user->getId())) {
+      return $this->findById($groupId);
+    }
+    return false;
+  }
+
   public function details($id) {
     $group = $this->findById($id);
     $group["members"] = $this->getMembers($id);

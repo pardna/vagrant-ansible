@@ -70,6 +70,11 @@ class ServicesLoader
         return $mandrillMailService;
       });
 
+      $this->app['payments.setup.service'] = $this->app->share(function (){
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app["db"], $this->app["gocardless"], $this->app['gc.environment']);
+        return $setUpService;
+      });
+
       $this->app['notification.service'] = $this->app->share(function () {
         return new Services\NotificationService($this->app["db"]);
       });
