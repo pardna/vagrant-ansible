@@ -170,12 +170,28 @@
     margin: 0 20px 0 5px
 }
 
-.box .navbar{ background: #6f2f6b;}
+.box #nav-container {
+    background: #6f2f6b;
+    padding: 0px 15%;
+}
+
+
+.box .navbar, 
+.navbar-header { 
+    background: #6f2f6b;
+}
 
 .box .navbar li a {
     color: #fff
 }
 
+.navbar-header .icon-bar {
+    background: #fff;
+}
+
+.navbar-toggle {
+    margin-top: 15px;
+}
 
 .md-whiteframe-z1 {
     box-shadow: none;
@@ -390,3 +406,19 @@ md-content.md-padding {
 }
 
 /*****/
+
+@media (max-width:767px) {
+    .box .navbar li {
+        border-bottom: 1px solid #40123E
+    }
+
+    .box .navbar {
+        border-top: 1px solid #40123E
+    }    
+}
+
+@media (max-width:1024px) {
+    .box #nav-container {
+        padding: 0px;
+    }
+}
