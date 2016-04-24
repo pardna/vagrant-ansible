@@ -15,6 +15,13 @@ class UsersService extends BaseService implements UserProviderInterface
 {
 
   protected $twillioClient;
+  protected $accountService;
+
+  public function __construct($db)
+  {
+      parent::__construct($db);
+      $this->accountService = new AccountService($db);
+  }
 
   public function setTwillioClient($twillioClient) {
     $this->twillioClient = $twillioClient;
@@ -30,7 +37,7 @@ class UsersService extends BaseService implements UserProviderInterface
      $atoZ = range('A','Z');
      $rand = mt_rand(0, count($atoZ)-1);
      $code = $atoZ[$rand] . $no;
-     $result = $this->db->fetchAssoc("SELECT membership_number FROM users WHERE membership_number = ? LIMIT 1", array($rand));
+     $result = $this->db->fetchAssoc("SELECT membership_number FROM users WHERE membership_number = ? LIMIT 1", array($code));
      if($result) {
        return $this->createMembershipNumber();
      }
@@ -80,6 +87,36 @@ class UsersService extends BaseService implements UserProviderInterface
 
   }
 
+  public function loadUserById($id)
+  {
+    $user = $this->get($id);
+
+    if(!$user) {
+
+      throw new UsernameNotFoundException("Username not found : " . $username);
+    }
+
+    $userEntity = new UserEntity();
+    $userEntity->setEmail($user["email"])
+    ->setUsername($user["email"])
+    ->setSalt($user["salt"])
+    ->setIsactive(true)
+    ->setMembershipNumber($user["membership_number"])
+    ->setLoginCount($user["login_count"])
+    ->setFullname($user["fullname"])
+    ->setPassword($user["password"])
+    ->setMobile($user["mobile"])
+    ->setVerified($user["verified"])
+    ->setId($user["id"]);
+
+    return $userEntity;
+
+  }
+
+  public function createAccount($user) {
+    $this->accountService->createAccount($user);
+  }
+
   public function refreshUser(UserInterface $user)
   {
     $class = get_class($user);
@@ -120,6 +157,8 @@ public function supportsClass($class)
   {
     return $this->db->fetchAssoc("SELECT * FROM users WHERE email = ? LIMIT 1", array($email));
   }
+
+
 
   function save($user)
   {

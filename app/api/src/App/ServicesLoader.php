@@ -14,6 +14,7 @@ class ServicesLoader
         $twillioClient = new \Services_Twilio($this->app["twillio"]["account_sid"], $this->app["twillio"]["account_token"]);
         $service = new Services\UsersService($this->app["db"]);
         $service->setTwillioCLient($twillioClient);
+
         return $service;
       });
 

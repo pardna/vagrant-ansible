@@ -1,6 +1,6 @@
 <form class="ng-pristine ng-valid">
   <div class="row col-sm-12">
-    <div class="col-sm-8">
+    <div class="col-sm-6">
       <h4>Give this group a memorable name</h4>
       <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
         <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
@@ -9,8 +9,17 @@
         </md-input-container>
       </div>
     </div>
-    <div class="col-sm-4">
-      <h4>Choose a start dates</h4>
+    <div class="col-sm-3">
+      <h4>Slots</h4>
+      <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
+        <md-input-container style="" class="md-default-theme md-input-has-value col-sm-12">
+          <label for="input_71">Slots</label>
+          <input ng-model="pardna.slots" class="ng-pristine ng-untouched ng-valid md-input" aria-invalid="false">
+        </md-input-container>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <h4>Start date</h4>
       <div class="md-layout-row md-layout-sm-column col-sm-12 padding-0" flex layout="row" layout-align="space-between center">
 
         <md-datepicker ng-model="pardna.startdate" md-placeholder="Enter date" class="ng-pristine ng-valid ng-isolate-scope md-default-theme ng-touched col-sm-8" tabindex="-1" aria-invalid="false" style="">111

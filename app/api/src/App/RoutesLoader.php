@@ -378,6 +378,7 @@ class RoutesLoader
          */
 
         $api->get('/pardna/group/details/{id}', "pardna.group.controller:details");
+        $api->get('/pardna/group/slots/{id}', "pardna.group.controller:slots");
 
         $api->post('/invite', "invitation.controller:save");
         $api->get('/invite/group', "invitation.controller:readGroupInvitations");

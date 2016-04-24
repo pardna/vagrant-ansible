@@ -15,7 +15,12 @@ function GroupService($http, env) {
 
   dataFactory.details = function(params) {
     console.log(params);
-    return $http.get(urlBase + '/pardna/group/details/' + params.id); 
+    return $http.get(urlBase + '/pardna/group/details/' + params.id);
+  };
+
+  dataFactory.slots = function(params) {
+    console.log(params);
+    return $http.get(urlBase + '/pardna/group/slots/' + params.id); 
   };
 
   return dataFactory;

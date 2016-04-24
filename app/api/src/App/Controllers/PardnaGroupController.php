@@ -55,6 +55,18 @@ class PardnaGroupController extends AppController
 
     }
 
+    public function slots($id)
+    {
+
+        try {
+          $slots = $this->service->getGroupSlots($id);
+          return new JsonResponse($slots);
+        } catch(\Exception $e) {
+          throw new HttpException(409,"Error getting slots : " . $e->getMessage());
+        }
+
+    }
+
     public function addMember(Request $request)
     {
 
