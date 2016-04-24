@@ -161,6 +161,8 @@ class UsersController
   {
     $user = $this->getDataFromRequest($request);
     $userId = $this->usersService->save($user);
+    $userEntity = $this->usersService->loadUserById($userId);
+    $this->usersService->createAccount($userEntity);
 
     //subscribe user to mail list
     if (isset($user)){
@@ -175,7 +177,7 @@ class UsersController
       }
 
       $link = $this->generateVerifyEmailConfirmationLink();
-      $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
+      // $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
       // $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
 
       // $this->mailChimpsService->subscribeUserToMailList($user['email'], $firstname, $lastname);
