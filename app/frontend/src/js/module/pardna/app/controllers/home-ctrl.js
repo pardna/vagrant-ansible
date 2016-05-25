@@ -1,7 +1,7 @@
 angular.module('Pardna')
-.controller('HomeCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'inviteService', HomeCtrl]);
+.controller('HomeCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'inviteService', 'paymentService', HomeCtrl]);
 
-function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageService, userService, groupService, inviteService) {
+function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageService, userService, groupService, inviteService, paymentService) {
 
   $scope.user = userService.user;
   $scope.ui = {};
@@ -10,6 +10,7 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   $scope.ui.userInvitationList = [];
   $scope.ui.relationships = [];
   $scope.acceptUserInvitation = acceptUserInvitation;
+  $scope.setupPayment = setupPayment;
   $scope.acceptGroupInvitation = acceptGroupInvitation;
   var originatorEv;
 
@@ -111,6 +112,19 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
     });
   }
 
+  function setupPayment(params){
+    paymentService.getPaymentUrl(params).success(function(data) {
+      $window.location.href = data.payment_url;
+      //$scope.ui.groupInvitationList = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error getting payment url')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
+  }
 
   function loadGroupInvitations() {
     inviteService.getGroupInvitations({}).success(function(data) {

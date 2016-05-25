@@ -33,7 +33,7 @@ class GoCardlessService extends BaseService
     public function getSubscriptionUrl($subscription)
     {
       $payment_details =  (array) $subscription;
-      $subsc_url = $this->gc->new_bill_url($payment_details);
+      $subsc_url = $this->gc->new_subscription_url($payment_details);
       return $subsc_url;
     }
 
