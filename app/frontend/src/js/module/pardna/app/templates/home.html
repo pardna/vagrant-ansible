@@ -64,7 +64,7 @@
               </tr>
                 <tr ng-repeat="group in ui.list" ui-sref="group-details({id: group.id})">
                   <td>{{ group.name }} </td>
-                  <td>{{ group.startdate }} </td>
+                  <td>{{ group.startdate | date:'dd MMM yyyy' }} </td>
                   <td>{{ group.frequency }} </td>
                   <td><span class="pull-right">£{{ group.amount}} </span></td>
                 </tr>
@@ -88,7 +88,7 @@
               </tr>
                 <tr ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">
                   <td>{{ group.name }} </td>
-                  <td>{{ group.startdate }} </td>
+                  <td>{{ group.startdate | date:'dd MMM yyyy' }} </td>
                   <td>{{ group.frequency }} </td>
                   <td><span class="pull-right">{{ group.amount}} </span></td>
                   <td>
