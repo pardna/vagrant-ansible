@@ -77,5 +77,6 @@ Vagrant.configure("2") do |config|
         config.vm.provision :shell, path: "ansible/windows.sh", args: ["pv-dashboard-frontend", "#{OS.windows?}"]
     end
 
-    config.vm.synced_folder "./", "/vagrant", type: "nfs"
+    #config.vm.synced_folder "./", "/vagrant", type: "nfs"
+    config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: ".git/"
 end

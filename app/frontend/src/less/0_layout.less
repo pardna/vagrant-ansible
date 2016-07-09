@@ -147,10 +147,16 @@
 } 
 
 .glyphicon-user {
-    margin: 4px 20px 0 0;
+    margin: 4px 10px 0 0;
     color: #fff;
     font-size: 1.25em;
 }
+
+.fa-user-name-number h2 span {
+    float: left;
+    margin-bottom: 5px
+}
+
 
 .fa-user span {
     display: block;
@@ -159,10 +165,8 @@
 .fa-user + div span h2 {
     margin: 0;
     text-transform: capitalize;
-    display: flex;
     align-items: baseline;
     color: #fff
-
 }
 
 .fa-user-details .fa-check {
@@ -172,12 +176,12 @@
     color: #fff;
     background: #3A1144; 
     align-self: center;
-    margin: 0 20px 0 5px
+    margin: 0 20px 0 0
 }
 
 .box #nav-container {
     background: #6f2f6b;
-    padding: 0px 15%;
+    padding: 0px 10%;
 }
 
 
@@ -289,6 +293,11 @@ md-dialog {
     margin: 0 auto;
 }
 
+#user-fullname {
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
 .unverified {
     font-size: 11px;
     text-transform: uppercase;
@@ -296,7 +305,7 @@ md-dialog {
     background: #FBFFDB;
     color: #000;
     letter-spacing: 1px;
-    margin: 12px 20px 20px 10px;
+    margin: 14px 20px 0 0;
     font-weight: 700;
     border-radius: 2px;
     line-height: initial;
@@ -358,23 +367,28 @@ md-dialog .md-actions .md-button {
     background: #fafafa;
 }
 
- tr.list-group-header td:last-child {
-    text-align: right;
-}
-
 .table>tbody>tr.list-group-header>td {
-    padding: 4px 24px;
+    padding: 4px 12px;
     color: #6f2f6b;
     background: #fff;   
     font-weight: bold
 }
 
+<<<<<<< HEAD
 .table-striped>tbody>tr {
     cursor: pointer
 }
 
 .table-striped>tbody>tr:hover {
     background: #fff;
+=======
+.table>tbody>tr>td:last-child {
+    padding-right: 24px
+}
+
+.table>tbody>tr>td:first-child {
+    padding-left: 24px
+>>>>>>> origin/userinterface-responsiveSitePages
 }
 
 .users-heading {
@@ -418,9 +432,102 @@ md-content.md-padding {
     padding-bottom: 70px
 }
 
+<<<<<<< HEAD
 
 
+=======
+.table>tbody>tr>td {
+    padding: 12px
+}
+
+
+.table>tbody>tr>td.invitation-response-buttons span {
+    display: flex;
+    justify-content: space-between;
+    width: 100%
+}
+
+.list-group table tr.group-invitations-row td div {
+    padding: 10px;
+    display: inline;
+}  
+
+#friend-invitations-card .table>tbody>tr>td:last-child span {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+} 
+
+md-content.md-padding,
+md-tabs.md-dynamic-height md-tab-content.md-active {
+    overflow: hidden;
+}
+
+>>>>>>> origin/userinterface-responsiveSitePages
 /*****/
+
+@media (max-width:480px) {
+    
+    .user-details-container {
+        padding: 14px 10px;
+    }
+    
+    .glyphicon.glyphicon-user {
+        display: none;
+    }
+    
+    .verify a {
+        width: 100%
+    }
+
+    .verify-text + a {
+        margin-bottom: 15px
+    }
+
+    .list-group-header td:last-child {
+       /* display:none */
+    }
+    
+    .list-group table tr.group-invitations-row {
+        height: 90px;
+    }
+
+    .list-group table tr.group-invitations-row td {
+        padding-bottom: 50px;
+    }  
+
+    .list-group table tr.group-invitations-row td:last-child {
+        padding-bottom: 0;
+    }  
+    
+    .table>tbody>tr>td.invitation-response-buttons {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        border-top: 0;
+        background: transparent;
+        height: inherit;   
+        display: flex;
+        align-items: flex-end
+    }
+    
+    .table>tbody>tr>td.invitation-response-buttons span {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    #add-new-pardna .card-body {
+        padding: 0;
+    }
+
+    .add-more-emails button{
+        margin-bottom: 20px;
+    }
+
+    .previous-button {
+        margin-bottom: 20px;   
+    }
+}
 
 @media (max-width:767px) {
     .box .navbar li {
@@ -430,10 +537,81 @@ md-content.md-padding {
     .box .navbar {
         border-top: 1px solid #40123E
     }    
+    
+    #membership-no {
+        padding-left: 0;
+        border-left: 0;
+        height: 30px;
+        line-height: 30px;
+        margin-top: 10px;
+    }
+        
+    .glyphicon-user {
+        font-size: 0.9em;
+        margin-top: 8px
+    }
+    
+    .table>tbody>tr.list-group-header>td {
+        padding: 4px 12px
+    }  
+
+    .card-heading {
+        position: relative;
+        padding: 20px 12px;
+    }
+
+    .table>tbody>tr>td:first-child {
+        padding-left: 12px
+    }    
+    
 }
 
 @media (max-width:1024px) {
     .box #nav-container {
         padding: 0px;
     }
+
+    .box .groups .start-new-pardna {
+        position: static;
+        margin-top: 15px;
+    }
+
+    .box .groups .start-new-pardna button {
+        width: 100%
+    }
+    
+    .user-details-container + div {
+        display: inline-block;
+    }
+}
+
+@media (max-width:320px) {
+
+    #membership-no {
+        height: 50px;
+    }
+    
+    .table>tbody>tr>td {
+        padding: 12px 3px;
+    }    
+
+    .table>tbody>tr>td:first-child {
+        padding-left: 3px;
+    }
+    .table>tbody>tr>td:last-child {
+        padding-right: 3px;
+    } 
+    
+    .table>tbody>tr.list-group-header>td {
+        padding: 4px;
+    }
+
+    .list-group-lg .list-group-item {
+        padding: 5px 12px;
+    }    
+
+    #friend-invitations-card .table>tbody>tr>td:first-child {
+        padding-left: 12px
+    }  
+
 }
