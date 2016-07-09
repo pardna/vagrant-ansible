@@ -1,7 +1,7 @@
 angular.module('Pardna')
-.controller('GroupDetailsCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', GroupDetailsCtrl]);
+.controller('GroupDetailsCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$filter', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', GroupDetailsCtrl]);
 
-function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $stateParams, jwtHelper, localStorageService, userService, groupService) {
+function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateParams, jwtHelper, localStorageService, userService, groupService) {
 
   $scope.user = userService.user;
   $scope.ui = {data: {}};
@@ -26,7 +26,7 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $stateParams, jw
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
           .title('Would you like to claim this slot ?')
-          .content('If you have a previously claimed slot, it will be <span class="debt-be-gone">release</span>.')
+          .content('If you have a previously claimed slot, it will be <span class="debt-be-gone">released</span>.')
           .ariaLabel('Claim Slot')
           .targetEvent(ev)
           .ok('Ok')
@@ -37,10 +37,12 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $stateParams, jw
       $scope.status = 'You decided to keep your debt.';
     });
   };
-
+  
+    
   function loadSlots(id) {
       groupService.slots({id: id}).success(function(data) {
-        $scope.ui.slots = data;
+        $scope.ui.slots = data;  
+          
       }).error(function(error) {
         $mdToast.show(
               $mdToast.simple()
@@ -49,8 +51,18 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $stateParams, jw
                 .hideDelay(3000)
             );
       });
-  }
+  }    
 
+
+// Format the start date that is returned from the database    
+function formatDate($scope) {
+    $scope.v = {
+        pay_date: Date.parse()
+    }
+}
+    
+    
+    
   console.log($scope.user);
   loadDetails($stateParams.id);
   loadSlots($stateParams.id);
