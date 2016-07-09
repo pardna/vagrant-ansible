@@ -50,12 +50,8 @@
     <div class="col-lg-9 col-md-8 col-sm-8">
       <div class="row no-gutter">
 
-<<<<<<< HEAD
-        <div class="col-xs-12">
-=======
 
         <div id="group-card"  class="col-xs-12">
->>>>>>> origin/userinterface-responsiveSitePages
           <div class="card contacts">
             <div class="card-heading groups">
                 <h2>Pardna Groups ({{ ui.list.length }})</h2>
@@ -91,35 +87,16 @@
             </div>
             <div class="list-group list-group-lg no-bg">
               <table class="table table-striped">
-<<<<<<< HEAD
-            <tr class="list-group-header">
-                  <td>Group Name</td>
-                  <td>Start Date</td>
-                  <td>Frequency</td>
-                  <td>Amount</td>
-              </tr>
-                <tr ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">
-                  <td>{{ group.name }} </td>
-                  <td>{{ group.startdate | date:'dd MMM yyyy' }} </td>
-                  <td>{{ group.frequency }} </td>
-                  <td><span class="pull-right">{{ group.amount}} </span></td>
-                  <td>
-                    <span class="pull-right">
-                      <a class="md-btn md-fab md-raised pink md-ink-ripple" ng-click="" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-close"></i></a>
-                      <a class="md-btn md-fab md-raised blue md-ink-ripple" ng-click="acceptGroupInvitation(group.id)" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-check"></i></a>
-                    </span>
-                  </td>
-                </tr>
-=======
+
                  <tr class="list-group-header">
                       <td>Group Name</td>
                       <td>Start Date</td>
                       <td>Frequency</td>
                       <td colspan="2">Amount</td>
                   </tr>
-                                   
-                  <md-content>    
-                  <tr class="group-invitations-row" ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">  
+
+                  <md-content>
+                  <tr class="group-invitations-row" ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">
                       <td>{{ group.name }} </td>
                       <td>{{ group.startdate }} </td>
                       <td>{{ group.frequency }} </td>
@@ -129,18 +106,17 @@
                           <a class="md-btn md-fab md-raised pink md-ink-ripple" ng-click="" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-close"></i></a>
                           <a class="md-btn md-fab md-raised blue md-ink-ripple" ng-click="acceptGroupInvitation(group.id)" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-check"></i></a>
                         </span>
-                      </td>                      
+                      </td>
                   </tr>
                   </md-content>
 
-                  
-                  
->>>>>>> origin/userinterface-responsiveSitePages
+
+
               </table>
             </div>
           </div>
         </div>
-          
+
         <div id="friend-invitations-card" class="col-xs-12" ng-show="ui.userInvitationList.length">
           <div class="card contacts">
             <div class="card-heading">
