@@ -11,8 +11,12 @@
       </div>
       <form name="form" class="ng-pristine ng-invalid ng-invalid-required ng-valid-email" ng-submit="signup()">
         <div class="md-form-group">
-          <input type="text" class="md-input ng-pristine ng-invalid ng-invalid-required ng-touched" ng-model="data.user.fullname" required="" tabindex="0" aria-required="true" aria-invalid="true" style="">
-          <label>Name</label>
+          <input type="text" class="md-input ng-pristine ng-invalid ng-invalid-required ng-touched" ng-model="data.user.firstname" required="" tabindex="0" aria-required="true" aria-invalid="true" style="">
+          <label>Firstname</label>
+        </div>
+        <div class="md-form-group">
+          <input type="text" class="md-input ng-pristine ng-invalid ng-invalid-required ng-touched" ng-model="data.user.lastname" required="" tabindex="0" aria-required="true" aria-invalid="true" style="">
+          <label>Lastname</label>
         </div>
         <div class="md-form-group">
           <input type="email" class="md-input ng-pristine ng-untouched ng-valid-email ng-invalid ng-invalid-required" ng-model="data.user.email" required="" tabindex="0" aria-required="true" aria-invalid="true">

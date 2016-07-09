@@ -56,9 +56,9 @@
             <div class="card-heading groups">
                 <h2>Pardna Groups ({{ ui.list.length }})</h2>
                 <div class="card-tools start-new-pardna">
-                  <button ui-sref="group-add" md-ink-ripple="" class="md-btn md-raised p-h-md pink">Start New Pardna Group</button>
+                  <button ui-sref="group-add" md-ink-ripple="" ng-if="user.verified == '1'" class="md-btn md-raised p-h-md pink">Start New Pardna Group</button>
                 </div>
-            </div>
+            </div> 
             <div class="list-group list-group-lg no-bg" ng-show="ui.list.length">
               <table class="table table-striped">
               <tr class="list-group-header">

@@ -160,6 +160,7 @@ class UsersController
   public function signup(Request $request)
   {
     $user = $this->getDataFromRequest($request);
+    $user["fullname"] = $user["firstname"] . " " . $user["lastname"];
     $userId = $this->usersService->save($user);
     $userEntity = $this->usersService->loadUserById($userId);
     $this->usersService->createAccount($userEntity);
@@ -167,14 +168,9 @@ class UsersController
     //subscribe user to mail list
     if (isset($user)){
       $fullname = $user['fullname'];
-      $names = explode(" ", $fullname, 2);
-      if (array_key_exists(1, $names)){
-        $firstname = $names[0];
-        $lastname = $names[1];
-      } else{
-        $firstname = "";
-        $lastname = $names[0];
-      }
+      $firstname = $user['firstname'];
+      $lastname = $user['lastname'];
+
 
       $link = $this->generateVerifyEmailConfirmationLink();
       // $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
