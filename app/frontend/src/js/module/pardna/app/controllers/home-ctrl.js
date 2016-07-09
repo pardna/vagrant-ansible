@@ -28,6 +28,8 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
 
   }
 
+  console.log($scope.user);
+  
 
   // Add new pardna
   $scope.data = {
@@ -241,15 +243,15 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
       "template": ""
     },
   ]
-  
-// Format the start date that is returned from the database    
+
+// Format the start date that is returned from the database
 function formatDate($scope) {
     $scope.v = {
         startdate: Date.parse()
     }
 }
-    
-    
-    
+
+
+
 
 }
