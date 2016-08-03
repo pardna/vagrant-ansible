@@ -188,11 +188,41 @@ a:hover {
 /* Container
 -------------------------------------------------------------------------*/
 .container {
-  background-color: #fff;
-  max-width: 1200px; }
+  width: 100%;
+  max-width: 100%;
+}
+
+
+#home .container,
+#about .container {
+    padding-top: 69px;
+}
+
+/* Max width inside Container
+-------------------------------------------------------------------------*/
+
+.valueprop,
+.carousel,
+.panel,
+.team,
+.company,
+.title,
+.footer {
+    margin: 0 15%; 
+}
+
+
 
 /* Header
 -------------------------------------------------------------------------*/
+.header {
+    margin: 0 auto;
+    background-color: #6f2f6b;
+    padding: 0 15%;
+    position: fixed;
+    z-index: 9;
+}
+
 .logo {
   display: -webkit-box;
   display: -moz-box;
@@ -207,7 +237,8 @@ a:hover {
 
 .logo img#logo, .logo a {
   width: 70%;
-  margin-left: 20px; }
+  margin-left: 15px; 
+    width: 250px;}
 
 .navigation {
   display: -webkit-box;
@@ -223,11 +254,13 @@ a:hover {
   align-items: center; }
 
 .header div, .logo a {
-  height: 85px; }
+  height: 69px; }
 
 .logo a {
-  background: url(../img/logo-full.svg) no-repeat 0 50% #fff;
-  z-index: 1; }
+  background: url(../img/logo-full-white.svg) no-repeat 0 50% #6f2f6b;
+  z-index: 1;
+    background-size: 90%
+}
 
 .navigation ul {
   list-style: none;
@@ -245,24 +278,30 @@ a:hover {
 .responsive-menu ul.navigation-list li {
   display: inline; }
 
+.responsive-menu ul.navigation-list li a {
+    color: #fff;
+}
+
 /* Hero
 -------------------------------------------------------------------------*/
 .hero {
-  background: url("../img/background-home.jpg") no-repeat 50% 0;
-  height: 600px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  justify-content: center;
-  text-align: center;
-  background-position: 100% 0; }
+    background: url("../img/background-pardna-friends.jpg") no-repeat 0 0;
+    height: 500px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content:  flex-end;
+    justify-content: flex-end;
+    background-color: #6c757e;
+}
 
 .hero__strapline {
   align-self: center;
-  -webkit-align-self: center; }
+  -webkit-align-self: center; 
+    margin-right: 10%
+}
 
 .hero__strapline h1,
 .hero__strapline h2 {
@@ -329,12 +368,57 @@ a:hover {
   background-position: 50%;
   height: 200px; }
 
+
+
+/* Team Members
+-------------------------------------------------------------------------*/
+
+.title {
+    display: flex;
+    height: 100px;
+    align-items: center;
+}
+
+.title h1{
+    margin: 0
+}
+
+/* Team Members
+-------------------------------------------------------------------------*/
+.team {
+    display: flex
+}
+
+.team_member {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 2px;
+    flex: 1
+}
+
+/* Company
+-------------------------------------------------------------------------*/
+.company_panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 2px;
+    flex: 1
+}
+
+
 /* Footer
 -------------------------------------------------------------------------*/
 .footer {
   background-color: #6f2f6b;
   color: #fff;
-  padding: 20px; }
+  padding: 20px;
+display: flex;    
+}
+
+.footer__social {
+     justify-content: space-between;
+    display: flex;
+}
 
 .footer h1, .footer h2, .footer h3 {
   color: #fff; }
@@ -342,7 +426,8 @@ a:hover {
 .footer__social--twitter:before,
 .footer__social--facebook:before,
 .footer__social--email:before {
-  margin-right: 20px; }
+  
+    font-size: 30px;}
 
 /* Forms
 -------------------------------------------------------------------------*/
@@ -381,8 +466,10 @@ a:hover {
   border-color: #c31c5e; }
 
 .navigation .button {
-  margin: 0 20px 0 0;
-  z-index: 1; }
+  margin: 0 20px;
+  z-index: 1;
+  background-color: #936390;
+  border: 0;}
 
 /* Register
 -------------------------------------------------------------------------*/
@@ -427,6 +514,17 @@ hr {
   border: 1px dashed #999; }
 
 /* Media Queries
+
+-------------------------------------------------------------------------*/
+/* MAX WIDTH 550
+-------------------------------------------------------------------------*/
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+  .container {
+    width: 100%;
+    padding: 0; }
+}
+
 -------------------------------------------------------------------------*/
 /* MAX WIDTH 550
 -------------------------------------------------------------------------*/
@@ -445,7 +543,7 @@ hr {
   .header {
     position: fixed;
     width: inherit;
-    background-color: #fff;
+    background-color: #6f2f6b;
     margin-top: -85px; }
 
   .logo a {
@@ -485,5 +583,6 @@ hr {
     margin: 0;
     background-color: #fff;
     padding: 10px 20px; } }
+
 /* MAX WIDTH 960
 -------------------------------------------------------------------------*/
