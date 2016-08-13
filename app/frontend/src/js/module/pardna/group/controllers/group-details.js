@@ -8,7 +8,7 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
   $scope.showConfirm = showConfirm;
 
   // $stateParams.id,
-
+ 
   function loadDetails(id) {
       groupService.details({id: id}).success(function(data) {
         $scope.ui.data = data;
@@ -32,17 +32,17 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
           .ok('Ok')
           .cancel('Cancel');
     $mdDialog.show(confirm).then(function() {
-      $scope.status = 'You decided to get rid of your debt.';
+      // $scope.status = 'You decided to get rid of your debt.';
     }, function() {
-      $scope.status = 'You decided to keep your debt.';
+      // $scope.status = 'You decided to keep your debt.';
     });
   };
-  
-    
+
+
   function loadSlots(id) {
       groupService.slots({id: id}).success(function(data) {
-        $scope.ui.slots = data;  
-          
+        $scope.ui.slots = data;
+
       }).error(function(error) {
         $mdToast.show(
               $mdToast.simple()
@@ -51,19 +51,19 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
                 .hideDelay(3000)
             );
       });
-  }    
+  }
 
 
-// Format the start date that is returned from the database    
+// Format the start date that is returned from the database
 function formatDate($scope) {
     $scope.v = {
         pay_date: Date.parse()
     }
 }
-    
-    
-    
-  console.log($scope.user);
+
+
+
+  // console.log($scope.user);
   loadDetails($stateParams.id);
   loadSlots($stateParams.id);
 

@@ -17,6 +17,24 @@ class PardnaGroupService extends BaseService
   protected $paymentTable = "pardnagroup_payments";
   protected $slotTable = "pardnagroup_slots";
   protected $invitationService;
+  protected $maximumSlots = 12;
+  protected $minimumSlots = 4;
+  protected $minimumAmount = 10;
+  protected $maximumAmount = 500;
+  protected $charges = array(
+    1 => 6,
+    2 => 5.5,
+    3 => 5.0,
+    4 => 4.5,
+    5 => 4.0,
+    6 => 3.5,
+    7 => 3.0,
+    8 => 2.5,
+    9 => 2.0,
+    10 => 1.5,
+    11 => 1.0,
+    12 => 0
+  );
 
   public function setInvitationService(InvitationService $invitationService) {
     $this->invitationService = $invitationService;
@@ -31,6 +49,21 @@ class PardnaGroupService extends BaseService
   {
 
     $group = $this->getGroupFromRequest($data, $user);
+    if($group["slots"] > count($this->charges)) {
+      throw new \Exception("Number of slots is greater than charge slots " . count($this->charges));
+    }
+    if($group["slots"] > $this->maximumSlots) {
+      throw new \Exception("Maximum number of slots is " . $this->maximumSlots);
+    }
+    if($group["slots"] < $this->minimumSlots) {
+      throw new \Exception("Minimum number of slots is " . $this->minimumSlots);
+    }
+    if($group["amount"] > $this->maximumAmount) {
+      throw new \Exception("Maximum amount is " . $this->maximumAmount);
+    }
+    if($group["amount"] < $this->minimumAmount) {
+      throw new \Exception("Minimum amount is " . $this->minimumAmount);
+    }
     $startDate = new \DateTime($group['startdate']);
     if ($startDate < new \DateTime())
     {
@@ -88,6 +121,14 @@ class PardnaGroupService extends BaseService
     throw new \Exception("Position does not exist in slot");;
   }
 
+  public function getChargePercent($position, $numberOfSlots) {
+    $chargeSlots = count($this->charges);
+    $key = ($chargeSlots+$position)-($numberOfSlots);
+    if(!isset($this->charges[$key])) {
+      throw new \Exception("Charge percentage slot " . $key . " does not exist");
+    }
+    return $this->charges[$key];
+  }
 
   public function createSlots($numberOfSlots, $group) {
     if($numberOfSlots > 24) {
@@ -106,8 +147,14 @@ class PardnaGroupService extends BaseService
         $slot = array(
           "pardnagroup_id" => $group["id"],
           "position" => $i,
-          "pay_date" => $startDate->format('Y-m-d')
+          "pay_date" => $startDate->format('Y-m-d'),
+          "total_contribution" => $numberOfSlots*$group["amount"],
+          "charge_percent" => $this->getChargePercent($i, $numberOfSlots),
         );
+
+        $slot["charge_amount"] = ($slot["total_contribution"]*$slot["charge_percent"])/100;
+        $slot["pay_amount"] = $slot["total_contribution"]-$slot["charge_amount"];
+
         $slot = $this->appendCreatedModified($slot);
         $this->db->insert($this->slotTable, $slot);
 
@@ -243,5 +290,6 @@ class PardnaGroupService extends BaseService
     }
     return $slots;
   }
+
 
 }

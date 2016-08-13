@@ -10,31 +10,31 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
               <div class="group-details__header row no-gutter">
                 <div class="col-xs-12">
-                    <h1>Group Details<span ui-sref="home" class="group-details__sub-nav">Back</span></h1> 
+                    <h1>Group Details<span ui-sref="home" class="group-details__sub-nav">Back</span></h1>
                     The payout dates for group <span class="group-details__group-name">{{ ui.data.name }}</span> are listed below. To choose or change your payout date, select an available slot.
                     <h2>{{ ui.data.name }}</h2>
                 </div>
               </div>
-              <div class="row group-details__slots">    
+              <div class="row group-details__slots">
                   <span class="my-icon"><span></span><i></i></span>
                 <div class="slot" ng-repeat="slot in ui.slots">
                       <a class="thumbnail" ng-click="showConfirm(slot)" ng-if="!slot.claimed">
-                        Available Slot {{ slot.position }} 
+                        Available Slot {{ slot.position }}
                           <span class="slot__payout-date">Payout date:</span>
                         {{ slot.pay_date | date:'dd MMM yyyy' }}
-                          <span class="slot__fee">Fee: %</span>
+                          <span class="slot__fee">Fee: {{ slot.charge_percent }}%</span>
                       </a>
                       <a class="thumbnail slot--yours" ng-if="slot.claimed && user.membership_number == slot.claimant">
                         Your Slot <br />
-                          <span class="slot__payout-date">Payout date:</span>       
+                          <span class="slot__payout-date">Payout date:</span>
                         {{ slot.pay_date | date:'dd MMM yyyy' }}
-                          <span class="slot__fee">Fee: %</span>
+                          <span class="slot__fee">Fee: {{ slot.charge_percent }}%</span>
                       </a>
                       <a class="thumbnail slot--claimed" ng-if="slot.claimed && user.membership_number != slot.claimant">
                         {{ slot.fullname }}
                           <span class="slot__payout-date">Payout date:</span>
                         {{ slot.pay_date | date:'dd MMM yyyy' }}
-                          <span class="slot__fee">Fee: %</span>
+                          <span class="slot__fee">Fee : {{ slot.charge_percent }}%</span>
                       </a>
                 </div>
               </div>
