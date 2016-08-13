@@ -1,0 +1,125 @@
+.group-details__header h1 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 25px;
+    color: #6f2f6b;
+}
+
+.group-details__header h2 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 25px;
+}
+
+.group-details__sub-nav {
+    font-size: 16px;
+    position: absolute;
+    right: 0;    
+    top: 5px;
+    cursor: pointer;
+}
+
+.group-details__sub-nav:hover {
+    font-size: 16px;
+    position: absolute;
+    right: 0;    
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.group-details__group-name {
+    font-weight: 800
+}
+
+.my-icon {
+    position: relative;
+}
+.my-icon > i {
+    position: absolute;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    line-height: 0;
+    border: 1em solid transparent;
+    margin-top: -2em;
+    border-bottom: 1em solid #E6E6E6;
+    left: 0em;
+    top: 0em;
+}
+
+.my-icon > span {
+    position: absolute;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    line-height: 0;
+    border: 1em solid transparent;
+    margin-top: -2.1em;
+    border-bottom: 1em solid #A2A1A1;
+    left: 0em;
+    top: 0em;
+}
+
+
+.group-details__slots {
+    display: flex;
+    flex-wrap: wrap;  
+    background: #E6E6E6;
+    padding: 0 20px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.slot {
+    display: table;
+    margin: 20px 40px 10px 0
+}
+
+.slot a {
+    padding: 30px 10px; 
+    text-align: center;
+    border-radius: 90px;
+    height: 140px;
+    width: 140px;
+    margin: 0 auto;
+    display: table-cell;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    border-color: #fff;
+    border-width: 5px;
+    box-shadow: 0px 0px 1px #636363;
+}
+
+.slot a.slot--claimed {
+    border: 5px solid #6f2f6b;
+    color:  #6f2f6b;
+}
+
+.slot a.slot--yours {
+    background: #6f2f6b;  
+    color: #fff;
+    border: 5px solid #6f2f6b;
+}
+
+.slot a.thumbnail.active, 
+.slot a.thumbnail:focus, 
+.slot a.thumbnail:hover {
+    border-color: #6f2f6b;
+    border-width: 5px;
+}
+
+.slot__payout-date, 
+.slot__fee {
+    color: #999;
+    font-size: 12px;
+    display: block;
+    line-height: 1;
+    margin-top: 5px;
+}
+
+.slot a.slot--yours .slot__fee {
+    color: #fff;
+}
