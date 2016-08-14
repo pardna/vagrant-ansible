@@ -173,7 +173,7 @@ class UsersController
 
 
       $link = $this->generateVerifyEmailConfirmationLink();
-      // $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
+       $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
       // $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
 
       // $this->mailChimpsService->subscribeUserToMailList($user['email'], $firstname, $lastname);

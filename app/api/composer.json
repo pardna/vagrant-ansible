@@ -19,6 +19,7 @@
       "nesbot/Carbon": "~1.6",
       "respect/validation": "~0.9",
       "gocardless/gocardless": ">=0.4.2",
+      "gocardless/gocardless-pro": ">=0.9.4",
       "twilio/sdk": "~4.5",
       "cnam/security-jwt-service-provider":"1.*",
       "zircote/swagger-php": "^2.0",

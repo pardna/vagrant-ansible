@@ -13,9 +13,12 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class PaymentsController extends AppController
 {
   protected $groupService;
+
   protected $trackerService;
+
   protected $manageService;
 
+  protected $app;
 
   public function setPardnaGroupsService($groupService){
     $this->groupService = $groupService;
@@ -29,13 +32,22 @@ class PaymentsController extends AppController
     $this->manageService = $manageService;
   }
 
+  public function setApp($app) {
+    $this->app = $app;
+  }
+
+  public function getApp() {
+    return $this->app;
+  }
+
   public function getGroupPaymentsSubscriptionUrl($id)
   {
     try {
       $user = $this->getUser();
       $group = $this->groupService->groupDetailsForUser($user, $id);
       if ($group){
-        $url = $this->service->createPaymentPlan($group);
+        $token = $this->getSessionToken($user, $id);
+        $url = $this->service->getRedirectUrl($token, $group);
         return new JsonResponse(array("payment_url" => $url));
       } else{
         return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
@@ -71,5 +83,13 @@ class PaymentsController extends AppController
     return $urlParams;
   }
 
-
+  protected function getSessionToken($user, $group_id) {
+    $app = $this->app;
+    return $app['security.jwt.encoder']->encode([
+        'user_id' => $user->getFullName(),
+        'fullname' => $user->getFullName(),
+        "membership_number" => $user->getMembershipNumber(),
+        "group_id" => $group_id
+      ]);
+  }
 }

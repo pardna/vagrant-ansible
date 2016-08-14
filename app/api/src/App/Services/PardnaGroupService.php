@@ -214,6 +214,11 @@ class PardnaGroupService extends BaseService
     return $data ? $data : array();
   }
 
+  public function getMember($groupId, $userId)
+  {
+    return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE user_id = ? AND group_id = ?  LIMIT 1", array($userId, $groupId));
+  }
+
   public function getMembers($id)
   {
     $data = $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE group_id = ?", array($id));
@@ -224,6 +229,15 @@ class PardnaGroupService extends BaseService
   {
     $data = $this->db->fetchAll("SELECT * FROM {$this->paymentTable} WHERE group_id = ?", array($id));
     return $data ? $data : array();
+  }
+
+  function dd_mandate_setup_completed($group_id, $user_id)
+  {
+    if($this->memberExists($group_id, $user_id)) {
+      return $this->db->update($this->memberTable, array("dd_mandate_setup" => 1), ['user_id' => $user_id, 'group_id' => $group_id]);
+    } else{
+      throw new HttpException(401,"User is not authorized to complete this operation");
+    }
   }
 
   public function findByMemberId($id)
