@@ -5,10 +5,10 @@ angular.module('Pardna')
 function PaymentCtrl($scope, $location, $mdToast, paymentService) {
   //var searchParams = $location.search();
   var searchParams = {};
-  searchParams.resource_id = getParameterByName("resource_id");
-  searchParams.resource_type = getParameterByName("resource_type");
-  searchParams.resource_uri = getParameterByName("resource_uri");
-  searchParams.signature = getParameterByName("signature");
+  searchParams.redirect_flow_id = getParameterByName("redirect_flow_id");
+  searchParams.membership_number = getParameterByName("membership_number");
+  searchParams.group_id = getParameterByName("group_id");
+  //searchParams.signature = getParameterByName("signature");
   console.log(searchParams);
   if (searchParams && searchParams !== "null" && searchParams !== "undefined"){
     confirmPayment(searchParams);

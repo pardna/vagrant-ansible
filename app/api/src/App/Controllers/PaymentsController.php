@@ -18,8 +18,6 @@ class PaymentsController extends AppController
 
   protected $manageService;
 
-  protected $app;
-
   public function setPardnaGroupsService($groupService){
     $this->groupService = $groupService;
   }
@@ -32,22 +30,14 @@ class PaymentsController extends AppController
     $this->manageService = $manageService;
   }
 
-  public function setApp($app) {
-    $this->app = $app;
-  }
-
-  public function getApp() {
-    return $this->app;
-  }
-
   public function getGroupPaymentsSubscriptionUrl($id)
   {
     try {
       $user = $this->getUser();
       $group = $this->groupService->groupDetailsForUser($user, $id);
       if ($group){
-        $token = $this->getSessionToken($user, $id);
-        $url = $this->service->getRedirectUrl($token, $group);
+        $token = $this->getSessionId($user, $id);
+        $url = $this->service->getRedirectUrl($token, $user, $group);
         return new JsonResponse(array("payment_url" => $url));
       } else{
         return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
@@ -57,39 +47,34 @@ class PaymentsController extends AppController
     }
   }
 
-  public function confirmPayment(Request $request)
+  public function completeRedirectFlow(Request $request)
   {
     try {
       $data = $request->request->all();
-      $urlParams = $this->getUrlParamsFromRequest($data);
-      $bill = $this->service->confirmPaymentPlan($urlParams);
-      return new JsonResponse($bill);
+      $user = $this->getUser();
+      if (strcmp($user->getMembershipNumber(), $data["membership_number"]) !== 0){
+        throw new HttpException(401, "Could not confirm setting up of mandate");
+      }
+      $token = $this->getSessionId($user, $data["group_id"]);
+      $pardnagroup_member = $this->groupService->getMember($data["group_id"], $user->getId());
+      $response = $this->service->completeReturnFromRedirectFlow($token, $data["redirect_flow_id"], $pardnagroup_member);
+      return new JsonResponse(array("message" => "Mandate Successfully created" ));
+    } catch(\GoCardlessPro\Core\Exception\InvalidApiUsageException $e) {
+      throw new HttpException(409, "Could not complete the redirect flow : " . $e->getMessage());
+    } catch(\GoCardlessPro\Core\Exception\InvalidStateException $e) {
+      throw new HttpException(409, "Could not complete the redirect flow : " . $e->getMessage());
     } catch(\Exception $e) {
       var_dump($e);
       throw new HttpException(409, "Could not confirm payment : " . $e->getMessage());
     }
   }
 
-  public function getUrlParamsFromRequest($data)
-  {
-    $urlParams = array();
-    $urlParams["resource_id"] = $data["resource_id"];
-    if(isset($data["status"]) && $data["status"]) {
-      $urlParams["status"] = $data["status"];
-    }
-    $urlParams["resource_type"] = $data["resource_type"];
-    $urlParams["resource_uri"] = $data["resource_uri"];
-    $urlParams["signature"] = $data["signature"];
-    return $urlParams;
+  public function createSubscription(Request $request){
+
   }
 
-  protected function getSessionToken($user, $group_id) {
-    $app = $this->app;
-    return $app['security.jwt.encoder']->encode([
-        'user_id' => $user->getFullName(),
-        'fullname' => $user->getFullName(),
-        "membership_number" => $user->getMembershipNumber(),
-        "group_id" => $group_id
-      ]);
+  protected function getSessionId($user, $group_id){
+    return "SESS_" . base64_encode($user->getId() . $user->getFullName() . $user->getMembershipNumber() . $group_id);
   }
+
 }

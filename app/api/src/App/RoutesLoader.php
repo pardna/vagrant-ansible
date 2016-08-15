@@ -43,7 +43,6 @@ class RoutesLoader
         $this->app['pardna.payments.controller'] = $this->app->share(function () {
             $controller = new Controllers\PaymentsController($this->app['payments.setup.service']);
             $controller->setPardnaGroupsService($this->app['pardna.group.service']);
-            $controller->setApp($this->app);
             // $controller->setTrackerService($this->app['payments.tracker.service']);
             // $controller->setManageService($this->app['payments.manage.service']);
             if($this->app['security.token_storage']->getToken()->getUser()) {
@@ -379,7 +378,7 @@ class RoutesLoader
 
         $api->post('/group/payments/getPaymentUrl/{id}', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
 
-        $api->post('/payments/confirm', "pardna.payments.controller:confirmPayment");
+        $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
 
         $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"], $api);
     }

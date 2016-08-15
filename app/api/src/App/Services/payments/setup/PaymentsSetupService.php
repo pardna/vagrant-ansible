@@ -17,14 +17,6 @@ class PaymentsSetupService extends GoCardlessProService
       $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
       return $this;
     }
-    //This is going to create a payment plan to take payment for many customers at once
-    //Returns the link which the customer will use to navigate to payment set up
-    public function createPaymentPlan($data){
-      $subscription = $this->createSubscriptionRequest($data);
-      //var_dump(array_filter($subscription->__toArray()));
-      $url = $this->getSubscriptionUrl(array_filter($subscription->__toArray()));
-      return $url;
-    }
 
     public function getReflectedValue($key, $obj){
       $rp = new \ReflectionProperty('\GoCardlessPro\Resources\RedirectFlow', $key);
@@ -32,25 +24,31 @@ class PaymentsSetupService extends GoCardlessProService
       return $rp->getValue($obj);
     }
 
-    public function getRedirectUrl($token, $data){
-      $description = "To set up recurring payment for " . $data["name"] . " Pardna.";
-      if (! $this->descriptionIsOfCorrectLength($description)){
-        $description = "To set up payment for " . $data["name"] . "Pardna.";
-      }
-      $response = $this->getRedirectFlowUrl([
-        "params" => ["description" => $description,
-                     "session_token" => $token,
-                     "success_redirect_url" => "http://192.168.33.99/app/frontend/dist/#/payment/confirm"]
-      ]);
-
-      $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
+    public function getRedirectFlowResponse($response){
       $redirectFlow = new RedirectFlow();
       $obj_vars = get_class_vars(get_class($redirectFlow));
       foreach ($obj_vars as $key => $value)
       {
           $redirectFlow->$key = $this->getReflectedValue($key, $response);
       }
-      return $redirectFlow->getRedirect_url();
+      return $redirectFlow;
+    }
+
+    public function getRedirectUrl($token, $user, $group){
+      $description = "To set up recurring payment for " . $group["name"] . " Pardna.";
+      if (! $this->descriptionIsOfCorrectLength($description)){
+        $description = "To set up payment for " . $group["name"] . "Pardna.";
+      }
+      $membership_number = $user->getMembershipNumber();
+      $group_id = $group["id"];
+      $success_redirect_url = "http://192.168.33.99/app/frontend/dist/#/payment/confirm?membership_number=" . $membership_number . "&group_id=" . $group_id;
+      $response = $this->getRedirectFlowUrl([
+        "params" => ["description" => $description,
+                     "session_token" => $token,
+                     "success_redirect_url" => $success_redirect_url]
+      ]);
+
+      return $this->getRedirectFlowResponse($response)->getRedirect_url();
     }
 
     public function descriptionIsOfCorrectLength($description){
@@ -61,9 +59,27 @@ class PaymentsSetupService extends GoCardlessProService
       return false;
     }
 
-    public function confirmPaymentPlan($urlParams){
-      $bill = $this->confirmGoCardlessRessource(array_filter($urlParams));
-      return $bill;
+    public function completeReturnFromRedirectFlow($token, $redirect_flow_id, $pardnagroup_member)
+    {
+      $response = $this->completeRedirectFlow($redirect_flow_id, [
+        "params" => ["session_token" => $token]
+      ]);
+      $this->storeGoCardlessCustomerInfo($response, $pardnagroup_member);
+    }
+
+    public function storeGoCardlessCustomerInfo($response, $pardnagroup_member){
+      $redirectFlow = $this->getRedirectFlowResponse($response);
+      $details = array();
+      $links = $redirectFlow->getLinks();
+      $details["gc_customer_id"] = $links->customer;
+      $details["pardnagroup_member_id"] = $pardnagroup_member[0]['id'];
+      $details["gc_cust_bank_account"] = $links->customer_bank_account;
+      $details["mandate_id"] = $links->mandate;
+      $this->storeGoCardlessCustomerDetails($details);
+    }
+
+    public function createSubscription($data){
+
     }
 
     public function createSubscriptionRequest($data){
