@@ -34,6 +34,7 @@ class RoutesLoader
         $this->app['pardna.group.controller'] = $this->app->share(function () {
             $controller = new Controllers\PardnaGroupController($this->app['pardna.group.service']);
             //$controller->setPaymentsService($this->app['gocardless.payments.service']);
+            $controller->setPardnaGroupStatusService($this->app['pardna.group.status.service']);
             if($this->app['security.token_storage']->getToken()->getUser()) {
                $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
             }

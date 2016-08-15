@@ -47,6 +47,12 @@ class ServicesLoader
         return $mandrillMailService;
       });
 
+      $this->app['pardna.group.status.service'] = $this->app->share(function (){
+        $pardnaGroupStatusService = new Services\PardnaGroupStatusService($this->app["db"]);
+        $pardnaGroupStatusService->setPardnaGroupService($this->app['pardna.group.service']);
+        return $pardnaGroupStatusService;
+      });
+
       $this->app['payments.setup.service'] = $this->app->share(function (){
         $setUpService = new Services\payments\setup\PaymentsSetupService($this->app["db"], $this->app["gocardless_pro"], $this->app['gocardless_env']);
         return $setUpService;

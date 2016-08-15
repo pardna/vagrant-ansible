@@ -58,7 +58,7 @@
                 <div class="card-tools start-new-pardna">
                   <button ui-sref="group-add" md-ink-ripple="" ng-if="user.verified == '1'" class="md-btn md-raised p-h-md pink">Start New Pardna Group</button>
                 </div>
-            </div> 
+            </div>
             <div class="list-group list-group-lg no-bg" ng-show="ui.list.length">
               <table class="table table-striped">
               <tr class="list-group-header">
@@ -73,7 +73,7 @@
                   <td>{{ group.startdate | date:'dd MMM yyyy' }} </td>
                   <td>{{ group.frequency }} </td>
                   <td><span class="pull-right">£{{ group.amount}} </span></td>
-                  <td><button ng-click="setupPayment({id: group.id})" md-ink-ripple="" class="md-btn">Set up Payment</button></td>
+                  <td><button ng-click="setupPayment({id: group.id})" md-ink-ripple="" class="md-btn">{{ group.status.decode}}</button></td>
                 </tr>
               </table>
             </div>
