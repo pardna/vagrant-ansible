@@ -5,7 +5,7 @@ namespace App\Entity;
 /**
  * Class containing constants to determine which server the API client should call.
  */
-class PardnaStatus
+class PardnaStatusEntity
 {
     /**
      * Pardna Status when the user needs to set up payments

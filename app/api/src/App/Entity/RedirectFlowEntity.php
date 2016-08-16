@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity;
 
-class RedirectFlow
+class RedirectFlowEntity
 {
 
   public $created_at;

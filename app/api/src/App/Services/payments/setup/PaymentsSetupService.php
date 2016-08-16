@@ -4,7 +4,7 @@ use App\Services\common\BaseService;
 use App\Entity\SubscriptionEntity;
 use App\Services\common\payments\GoCardlessProService;
 use App\utils\GoCardlessProAPIUtils;
-use App\Entity\RedirectFlow;
+use App\Entity\RedirectFlowEntity;
 
 class PaymentsSetupService extends GoCardlessProService
 {
@@ -25,13 +25,13 @@ class PaymentsSetupService extends GoCardlessProService
     }
 
     public function getRedirectFlowResponse($response){
-      $redirectFlow = new RedirectFlow();
-      $obj_vars = get_class_vars(get_class($redirectFlow));
+      $redirectFlowEntity = new RedirectFlowEntity();
+      $obj_vars = get_class_vars(get_class($redirectFlowEntity));
       foreach ($obj_vars as $key => $value)
       {
-          $redirectFlow->$key = $this->getReflectedValue($key, $response);
+          $redirectFlowEntity->$key = $this->getReflectedValue($key, $response);
       }
-      return $redirectFlow;
+      return $redirectFlowEntity;
     }
 
     public function getRedirectUrl($token, $user, $group){
