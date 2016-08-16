@@ -53,8 +53,19 @@ class ServicesLoader
         return $pardnaGroupStatusService;
       });
 
+      $this->app['gocardlesspro.client'] = $this->app->share(function (){
+        $gocardlessProClient = new Services\common\payments\GoCardlessProClient($this->app["db"], $this->app["gocardless_pro"], $this->app['gocardless_env']);
+        return $gocardlessProClient;
+      });
+
+      $this->app['redirectflow.service'] = $this->app->share(function (){
+        $redirectflowService = new Services\common\payments\RedirectFlowService($this->app["db"]);
+        $redirectflowService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $redirectflowService;
+      });
+
       $this->app['payments.setup.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app["db"], $this->app["gocardless_pro"], $this->app['gocardless_env']);
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service']);
         return $setUpService;
       });
 

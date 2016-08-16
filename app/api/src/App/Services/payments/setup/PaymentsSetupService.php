@@ -1,21 +1,37 @@
 <?php
 namespace App\Services\payments\setup;
 use App\Services\common\BaseService;
-use App\Entity\SubscriptionEntity;
-use App\Services\common\payments\GoCardlessProService;
+use App\Entity\LegacySubscriptionEntity;
 use App\utils\GoCardlessProAPIUtils;
 use App\Entity\RedirectFlowEntity;
 
-class PaymentsSetupService extends GoCardlessProService
+class PaymentsSetupService
 {
     protected $pardnaGroupService;
 
     protected $goCardlessProAPIUtils;
 
+    protected $customerBankAccountService;
+
+    protected $mandatesService;
+
+    protected $paymentsService;
+
+    protected $payoutsService;
+
+    protected $redirectFlowService;
+
+    protected $refundsService;
+
+    protected $subscriptionsService;
+
+    public function __construct($redirectFlowService){
+        $this->redirectFlowService = $redirectFlowService;
+        $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
+    }
+
     public function setPardnagroupsService(PardnaGroupService $pardnaGroupService){
       $this->pardnaGroupService = $pardnaGroupService;
-      $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
-      return $this;
     }
 
     public function getReflectedValue($key, $obj){
@@ -36,13 +52,13 @@ class PaymentsSetupService extends GoCardlessProService
 
     public function getRedirectUrl($token, $user, $group){
       $description = "To set up recurring payment for " . $group["name"] . " Pardna.";
-      if (! $this->descriptionIsOfCorrectLength($description)){
+      if (! $this->goCardlessProAPIUtils->descriptionIsOfCorrectLength($description)){
         $description = "To set up payment for " . $group["name"] . "Pardna.";
       }
       $membership_number = $user->getMembershipNumber();
       $group_id = $group["id"];
       $success_redirect_url = "http://192.168.33.99/app/frontend/dist/#/payment/confirm?membership_number=" . $membership_number . "&group_id=" . $group_id;
-      $response = $this->getRedirectFlowUrl([
+      $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,
                      "success_redirect_url" => $success_redirect_url]
@@ -51,17 +67,9 @@ class PaymentsSetupService extends GoCardlessProService
       return $this->getRedirectFlowResponse($response)->getRedirect_url();
     }
 
-    public function descriptionIsOfCorrectLength($description){
-      if (strlen($description) < 100)
-      {
-        return true;
-      }
-      return false;
-    }
-
     public function completeReturnFromRedirectFlow($token, $redirect_flow_id, $pardnagroup_member)
     {
-      $response = $this->completeRedirectFlow($redirect_flow_id, [
+      $response = $this->redirectFlowService->completeRedirectFlow($redirect_flow_id, [
         "params" => ["session_token" => $token]
       ]);
       $this->storeGoCardlessCustomerInfo($response, $pardnagroup_member);
@@ -75,15 +83,11 @@ class PaymentsSetupService extends GoCardlessProService
       $details["pardnagroup_member_id"] = $pardnagroup_member[0]['id'];
       $details["gc_cust_bank_account"] = $links->customer_bank_account;
       $details["mandate_id"] = $links->mandate;
-      $this->storeGoCardlessCustomerDetails($details);
-    }
-
-    public function createSubscription($data){
-
+      $this->redirectFlowService->storeGoCardlessCustomerDetails($details);
     }
 
     public function createSubscriptionRequest($data){
-      $subscription = new SubscriptionEntity();
+      $subscription = new LegacySubscriptionEntity();
       $subscription->setAmount(strval($data["amount"]));
       $subscription->setName("Pardna " . $data["name"]);
       $subscription->setDescription("This is going to run for the Pardna " . $data["name"] . "." );

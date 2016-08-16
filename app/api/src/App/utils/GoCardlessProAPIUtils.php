@@ -26,4 +26,11 @@ class GoCardlessProAPIUtils
     }
   }
 
+  public function descriptionIsOfCorrectLength($description){
+    if (strlen($description) < 100){
+      return true;
+    }
+    return false;
+  }
+
 }

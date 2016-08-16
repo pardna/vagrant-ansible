@@ -2,35 +2,14 @@
 namespace App\Services\common\payments;
 use App\Services\BaseService;
 
-class GoCardlessProService extends BaseService
+class RedirectFlowService extends BaseService
 {
-
-    // Sandbox is the default - uncomment to change to production
-    // GoCardless::$environment = 'production';
-
     protected $client;
-
     protected $gc_customersTable = "gocardless_customers";
     protected $gc_mandatesTable = "gocardless_mandates";
 
-    public function __construct($db, $config, $gocardless_env)
-    {
-        // Initialize GoCardless
-        $this->db = $db;
-        $gocarless_env = $this->goCardlessEnvironment($gocardless_env['environment']);
-        $access_token = $config['access_token'];
-        $this->client = new \GoCardlessPro\Client(array(
-          'access_token' => $access_token,
-          'environment'  => $gocarless_env
-        ));
-    }
-
-    public function goCardlessEnvironment($environment){
-        if (isset($environment) && strcasecmp($environment, "live") == 0){
-          return \GoCardlessPro\Environment::LIVE;
-        } else {
-          return \GoCardlessPro\Environment::SANDBOX;
-       }
+    public function setGoCardlessProClient($client){
+      $this->client = $client->client;
     }
 
     public function getRedirectFlowUrl($params)
@@ -66,6 +45,5 @@ class GoCardlessProService extends BaseService
     {
       return $this->db->fetchAssoc("SELECT * FROM {$this->gc_customersTable} WHERE cust_id = ? AND pardnagroup_member_id = ?  LIMIT 1", array($gcCustomerId, $pardnaGroupMemberId));
     }
-
 
 }

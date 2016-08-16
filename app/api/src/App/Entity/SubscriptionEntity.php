@@ -1,76 +1,126 @@
 <?php
 namespace App\Entity;
 
-class SubscriptionEntity extends BillEntity
+class SubscriptionEntity
 {
-    //required The number of interval_units between payments.
-    public $interval_length;
-    //required The unit of measurement for the interval. Can be day, week or month.
-    public $interval_unit;
-    //ISO8601 format.
-    public $start_at;
-    //ISO8601 format.
-    public $expires_at;
-    //Calculates the expires_at date based on the number of payments that you would like to collect from the subscription.
-    public $interval_count;
-    public $setup_fee;
+  private $amount;
 
-    public $subscription_url;
+  private $currency;
 
-    public function getInterval_length(){
-  		return $this->interval_length;
-  	}
+  private $day_of_month;
 
-  	public function setInterval_length($interval_length){
-  		$this->interval_length = $interval_length;
-  	}
+  private $end_date;
 
-  	public function getInterval_unit(){
-  		return $this->interval_unit;
-  	}
+  private $interval;
 
-  	public function setInterval_unit($interval_unit){
-  		$this->interval_unit = $interval_unit;
-  	}
+  private $interval_unit;
 
-  	public function getStart_at(){
-  		return $this->start_at;
-  	}
+  private $metadata;
 
-  	public function setStart_at($start_at){
-  		$this->start_at = $start_at;
-  	}
+  private $name;
 
-  	public function getExpires_at(){
-  		return $this->expires_at;
-  	}
+  private $start_date;
 
-  	public function setExpires_at($expires_at){
-  		$this->expires_at = $expires_at;
-  	}
+  private $links;
 
-  	public function getInterval_count(){
-  		return $this->interval_count;
-  	}
+  function setAmount($amount)
+  {
+    $this->amount = $amount;
+  }
 
-  	public function setInterval_count($interval_count){
-  		$this->interval_count = $interval_count;
-  	}
+  function getAmount()
+  {
+    return $this->amount;
+  }
 
-  	public function getSetup_fee(){
-  		return $this->setup_fee;
-  	}
+  function setCurrency($currency)
+  {
+    $this->currency = $currency;
+  }
 
-  	public function setSetup_fee($setup_fee){
-  		$this->setup_fee = $setup_fee;
-  	}
+  function getCurrency()
+  {
+    return $this->currency;
+  }
 
-  	public function getSubscription_url(){
-  		return $this->subscription_url;
-  	}
+  function setDay_of_month($day_of_month)
+  {
+    $this->day_of_month = $day_of_month;
+  }
 
-  	public function setSubscription_url($subscription_url){
-  		$this->subscription_url = $subscription_url;
-  	}
+  function getDay_of_month()
+  {
+    return $this->day_of_month;
+  }
+
+  function setEnd_date($end_date)
+  {
+    $this->end_date = $end_date;
+  }
+
+  function getEnd_date()
+  {
+    return $this->end_date;
+  }
+
+  function setInterval($interval)
+  {
+    $this->interval = $interval;
+  }
+
+  function getInterval()
+  {
+    return $this->interval;
+  }
+
+  function setInterval_unit($interval_unit)
+  {
+    $this->interval_unit = $interval_unit;
+  }
+
+  function getInterval_unit()
+  {
+    return $this->interval_unit;
+  }
+
+  function setMetadata($metadata)
+  {
+    $this->metadata = $metadata;
+  }
+
+  function getMetadata()
+  {
+    return $this->metadata;
+  }
+
+  function setName($name)
+  {
+    $this->name = $name;
+  }
+
+  function getName()
+  {
+    return $this->name;
+  }
+
+  function setStart_date($start_date)
+  {
+    $this->start_date = $start_date;
+  }
+
+  function getStart_date()
+  {
+    return $this->start_date;
+  }
+
+  function setLinks($links)
+  {
+    $this->links = $links;
+  }
+
+  function getLinks()
+  {
+    return $this->links;
+  }
 
 }
