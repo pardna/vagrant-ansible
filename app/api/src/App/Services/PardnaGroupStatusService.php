@@ -10,22 +10,6 @@ class PardnaGroupStatusService extends BaseService
     return $this;
   }
 
-  // public function getUserRelatedGroupStatus($group_id, $user_id){
-  //   $groups = $this->getGroupStatus($group_id);
-  //   $user_dependant_statuses = array(2,3,4);
-  //   $group = $groups[0];
-  //   $status["code"] = $group['code'];
-  //   $status["decode"] = $group['status'];
-  //   if (in_array($status["code"], $user_dependant_statuses)){
-  //     if (! $this->hasUserSetupPayment($group_id, $user_id)){
-  //       $user_dependant_status = $this->getStatus("SETRQ");
-  //       $status['code'] = $user_dependant_status['code'];
-  //       $status['decode'] = $user_dependant_status['status'];
-  //     }
-  //   }
-  //   return $status;
-  // }
-
   public function getUserRelatedGroupStatus($user, $group_id){
     $response;
     $response["reason"] = array();
