@@ -162,6 +162,7 @@ public function supportsClass($class)
 
   function save($user)
   {
+    
     $userExist = $this->getByEmail($user["email"]);
     if($userExist) {
       throw new HttpException(409,$user["email"] . " already registered");

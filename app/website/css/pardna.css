@@ -188,11 +188,40 @@ a:hover {
 /* Container
 -------------------------------------------------------------------------*/
 .container {
-  background-color: #fff;
-  max-width: 1200px; }
+  width: 100%;
+  max-width: 100%;
+}
+
+
+#home .container,
+#about .container {
+    padding-top: 69px;
+}
+
+/* Max width inside Container
+-------------------------------------------------------------------------*/
+
+.valueprop,
+.carousel,
+.panel,
+.team,
+.company,
+.title {
+    margin: 0 10%; 
+}
+
+
 
 /* Header
 -------------------------------------------------------------------------*/
+.header {
+    margin: 0 auto;
+    background-color: #6f2f6b;
+    padding: 0 10%;
+    position: fixed;
+    z-index: 9;
+}
+
 .logo {
   display: -webkit-box;
   display: -moz-box;
@@ -207,7 +236,8 @@ a:hover {
 
 .logo img#logo, .logo a {
   width: 70%;
-  margin-left: 20px; }
+  margin-left: 15px; 
+    width: 250px;}
 
 .navigation {
   display: -webkit-box;
@@ -223,11 +253,13 @@ a:hover {
   align-items: center; }
 
 .header div, .logo a {
-  height: 85px; }
+  height: 69px; }
 
 .logo a {
-  background: url(../img/logo-full.svg) no-repeat 0 50% #fff;
-  z-index: 1; }
+  background: url(../img/logo-full-white.svg) no-repeat 0 50% #6f2f6b;
+  z-index: 1;
+    background-size: 90%
+}
 
 .navigation ul {
   list-style: none;
@@ -245,24 +277,34 @@ a:hover {
 .responsive-menu ul.navigation-list li {
   display: inline; }
 
+.responsive-menu ul.navigation-list li a {
+    color: #fff;
+}
+
+.view-medium { 
+    display: none;
+}
+
 /* Hero
 -------------------------------------------------------------------------*/
 .hero {
-  background: url("../img/background-home.jpg") no-repeat 50% 0;
-  height: 600px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  justify-content: center;
-  text-align: center;
-  background-position: 100% 0; }
+    background: url("../img/background-pardna-friends.jpg") no-repeat 0 0;
+    height: 500px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content:  flex-end;
+    justify-content: flex-end;
+    background-color: #6c757e;
+}
 
 .hero__strapline {
   align-self: center;
-  -webkit-align-self: center; }
+  -webkit-align-self: center; 
+    margin-right: 10%
+}
 
 .hero__strapline h1,
 .hero__strapline h2 {
@@ -271,6 +313,14 @@ a:hover {
 
 .hero__strapline h1 {
   margin-bottom: 0; }
+
+.hero-mobile {
+    display: none;
+}
+
+.hero__strapline a {
+    margin-left: 0!important
+}
 
 /* Value proposition
 -------------------------------------------------------------------------*/
@@ -329,12 +379,58 @@ a:hover {
   background-position: 50%;
   height: 200px; }
 
+
+
+/* Team Members
+-------------------------------------------------------------------------*/
+
+.title {
+    display: flex;
+    height: 100px;
+    align-items: center;
+}
+
+.title h1{
+    margin: 0
+}
+
+/* Team Members
+-------------------------------------------------------------------------*/
+.team {
+    display: flex
+}
+
+.team_member {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 2px;
+    flex: 1
+}
+
+/* Company
+-------------------------------------------------------------------------*/
+.company_panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 2px;
+    flex: 1
+}
+
+
 /* Footer
 -------------------------------------------------------------------------*/
 .footer {
   background-color: #6f2f6b;
   color: #fff;
-  padding: 20px; }
+  padding: 20px;
+display: flex;    
+}
+
+.footer__social {
+    justify-content: space-around;
+    display: flex;
+    padding: 0 15%;
+}
 
 .footer h1, .footer h2, .footer h3 {
   color: #fff; }
@@ -342,7 +438,8 @@ a:hover {
 .footer__social--twitter:before,
 .footer__social--facebook:before,
 .footer__social--email:before {
-  margin-right: 20px; }
+  
+    font-size: 30px;}
 
 /* Forms
 -------------------------------------------------------------------------*/
@@ -381,8 +478,15 @@ a:hover {
   border-color: #c31c5e; }
 
 .navigation .button {
-  margin: 0 20px 0 0;
-  z-index: 1; }
+  margin: 0 20px;
+  z-index: 1;
+  background-color: #936390;
+  border: 0;}
+
+.panel a.button {
+    width: 100%;
+    margin-top: 20px
+} 
 
 /* Register
 -------------------------------------------------------------------------*/
@@ -427,38 +531,110 @@ hr {
   border: 1px dashed #999; }
 
 /* Media Queries
+
+-------------------------------------------------------------------------*/
+/* MAX WIDTH 550
+-------------------------------------------------------------------------*/
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+  .container {
+    width: 100%;
+    padding: 0; }
+}
+
 -------------------------------------------------------------------------*/
 /* MAX WIDTH 550
 -------------------------------------------------------------------------*/
 @media (max-width: 550px) {
   .navigation {
     position: absolute; } }
+
+
 /* MAX WIDTH 768
 -------------------------------------------------------------------------*/
 @media (max-width: 768px) {
-  body {
-    margin-top: 85px; }
 
   .container {
     padding: 0; }
 
-  .header {
-    position: fixed;
-    width: inherit;
-    background-color: #fff;
-    margin-top: -85px; }
 
-  .logo a {
-    background: url(../img/logo-p.svg) no-repeat 0 50% #fff;
-    background-size: 25%; }
-
+    #home .container {
+        padding-top: 0
+    }  
+    
   .hero {
-    height: 400px; }
+    height: 150px; 
+    background: url("../img/background-pardna-friends-mobile.jpg") no-repeat 0 0;}  
 
+    .hero__strapline {
+        display: none
+    }
+
+    .hero__strapline-mobile {    
+    padding: 20px;
+    }
+
+    .hero__strapline-mobile a.button {
+        width: 100%
+    }
+    
+    .hero-mobile    {
+        display: block
+    }
+
+    .valueprop, .panel {
+        margin: 0
+    }  
+
+    .valueprop div{
+        padding: 20px 0;
+        border-bottom: 1px solid #6f2f6b
+    }      
+    
   .form {
     padding: 20px;
     display: block; }
 
+    
+}
+
+/* MAX WIDTH 850
+-------------------------------------------------------------------------*/
+@media (max-width: 850px) {
+    .video {
+        display: none
+    }
+}
+
+
+/* MAX WIDTH 1200
+-------------------------------------------------------------------------*/
+@media (max-width: 1200px) {
+    #home .container {
+        padding-top: 0
+    }    
+    
+  body {
+    margin-top: 65px; }    
+    
+  .header {
+    position: fixed;
+    width: inherit;
+    background-color: #6f2f6b;
+    margin-top: -80px;
+    padding: 0;
+    width: 100%}
+
+  .logo a {
+    background: url(../img/logo-p-white.svg) no-repeat 0 50%;
+    background-size: 90%;
+    width: 55px;
+    height: 55px;
+    margin-left: 25px;
+    margin-top: 25px;
+    }
+    
+    
   /* Menu
   -------------------------------------------------------------------------*/
   .responsive-menu label.expand-control {
@@ -475,7 +651,7 @@ hr {
     top: 85px;
     z-index: 0; }
 
-  .responsive-menu ul.navigation-list {
+  .responsive-menu {
     display: none;
     width: 100%; }
 
@@ -484,6 +660,75 @@ hr {
     float: none;
     margin: 0;
     background-color: #fff;
-    padding: 10px 20px; } }
-/* MAX WIDTH 960
--------------------------------------------------------------------------*/
+    padding: 10px 20px; }     
+    
+/***new responsive nav***/
+    
+    .navigation {
+       justify-content: flex-start;
+    }
+    
+    .view-medium {
+        display: block
+    }
+
+    input#nav__button[type="checkbox"] {
+        display: none;
+    }
+
+    ul.nav__list { 
+        list-style: none;
+        padding: 0 15px;
+        margin: 0;
+    }
+
+    ul.nav__list label {
+        position: absolute;
+        right: 0; 
+        cursor: pointer;
+        padding: 9px 10px;
+        margin-right: 15px;
+        margin-bottom: 8px;
+        margin-top: 28px;
+    }
+
+    a { 
+        text-decoration: none; 
+    }
+
+    .group-list {
+      height: 100%;
+      max-height: 0;
+      overflow: hidden;
+      -webkit-transition: max-height .5s ease-in-out;
+      transition: max-height .5s ease-in-out;
+      width: 100%;
+      list-style: none;
+        margin: 0;
+    }
+    
+    .group-list li a {
+        color: #fff;   
+        padding: 0 16px;
+        line-height: 56px;
+        display: block;
+    }
+    
+    .group-list li {  
+        border-bottom: 1px solid #40123e;
+        margin-bottom: 0;
+    }
+
+    .nav__list input[type=checkbox]:checked + label + ul { /* reset the height when checkbox is checked */
+        max-height: 1000px;
+    }
+    
+    ul.nav__list label .icon-bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        border-radius: 1px;
+        margin-top: 4px;
+        background: #fff;
+    }    
+}

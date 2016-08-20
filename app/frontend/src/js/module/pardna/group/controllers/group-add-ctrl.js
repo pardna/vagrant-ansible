@@ -10,7 +10,7 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
 
   $scope.pardna = {
     name : "",
-    amount: 10, 
+    amount: 10,
     slots: 6,
     startdate: "",
     frequency: "monthly",
@@ -52,6 +52,7 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
     });
   }
 
+ // alert("changed 1");
 
   function add() {
     var pardna = getPardna();
@@ -65,9 +66,15 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
 
 
     }).error(function(error) {
+
+      console.log(error);
+      var message = "Save failed";
+      if(angular.isDefined(error.message)) {
+        message = error.message;
+      }
       $mdToast.show(
             $mdToast.simple()
-              .content('Save failed')
+              .content(message)
               .position("top right")
               .hideDelay(3000)
           );

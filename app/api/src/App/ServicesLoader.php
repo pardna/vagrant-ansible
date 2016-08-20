@@ -10,7 +10,7 @@ class ServicesLoader
     }
     public function bindServicesIntoContainer()
     {
-      $this->app['users.service'] = $this->app->share(function () {
+        $this->app['users.service'] = $this->app->share(function () {
         $twillioClient = new \Services_Twilio($this->app["twillio"]["account_sid"], $this->app["twillio"]["account_token"]);
         $service = new Services\UsersService($this->app["db"]);
         $service->setTwillioCLient($twillioClient);
@@ -69,6 +69,11 @@ class ServicesLoader
         $mandrillMailService = new Services\common\email\MandrillMailService($this->app["db"]);
         $mandrillMailService->setMandrillMailClient($this->app["mandrill"]["API_KEY"]);
         return $mandrillMailService;
+      });
+
+      $this->app['payments.setup.service'] = $this->app->share(function (){
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app["db"], $this->app["gocardless"], $this->app['gc.environment']);
+        return $setUpService;
       });
 
       $this->app['notification.service'] = $this->app->share(function () {

@@ -54,7 +54,7 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                     controller: 'GroupDetailsCtrl',
                     'templateUrl' : 'module/pardna/group/templates/group-details.html',
                   },
-                  'nav@group-details': { 
+                  'nav@group-details': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   }
                 },
@@ -89,6 +89,12 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                     'templateUrl' : 'module/pardna/group/templates/add-users.html'
                   }
                 },
+                requiresLogin: true
+            })
+            .state('payment-confirm', {
+                url: '/payment/confirm',
+                controller: 'PaymentCtrl',
+                templateUrl: 'module/pardna/payment/templates/payment-confirm.html',
                 requiresLogin: true
             })
             .state('user-add', {
