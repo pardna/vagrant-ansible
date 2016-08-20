@@ -206,9 +206,8 @@ a:hover {
 .panel,
 .team,
 .company,
-.title,
-.footer {
-    margin: 0 15%; 
+.title {
+    margin: 0 10%; 
 }
 
 
@@ -218,7 +217,7 @@ a:hover {
 .header {
     margin: 0 auto;
     background-color: #6f2f6b;
-    padding: 0 15%;
+    padding: 0 10%;
     position: fixed;
     z-index: 9;
 }
@@ -282,6 +281,10 @@ a:hover {
     color: #fff;
 }
 
+.view-medium { 
+    display: none;
+}
+
 /* Hero
 -------------------------------------------------------------------------*/
 .hero {
@@ -310,6 +313,14 @@ a:hover {
 
 .hero__strapline h1 {
   margin-bottom: 0; }
+
+.hero-mobile {
+    display: none;
+}
+
+.hero__strapline a {
+    margin-left: 0!important
+}
 
 /* Value proposition
 -------------------------------------------------------------------------*/
@@ -416,8 +427,9 @@ display: flex;
 }
 
 .footer__social {
-     justify-content: space-between;
+    justify-content: space-around;
     display: flex;
+    padding: 0 15%;
 }
 
 .footer h1, .footer h2, .footer h3 {
@@ -470,6 +482,11 @@ display: flex;
   z-index: 1;
   background-color: #936390;
   border: 0;}
+
+.panel a.button {
+    width: 100%;
+    margin-top: 20px
+} 
 
 /* Register
 -------------------------------------------------------------------------*/
@@ -531,32 +548,93 @@ hr {
 @media (max-width: 550px) {
   .navigation {
     position: absolute; } }
+
+
 /* MAX WIDTH 768
 -------------------------------------------------------------------------*/
 @media (max-width: 768px) {
-  body {
-    margin-top: 85px; }
 
   .container {
     padding: 0; }
 
-  .header {
-    position: fixed;
-    width: inherit;
-    background-color: #6f2f6b;
-    margin-top: -85px; }
 
-  .logo a {
-    background: url(../img/logo-p.svg) no-repeat 0 50% #fff;
-    background-size: 25%; }
-
+    #home .container {
+        padding-top: 0
+    }  
+    
   .hero {
-    height: 400px; }
+    height: 150px; 
+    background: url("../img/background-pardna-friends-mobile.jpg") no-repeat 0 0;}  
 
+    .hero__strapline {
+        display: none
+    }
+
+    .hero__strapline-mobile {    
+    padding: 20px;
+    }
+
+    .hero__strapline-mobile a.button {
+        width: 100%
+    }
+    
+    .hero-mobile    {
+        display: block
+    }
+
+    .valueprop, .panel {
+        margin: 0
+    }  
+
+    .valueprop div{
+        padding: 20px 0;
+        border-bottom: 1px solid #6f2f6b
+    }      
+    
   .form {
     padding: 20px;
     display: block; }
 
+    
+}
+
+/* MAX WIDTH 850
+-------------------------------------------------------------------------*/
+@media (max-width: 850px) {
+    .video {
+        display: none
+    }
+}
+
+
+/* MAX WIDTH 1200
+-------------------------------------------------------------------------*/
+@media (max-width: 1200px) {
+    #home .container {
+        padding-top: 0
+    }    
+    
+  body {
+    margin-top: 65px; }    
+    
+  .header {
+    position: fixed;
+    width: inherit;
+    background-color: #6f2f6b;
+    margin-top: -80px;
+    padding: 0;
+    width: 100%}
+
+  .logo a {
+    background: url(../img/logo-p-white.svg) no-repeat 0 50%;
+    background-size: 90%;
+    width: 55px;
+    height: 55px;
+    margin-left: 25px;
+    margin-top: 25px;
+    }
+    
+    
   /* Menu
   -------------------------------------------------------------------------*/
   .responsive-menu label.expand-control {
@@ -573,7 +651,7 @@ hr {
     top: 85px;
     z-index: 0; }
 
-  .responsive-menu ul.navigation-list {
+  .responsive-menu {
     display: none;
     width: 100%; }
 
@@ -582,7 +660,75 @@ hr {
     float: none;
     margin: 0;
     background-color: #fff;
-    padding: 10px 20px; } }
+    padding: 10px 20px; }     
+    
+/***new responsive nav***/
+    
+    .navigation {
+       justify-content: flex-start;
+    }
+    
+    .view-medium {
+        display: block
+    }
 
-/* MAX WIDTH 960
--------------------------------------------------------------------------*/
+    input#nav__button[type="checkbox"] {
+        display: none;
+    }
+
+    ul.nav__list { 
+        list-style: none;
+        padding: 0 15px;
+        margin: 0;
+    }
+
+    ul.nav__list label {
+        position: absolute;
+        right: 0; 
+        cursor: pointer;
+        padding: 9px 10px;
+        margin-right: 15px;
+        margin-bottom: 8px;
+        margin-top: 28px;
+    }
+
+    a { 
+        text-decoration: none; 
+    }
+
+    .group-list {
+      height: 100%;
+      max-height: 0;
+      overflow: hidden;
+      -webkit-transition: max-height .5s ease-in-out;
+      transition: max-height .5s ease-in-out;
+      width: 100%;
+      list-style: none;
+        margin: 0;
+    }
+    
+    .group-list li a {
+        color: #fff;   
+        padding: 0 16px;
+        line-height: 56px;
+        display: block;
+    }
+    
+    .group-list li {  
+        border-bottom: 1px solid #40123e;
+        margin-bottom: 0;
+    }
+
+    .nav__list input[type=checkbox]:checked + label + ul { /* reset the height when checkbox is checked */
+        max-height: 1000px;
+    }
+    
+    ul.nav__list label .icon-bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        border-radius: 1px;
+        margin-top: 4px;
+        background: #fff;
+    }    
+}

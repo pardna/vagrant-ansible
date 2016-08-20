@@ -38,15 +38,25 @@
     <div class="container">
 
 
-<!-- Hero
+<!-- Hero 
 ------------------------------------------------------------------------->
 <div class="hero">
 	<div class="hero__strapline six columns">
 	    	<h1>The group saving, lending and borrowing platform for close friends and family</h1>
         <h2>Leverage the power of the collective to achieve your financial goals</h2>
-    	<a href="../frontend/prod/#/signup" class="button button-primary">Get Started!</a>
+    	<a href="../frontend/dist/#/signup" class="button button-primary six columns">Get Started!</a>
     </div>
-</div> 
+</div>
+        
+<!-- Hero - Mobile
+------------------------------------------------------------------------->
+<div class="hero-mobile">
+	<div class="hero__strapline-mobile twelve columns">
+	    	<h1>The group saving, lending and borrowing platform for close friends and family</h1>
+        <h2>Leverage the power of the collective to achieve your financial goals</h2>
+    	<a href="../frontend/dist/#/signup" class="button button-primary">Get Started!</a>
+    </div>
+</div>        
 
 <!-- Value Proposition
 ------------------------------------------------------------------------->
@@ -71,11 +81,10 @@
         
 <!-- Video
 ------------------------------------------------------------------------->        
-<div class="row">
+<div class="row video">
 <style>.embed-container { position: relative; height: 480px; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='video/index.html?w=854&h=480&a=0&r=0&c=1' frameborder='0'></iframe></div>
-</div>        
-        
-
+</div>     
+      
 
 <!-- Panel
 ------------------------------------------------------------------------->
@@ -105,11 +114,8 @@
 
 <!-- Javascript
 ----------------------------------------------------------------------->
-    <?php include 'inc/_javascript.php';?>
-    <script src="js/angular-carousel.min.js"></script>
-    <script>
-        angular.module('explainerApp', ['angular-carousel']);
-    </script>
+    <?php include 'inc/_video.php';?>
+    <?php include_once("inc/_analyticstracking.php") ?>
 
 </body>
 </html>
