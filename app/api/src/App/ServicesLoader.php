@@ -64,8 +64,14 @@ class ServicesLoader
         return $redirectflowService;
       });
 
+      $this->app['subscription.service'] = $this->app->share(function (){
+        $subscriptionService = new Services\common\payments\SubscriptionsService($this->app["db"]);
+        $subscriptionService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $subscriptionService;
+      });
+
       $this->app['payments.setup.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service']);
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service'], $this->app['subscription.service']);
         return $setUpService;
       });
 

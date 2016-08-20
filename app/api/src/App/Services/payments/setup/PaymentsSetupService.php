@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\payments\setup;
 use App\Services\common\BaseService;
-use App\Entity\LegacySubscriptionEntity;
+use App\Entity\SubscriptionEntity;
 use App\utils\GoCardlessProAPIUtils;
 use App\Entity\RedirectFlowEntity;
 
@@ -25,8 +25,9 @@ class PaymentsSetupService
 
     protected $subscriptionsService;
 
-    public function __construct($redirectFlowService){
+    public function __construct($redirectFlowService, $subscriptionsService){
         $this->redirectFlowService = $redirectFlowService;
+        $this->subscriptionsService = $subscriptionsService;
         $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
     }
 
@@ -86,9 +87,21 @@ class PaymentsSetupService
       $this->redirectFlowService->storeGoCardlessCustomerDetails($details);
     }
 
+    //This is going to create a payment plan/subscription to take payment for many customers at once
+    //Returns the link which the customer will use to navigate to payment set up
+    public function createSubscription($group){
+      $subscription = $this->createSubscriptionRequest($group);
+      //var_dump(array_filter($subscription->__toArray()));
+      $url = $this->subscriptionsService->create(array_filter($subscription->__toArray()));
+      return $url;
+    }
+
     public function createSubscriptionRequest($data){
-      $subscription = new LegacySubscriptionEntity();
+      $subscription = new SubscriptionEntity();
       $subscription->setAmount(strval($data["amount"]));
+      //Set Currency
+      $subscription->setCurrency(strval($data["amount"]));
+
       $subscription->setName("Pardna " . $data["name"]);
       $subscription->setDescription("This is going to run for the Pardna " . $data["name"] . "." );
       //$subscription->setRedirect_uri('http://www.pardnermoney.com/index.php');

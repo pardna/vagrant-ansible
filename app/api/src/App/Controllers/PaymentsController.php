@@ -18,6 +18,12 @@ class PaymentsController extends AppController
 
   protected $manageService;
 
+  protected $pardnaGroupStatusService;
+
+  public function setPardnaGroupStatusService($pardnaGroupStatusService){
+    $this->pardnaGroupStatusService = $pardnaGroupStatusService;
+  }
+
   public function setPardnaGroupsService($groupService){
     $this->groupService = $groupService;
   }
@@ -70,8 +76,19 @@ class PaymentsController extends AppController
     }
   }
 
-  public function createSubscription(Request $request){
+  public function getGroupStatus($id)
+  {
+    $user = $this->getUser();
+    $status = $this->pardnaGroupStatusService->getPaymentStatusForGroupId($user, $id);
+    return new JsonResponse($status);
+  }
 
+  public function areAllTheSlotsTaken($nb_slots, $members){
+    if ($nb_slots > sizeof($members)){
+        return false;
+    } else{
+      return true;
+    }
   }
 
   protected function getSessionId($user, $group_id){

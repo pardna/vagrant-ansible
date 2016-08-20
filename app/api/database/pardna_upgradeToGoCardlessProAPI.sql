@@ -6,19 +6,31 @@ ADD `group_status_code` bigint(20) DEFAULT 2 NOT NULL
 DROP TABLE IF EXISTS `pardnagroup_status`;
 CREATE TABLE `pardnagroup_status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` varchar(6) NOT NULL,
   `status` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+DROP TABLE IF EXISTS `pardnagroup_status_reasons`;
+CREATE TABLE `pardnagroup_status_reasons` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` varchar(6) NOT NULL,
+  `reason` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `pardnagroup_status` (`status`) VALUES
-('Set up required'),
-('Awaiting'),
-('On hold'),
-('Cancelled'),
-('Stopped'),
-('Active'),
-('Successfully ended');
+INSERT INTO `pardnagroup_status` (`code`, `status`) VALUES
+('SETRQ', 'Set up required'),
+('AWTNG', 'Awaiting'),
+('OHOLD', 'On hold'),
+('RDSRT', 'Ready to Start'),
+('CNCLD', 'Cancelled'),
+('STOPD', 'Stopped'),
+('ACTVE', 'Active'),
+('SCESS', 'Successfully ended');
+
+INSERT INTO `pardnagroup_status_reasons` (`code`, `reason`) VALUES
+('EMPSL', 'Some slots are empty');
 
 ALTER TABLE `pardnagroup_members`
 ADD `dd_mandate_setup` tinyint(1) unsigned DEFAULT '0'

@@ -74,8 +74,8 @@
                   <td>{{ group.frequency }} </td>
                   <td><span class="pull-right">£{{ group.amount}} </span></td>
                   <td>
-                      <button ng-click="setupPayment({id: group.id})" ng-if="group.status.code == '1'" md-ink-ripple="" class="md-btn">{{ group.status.decode}}</button>
-                      <button ng-if="group.status.code != '1'" class="md-btn">{{ group.status.decode}}</button>
+                      <button ng-click="setupPayment({id: group.id})" ng-if="group.status.code == 'SETRQ'" md-ink-ripple="" class="md-btn">{{ group.status.decode}}</button>
+                      <button ng-if="group.status.code != 'SETRQ'" class="md-btn">{{ group.status.decode}}</button>
                   </td>
                 </tr>
               </table>

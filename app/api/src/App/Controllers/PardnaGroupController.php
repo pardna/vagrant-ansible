@@ -40,7 +40,9 @@ class PardnaGroupController extends AppController
           $user = $this->getUser();
           $groups = $this->service->findByMemberId($user->getId());
           foreach ($groups as $key => $value) {
-            $groups[$key]["status"] = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($groups[$key]["id"], $groups[$key]["user_id"]);
+            $statusAndReason = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $groups[$key]["id"]);
+            $groups[$key]["status"] = $statusAndReason["status"];
+            $groups[$key]["reason"] = $statusAndReason["reason"];
           }
           return new JsonResponse($groups);
         } catch(\Exception $e) {
