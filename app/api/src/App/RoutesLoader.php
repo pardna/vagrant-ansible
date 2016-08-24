@@ -45,8 +45,8 @@ class RoutesLoader
             $controller = new Controllers\PaymentsController($this->app['payments.setup.service']);
             $controller->setPardnaGroupsService($this->app['pardna.group.service']);
             $controller->setPardnaGroupStatusService($this->app['pardna.group.status.service']);
+            $controller->setManageService($this->app['payments.manage.service']);
             // $controller->setTrackerService($this->app['payments.tracker.service']);
-            // $controller->setManageService($this->app['payments.manage.service']);
             if($this->app['security.token_storage']->getToken()->getUser()) {
                $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
             }
@@ -386,6 +386,10 @@ class RoutesLoader
 
         $api->post('/group/subscriptions/create/{id}', "pardna.payments.controller:createSubscription");
 
+        $api->post('/group/subscriptions/cancel/{id}', "pardna.payments.controller:cancelSubscription");
+
+        $api->post('/group/subscriptions/get/{id}', "pardna.payments.controller:getSubscription");
+        
         $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"], $api);
     }
 }

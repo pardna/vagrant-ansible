@@ -80,8 +80,24 @@ class PaymentsController extends AppController
   public function getGroupStatus($id)
   {
     $user = $this->getUser();
-    $status = $this->pardnaGroupStatusService->getPaymentStatusForGroupId($user, $id);
+    $status = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $id);
     return new JsonResponse($status);
+  }
+
+  public function triggerMassSubscriptionCreation($id){
+    try {
+      $user = $this->getUser();
+      $status = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $id);
+      if ($this->isReadyForSetup($status)){
+        $group = $this->groupService->groupDetailsForUser($user, $id);
+        $members = $this->groupService->getMembers($id, $user->getId());
+        $this->service->triggerPardnaGroupCreateMembersSubscriptions($group, $members);
+      } else{
+        throw new HttpException(401, "Could not create subscriptions : Some slots are empty");
+      }
+    } catch(PaymentSetupException $e) {
+      throw new HttpException(401, "Could not set up payments for all users in group " . $e->getMessage());
+    }
   }
 
   public function createSubscription($id){
@@ -98,6 +114,59 @@ class PaymentsController extends AppController
     } catch(PaymentSetupException $e) {
       throw new HttpException($e->getHttpResponseStatusEquivalentCode(), "Could not create subscription : " . $e->getMessage());
     }
+  }
+
+  public function cancelSubscription($id){
+    $user = $this->getUser();
+    $gc_customers = $this->manageService->getGoCardlessCustomerForSubscriptionId($id);
+    if (! empty($gc_customers)){
+      $gc_customer = $gc_customers[0];
+      $pardnamember_id = $gc_customer['pardnagroup_member_id'];
+      $group_member = $this->groupService->getMemberByMemberId($pardnamember_id);
+      if ($group_member[0]['user_id'] == $user->getId()){
+        $response = $this->manageService->cancelSubscription($id);
+        return new JsonResponse(array("message" => "Successfully cancelled subscription"));
+      } else{
+        throw new HttpException(401, "User does not have access to payments for this group");
+      }
+    } else{
+      throw new HttpException(403, "Subscription does not exist");
+    }
+  }
+
+  public function getSubscription($id){
+    try{
+      $user = $this->getUser();
+      $group = $this->groupService->groupDetailsForUser($user, $id);
+      $member = $this->groupService->getMember($id, $user->getId());
+      if ($group && $member){
+        $response =  $this->manageService->getSubscription($member[0]);
+        if (isset($response)){
+          return new JsonResponse($response);
+        } else{
+          return new JsonResponse(array("message" => "Subscription not found"));
+        }
+      } else{
+        throw new HttpException(401, "User does not have access to payments for this group");
+      }
+    } catch(PaymentSetupException $e) {
+      throw new HttpException($e->getHttpResponseStatusEquivalentCode(), "Could not create subscription : " . $e->getMessage());
+    }
+  }
+
+  public function isReadyForSetup($status_object){
+    $reasons = $status_object['reason'];
+    $status = $status_object['status'];
+    foreach ($reasons as $reason){
+      if ($reason['code'] == 'EMPSL'){
+        return false;
+      }
+    }
+
+    if ($status['code'] == 'RDSRT'){
+      return true;
+    }
+    return false;
   }
 
   protected function getSessionId($user, $group_id){

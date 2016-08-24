@@ -75,6 +75,11 @@ class ServicesLoader
         return $setUpService;
       });
 
+      $this->app['payments.manage.service'] = $this->app->share(function (){
+        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscription.service']);
+        return $setUpService;
+      });
+
       $this->app['notification.service'] = $this->app->share(function () {
         return new Services\common\notifications\NotificationService($this->app["db"]);
       });

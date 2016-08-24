@@ -219,6 +219,12 @@ class PardnaGroupService extends BaseService
     return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE user_id = ? AND group_id = ?  LIMIT 1", array($userId, $groupId));
   }
 
+  public function getMemberByMemberId($member_id)
+  {
+    return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE id = ?  LIMIT 1", array($member_id));
+  }
+
+
   public function getMembers($id)
   {
     $data = $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE group_id = ?", array($id));

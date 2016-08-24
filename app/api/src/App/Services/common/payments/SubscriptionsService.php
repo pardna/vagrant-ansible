@@ -35,12 +35,22 @@ class SubscriptionsService extends BaseService
     return $gcMember;
   }
 
+  public function getGoCardlessCustomerForSubscriptionId($subscription_id)
+  {
+    $gcMember = $this->db->fetchAll("SELECT g.*, m.mandate_id FROM {$this->gc_customersTable} g RIGHT JOIN {$this->gc_mandatesTable} m ON g.cust_id = m.cust_id RIGHT JOIN {$this->subscriptionsTable} s ON m.mandate_id = s.mandate_id WHERE s.subscription_id = ?", array($subscription_id));
+    return $gcMember;
+  }
+
   public function mandateHasSubscriptions($mandate_id){
     return $this->db->fetchAssoc("SELECT subscription_id FROM {$this->subscriptionsTable} WHERE mandate_id = ? LIMIT 1", array($mandate_id));
   }
 
   public function getMandatesSubscriptions($mandate_id){
     return $this->db->fetchAll("SELECT * FROM {$this->subscriptionsTable} WHERE mandate_id = ? LIMIT 1", array($mandate_id));
+  }
+
+  public function updateStatus($subscription_id, $status) {
+    return $this->db->update($this->subscriptionsTable, array("status" => $status), ['subscription_id' => $subscription_id]);
   }
 
   public function logSubscriptionCreation($subscription){

@@ -111,6 +111,26 @@ class PaymentsSetupService
       $this->redirectFlowService->storeGoCardlessCustomerDetails($details);
     }
 
+    public function triggerPardnaGroupCreateMembersSubscriptions($group, $members){
+      //Iterate through each member of the group creating a subscription
+      $message = array();
+      foreach($members as $member){
+        try{
+          $this->createSubscription($group, $member);
+        } catch(PaymentSetupException $e){
+          if ($e->getHttpResponseStatusEquivalentCode() != 409){
+            array_push("Could not set up subscription for member " . $member . " because of " . $e);
+          }
+        }
+      }
+
+      if (! empty($message)){
+        //Send a message to some sort of log systems
+        $paymentSetupException = new PaymentSetupException("Could not setup subscription for the members in the array " . $message , 0, 409);
+        throw $paymentSetupException;
+      }
+    }
+
     //This is going to create a payment plan/subscription to take payment for many customers at once
     //Returns the link which the customer will use to navigate to payment set up
     public function createSubscription($group, $member){
@@ -124,7 +144,7 @@ class PaymentsSetupService
             $response = $this->subscriptionsService->get($gocardless_subscription['subscription_id']);
             $subscription = $this->getSubscriptionResponse($response);
             if ($subscription->getStatus() == 'active'){
-              $paymentSetupException = new PaymentSetupException("Active subscription exist", 0, 401);
+              $paymentSetupException = new PaymentSetupException("Active subscription exist", 0, 409);
               throw $paymentSetupException;
             }
           }
