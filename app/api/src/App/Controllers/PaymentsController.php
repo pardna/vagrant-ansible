@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Controllers\AppController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\utils\exceptions\PaymentSetupException;
 
 class PaymentsController extends AppController
 {
@@ -83,11 +84,19 @@ class PaymentsController extends AppController
     return new JsonResponse($status);
   }
 
-  public function areAllTheSlotsTaken($nb_slots, $members){
-    if ($nb_slots > sizeof($members)){
-        return false;
-    } else{
-      return true;
+  public function createSubscription($id){
+    try{
+      $user = $this->getUser();
+      $group = $this->groupService->groupDetailsForUser($user, $id);
+      $member = $this->groupService->getMember($id, $user->getId());
+      if ($group && $member){
+        $response =  $this->service->createSubscription($group, $member[0]);
+        return new JsonResponse(array("message" => "Successfully created subscription"));
+      } else{
+        return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
+      }
+    } catch(PaymentSetupException $e) {
+      throw new HttpException($e->getHttpResponseStatusEquivalentCode(), "Could not create subscription : " . $e->getMessage());
     }
   }
 

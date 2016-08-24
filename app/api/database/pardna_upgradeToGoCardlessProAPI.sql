@@ -1,7 +1,10 @@
 -- Adminer 4.2.3 MySQL dump
 
+-- ALTER TABLE `pardnagroups`
+-- ADD `group_status_code` bigint(20) DEFAULT 2 NOT NULL
+
 ALTER TABLE `pardnagroups`
-ADD `group_status_code` bigint(20) DEFAULT 2 NOT NULL
+ADD `currency` varchar(3) DEFAULT 'GBP' NOT NULL
 
 DROP TABLE IF EXISTS `pardnagroup_status`;
 CREATE TABLE `pardnagroup_status` (
@@ -56,4 +59,17 @@ CREATE TABLE `gocardless_mandates` (
   PRIMARY KEY (`id`),
   KEY `cust_id` (`cust_id`),
   KEY `mandate_id` (`mandate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `gocardless_subscriptions`;
+CREATE TABLE `gocardless_subscriptions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mandate_id` varchar(20) NOT NULL,
+  `subscription_id` varchar(20) NOT NULL,
+  `status` varchar(6) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `mandate_id` (`mandate_id`),
+  KEY `subscription_id` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

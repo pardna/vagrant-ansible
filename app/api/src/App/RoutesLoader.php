@@ -384,6 +384,8 @@ class RoutesLoader
 
         $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
 
+        $api->post('/group/subscriptions/create/{id}', "pardna.payments.controller:createSubscription");
+
         $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"], $api);
     }
 }

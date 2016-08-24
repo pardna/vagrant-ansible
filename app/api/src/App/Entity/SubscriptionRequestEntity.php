@@ -1,27 +1,27 @@
 <?php
 namespace App\Entity;
 
-class SubscriptionEntity
+class SubscriptionRequestEntity
 {
-  private $amount;
+  public $amount;
 
-  private $currency;
+  public $currency;
 
-  private $day_of_month;
+  public $day_of_month;
 
-  private $end_date;
+  public $end_date;
 
-  private $interval;
+  public $interval;
 
-  private $interval_unit;
+  public $interval_unit;
 
-  private $metadata;
+  public $metadata;
 
-  private $name;
+  public $name;
 
-  private $start_date;
+  public $start_date;
 
-  private $links;
+  public $links;
 
   function setAmount($amount)
   {
