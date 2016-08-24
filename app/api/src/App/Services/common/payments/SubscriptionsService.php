@@ -44,7 +44,7 @@ class SubscriptionsService extends BaseService
   }
 
   public function logSubscriptionCreation($subscription){
-    $this->appendCreatedModified($subscription);
+    $subscription = $this->appendCreatedModified($subscription);
     return $this->db->insert($this->subscriptionsTable, $subscription);
   }
 
