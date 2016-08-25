@@ -12,6 +12,12 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PardnaGroupController extends AppController
 {
+    protected $pardnaGroupStatusService;
+
+    public function setPardnaGroupStatusService($pardnaGroupStatusService)
+    {
+      $this->pardnaGroupStatusService = $pardnaGroupStatusService;
+    }
 
     public function save(Request $request)
     {
@@ -29,16 +35,19 @@ class PardnaGroupController extends AppController
 
     public function read(Request $request)
     {
-
         try {
           $data = $request->request->all();
           $user = $this->getUser();
           $groups = $this->service->findByMemberId($user->getId());
+          foreach ($groups as $key => $value) {
+            $statusAndReason = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $groups[$key]["id"]);
+            $groups[$key]["status"] = $statusAndReason["status"];
+            $groups[$key]["reason"] = $statusAndReason["reason"];
+          }
           return new JsonResponse($groups);
         } catch(\Exception $e) {
           throw new HttpException(409,"Error getting list : " . $e->getMessage());
         }
-
     }
 
     public function details($id)

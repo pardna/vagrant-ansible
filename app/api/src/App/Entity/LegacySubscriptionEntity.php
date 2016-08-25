@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity;
 
-class SubscriptionEntity extends BillEntity
+class LegacySubscriptionEntity extends BillEntity
 {
     //required The number of interval_units between payments.
     public $interval_length;

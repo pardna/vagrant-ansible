@@ -14,16 +14,11 @@ class RoutesLoader
         $this->app['users.controller'] = $this->app->share(function () {
             $controller = new Controllers\UsersController($this->app['users.service']);
             $controller->setNotificationService($this->app['notification.service']);
-            // $controller->setMailService($this->app['mail.service']);
             $controller->setMandrillMailService($this->app['mandrill.mail.service']);
             $controller->setApp($this->app);
             if($this->app['security.token_storage']->getToken()->getUser()) {
-              //var_dump($this->app['security.token_storage']->getToken()->getUser());
-            //  exit;
               $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
             }
-            // var_dump($this->app['security.token_storage']->getToken()->getTokenContext());
-            // exit;
             return $controller;
         });
 
@@ -39,6 +34,7 @@ class RoutesLoader
         $this->app['pardna.group.controller'] = $this->app->share(function () {
             $controller = new Controllers\PardnaGroupController($this->app['pardna.group.service']);
             //$controller->setPaymentsService($this->app['gocardless.payments.service']);
+            $controller->setPardnaGroupStatusService($this->app['pardna.group.status.service']);
             if($this->app['security.token_storage']->getToken()->getUser()) {
                $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
             }
@@ -48,34 +44,14 @@ class RoutesLoader
         $this->app['pardna.payments.controller'] = $this->app->share(function () {
             $controller = new Controllers\PaymentsController($this->app['payments.setup.service']);
             $controller->setPardnaGroupsService($this->app['pardna.group.service']);
+            $controller->setPardnaGroupStatusService($this->app['pardna.group.status.service']);
+            $controller->setManageService($this->app['payments.manage.service']);
             // $controller->setTrackerService($this->app['payments.tracker.service']);
-            // $controller->setManageService($this->app['payments.manage.service']);
             if($this->app['security.token_storage']->getToken()->getUser()) {
                $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
             }
             return $controller;
         });
-
-
-        $this->app['groups.controller'] = $this->app->share(function () {
-            $controller = new Controllers\GroupsController($this->app['groups.setup.service'], $this->app['groups.manage.service']);
-            $controller->setUserService($this->app['users.service']);
-            $controller->setPardnaSetupService($this->app['pardna.setup.service']);
-            if($this->app['security.token_storage']->getToken()->getUser()) {
-              $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
-            }
-            return $controller;
-        });
-
-
-        $this->app['pardna.controller'] = $this->app->share(function () {
-            $controller = new Controllers\PardnaController($this->app['pardna.setup.service'], $this->app['pardna.manage.service']);
-            if($this->app['security.token_storage']->getToken()->getUser()) {
-              $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
-            }
-            return $controller;
-        });
-
 
     }
 
@@ -400,57 +376,20 @@ class RoutesLoader
 
         $api->post('/user/notifications', "users.controller:notifications");
 
-        $api->post('/user/pardnagroups', "groups.controller:getUserPardnaGroups");
-
-        /**
-         *  @SWG\Post(
-         *    path="/group/setup",
-         *    tags={"groups"},
-         *    operationId="Set up Pardna group",
-         *    summary="Creates a pardna group and adds members as well as invitees to relev tables",
-         *    description="Creates a pardna group and adds members as well as invitees to relev tables",
-         *    consumes={"application/json", "application/xml"},
-         *    produces={"application/json", "application/xml"},
-         *    @SWG\Parameter(
-         *      name="VerifyUserPhoneNumberRequest",
-         *      in="body",
-         *      required = true,
-         *      description="Verify User PhoneNumber",
-         *      @SWG\Schema(ref="#/definitions/MobilePhoneRequest")
-         *    ),
-         *    @SWG\Response(
-         *      response="401",
-         *      description="Invalid username or password",
-         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
-         *    ),
-         *    @SWG\Response(
-         *      response="200",
-         *      description="User is successfuly registered",
-         *      @SWG\Schema(ref="#/definitions/TokenDefault")
-         *    ),
-         *    security={
-         *         {
-         *             "pardna_auth": {"write:pardna", "read:pardna"}
-         *         }
-         *    }
-         *  )
-         */
-        $api->post('/group/setup', "groups.controller:setupGroup");
-
-        $api->post('/groupAndPardna/setup', "groups.controller:setupGroupAndPardna");
-
-        $api->post('/group/details/{id}', "groups.controller:getPardnagroupDetails");
-
-        $api->post('/group/add-members/{id}', "groups.controller:addMembers");
-
-        $api->post('/pardna/setup', "pardna.controller:setUpPardna");
-
         //Payments set up
 
         $api->post('/group/payments/getPaymentUrl/{id}', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
 
-        $api->post('/payments/confirm', "pardna.payments.controller:confirmPayment");
+        $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
 
+        $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
+
+        $api->post('/group/subscriptions/create/{id}', "pardna.payments.controller:createSubscription");
+
+        $api->post('/group/subscriptions/cancel/{id}', "pardna.payments.controller:cancelSubscription");
+
+        $api->post('/group/subscriptions/get/{id}', "pardna.payments.controller:getSubscription");
+        
         $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"], $api);
     }
 }

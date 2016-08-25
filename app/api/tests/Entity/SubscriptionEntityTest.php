@@ -3,7 +3,7 @@ namespace Tests\Entity;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use App\Services\PardnaGroupService;
-use App\Entity\SubscriptionEntity;
+use App\Entity\LegacySubscriptionEntity;
 class SubscriptionEntityTest extends \PHPUnit_Framework_TestCase
 {
     private $userService;
@@ -20,7 +20,7 @@ class SubscriptionEntityTest extends \PHPUnit_Framework_TestCase
         'frequency' => 'monthly',
         'startdate' => '2016-04-19T23:00:00.000Z'
       );
-      $subscription = new SubscriptionEntity();
+      $subscription = new LegacySubscriptionEntity();
       $subscription->setAmount(strval($data["amount"]));
       $subscription->setName("Pardna " . $data["name"]);
       $subscription->setDescription("This is going to run for the Pardna " . $data["name"] . " ." );

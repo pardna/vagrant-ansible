@@ -34,35 +34,11 @@ class ServicesLoader
         return $service;
       });
 
-      $this->app['mail.service'] = $this->app->share(function (){
-        $mailService = new Services\MailService($this->app["db"]);
-
-      });
-      $this->app['groups.setup.service'] = $this->app->share(function () {
-        $service = new Services\groups\setup\GroupsSetupService($this->app["db"]);
-        return $service;
-      });
-
-      $this->app['groups.manage.service'] = $this->app->share(function () {
-        $service = new Services\groups\manage\GroupsManageService($this->app["db"]);
-        return $service;
-      });
-
-      $this->app['pardna.setup.service'] = $this->app->share(function () {
-        $service = new Services\pardna\setup\PardnaSetupService($this->app["db"]);
-        return $service;
-      });
-
-      $this->app['pardna.manage.service'] = $this->app->share(function () {
-        $service = new Services\pardna\manage\PardnaManageService($this->app["db"]);
-        return $service;
-      });
-
       $this->app['email.mailchimps.service'] = $this->app->share(function (){
-        $mailService = new Services\common\email\MailChimpsService($this->app["db"]);
-        $mailService->setMailChimpsClient($this->app["mailChimps"]["API_KEY"]);
-        $mailService->setPardnaAccConfirmListId($this->app["mailChimps"]["pardna_acc_confirm_list_id"]);
-        return $mailService;
+        $mailChimpsMailService = new Services\common\email\MailChimpsService($this->app["db"]);
+        $mailChimpsMailService->setMailChimpsClient($this->app["mailChimps"]["API_KEY"]);
+        $mailChimpsMailService->setPardnaAccConfirmListId($this->app["mailChimps"]["pardna_acc_confirm_list_id"]);
+        return $mailChimpsMailService;
       });
 
       $this->app['mandrill.mail.service'] = $this->app->share(function (){
@@ -71,13 +47,41 @@ class ServicesLoader
         return $mandrillMailService;
       });
 
+      $this->app['pardna.group.status.service'] = $this->app->share(function (){
+        $pardnaGroupStatusService = new Services\PardnaGroupStatusService($this->app["db"]);
+        $pardnaGroupStatusService->setPardnaGroupService($this->app['pardna.group.service']);
+        return $pardnaGroupStatusService;
+      });
+
+      $this->app['gocardlesspro.client'] = $this->app->share(function (){
+        $gocardlessProClient = new Services\common\payments\GoCardlessProClient($this->app["db"], $this->app["gocardless_pro"], $this->app['gocardless_env']);
+        return $gocardlessProClient;
+      });
+
+      $this->app['redirectflow.service'] = $this->app->share(function (){
+        $redirectflowService = new Services\common\payments\RedirectFlowService($this->app["db"]);
+        $redirectflowService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $redirectflowService;
+      });
+
+      $this->app['subscription.service'] = $this->app->share(function (){
+        $subscriptionService = new Services\common\payments\SubscriptionsService($this->app["db"]);
+        $subscriptionService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $subscriptionService;
+      });
+
       $this->app['payments.setup.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app["db"], $this->app["gocardless"], $this->app['gc.environment']);
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service'], $this->app['subscription.service']);
+        return $setUpService;
+      });
+
+      $this->app['payments.manage.service'] = $this->app->share(function (){
+        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscription.service']);
         return $setUpService;
       });
 
       $this->app['notification.service'] = $this->app->share(function () {
-        return new Services\NotificationService($this->app["db"]);
+        return new Services\common\notifications\NotificationService($this->app["db"]);
       });
 
     }

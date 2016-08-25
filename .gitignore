@@ -6,7 +6,7 @@ npm-debug*
 .vagrant
 .DS_Store
 build
-
+.idea 
 src/bower_components
 
 nbproject
