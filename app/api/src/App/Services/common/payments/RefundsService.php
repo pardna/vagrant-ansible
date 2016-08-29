@@ -21,4 +21,8 @@ class RefundsService extends BaseService
     return $this->client->refunds()->get($refund_id);
   }
 
+  public function processEvent($event){
+
+  }
+
 }
