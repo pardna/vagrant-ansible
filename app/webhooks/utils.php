@@ -5,7 +5,7 @@
 function getWebhookEndPointSecret(){
   //$webhook_endpoint_secret = $app['gocardless_env']['webhook_endpoint_secret'];
   //return $webhook_endpoint_secret;
-  return "HYANE-HTB-12002";
+  return "HOOK-SIGNATURE-001";
 }
 
 function getAPIBaseUrl(){
@@ -23,23 +23,16 @@ function getRequestHeaders(){
 }
 
 function getRequestBody(){
-  $body = '';
-  $fh   = @fopen('php://input', 'r');
-  if ($fh)
-  {
-    while (!feof($fh))
-    {
-      $s = fread($fh, 1024);
-      if (is_string($s))
-      {
-        $body .= $s;
-      }
-    }
-    fclose($fh);
-  }
-  //print("-------------- PHP Input Stream ----------------\n$body\n\n");
+  return file_get_contents('php://input');
+}
 
-  return json_decode($body, true);
+function isSignatureCorrect($request_signature, $request_body, $secret){
+  $generated_signature = hash_hmac('sha256', $request_body, $secret);
+  if($generated_signature == $request_signature){
+    return true;
+  } else{
+    return false;
+  }
 }
 
 function handleResponse($response){

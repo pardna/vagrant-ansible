@@ -13,11 +13,11 @@ $webhook_signature = $request_headers['Webhook-Signature'];
 
 $request_body = getRequestBody();
 
-$request_body_string = json_encode($request_body);
+$request_body_array = json_decode($request_body, true);
 
-$events = $request_body['events'];
+$events = $request_body_array['events'];
 
-$signature_correct = (boolean) exec("ruby ./signature.rb $webhook_signature $request_body_string $secret");
+$signature_correct = (boolean) isSignatureCorrect($webhook_signature, $request_body, $secret);
 
 if ($signature_correct){
   foreach ($events as $event) {
