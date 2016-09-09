@@ -21,4 +21,8 @@ class PayoutsService extends BaseService
     return $this->client->payouts()->get($payout_id);
   }
 
+  public function processEvent($event){
+
+  }
+
 }

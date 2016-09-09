@@ -58,4 +58,21 @@ class SubscriptionsService extends BaseService
     return $this->db->insert($this->subscriptionsTable, $subscription);
   }
 
+  public function processEvent($event){
+    $action = $event->getAction();
+    if ($action == 'created' || $action == 'payment_created' || $action == 'finished'){
+      $this->processNormalAction($event);
+    } else if ($action == 'cancelled'){
+      $this->processFailedAction($event);
+    }
+  }
+
+  private function processNormalAction($event){
+
+  }
+
+  private function processFailedAction($event){
+    //If mandate is cancelled check that this will not affect pardna
+  }
+
 }

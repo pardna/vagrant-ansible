@@ -21,4 +21,21 @@ class MandatesService extends BaseService
     return $this->client->mandates()->get($mandate_id);
   }
 
+  public function processEvent($event){
+    $action = $event->getAction();
+    if ($action == 'created' || $action == 'submitted' || $action == 'active'){
+      $this->processNormalAction($event);
+    } else if ($action == 'cancelled' || $action == 'failed'){
+      $this->processFailedAction($event);
+    }
+  }
+
+  private function processNormalAction($event){
+
+  }
+
+  private function processFailedAction($event){
+    //If mandate is cancelled check that this will not affect pardna
+  }
+
 }

@@ -109,7 +109,7 @@ class PaymentsController extends AppController
         $response =  $this->service->createSubscription($group, $member[0]);
         return new JsonResponse(array("message" => "Successfully created subscription"));
       } else{
-        return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
+        throw new HttpException(401, "User does not have access to payments for this group");
       }
     } catch(PaymentSetupException $e) {
       throw new HttpException($e->getHttpResponseStatusEquivalentCode(), "Could not create subscription : " . $e->getMessage());

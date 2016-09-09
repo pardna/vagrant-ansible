@@ -53,6 +53,11 @@ class RoutesLoader
             return $controller;
         });
 
+        $this->app['payments.events.controller'] = $this->app->share(function () {
+            $controller = new Controllers\PaymentEventsController($this->app['payments.events.service']);
+            return $controller;
+        });
+
     }
 
     /**
@@ -389,7 +394,11 @@ class RoutesLoader
         $api->post('/group/subscriptions/cancel/{id}', "pardna.payments.controller:cancelSubscription");
 
         $api->post('/group/subscriptions/get/{id}', "pardna.payments.controller:getSubscription");
-        
+
+        //Payments events
+
+        $api->post('/payments/events/process/{event_id}', "payments.events.controller:processEvent");
+
         $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"], $api);
     }
 }

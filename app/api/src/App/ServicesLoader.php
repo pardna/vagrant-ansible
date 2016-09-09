@@ -64,20 +64,55 @@ class ServicesLoader
         return $redirectflowService;
       });
 
-      $this->app['subscription.service'] = $this->app->share(function (){
-        $subscriptionService = new Services\common\payments\SubscriptionsService($this->app["db"]);
-        $subscriptionService->setGoCardlessProClient($this->app['gocardlesspro.client']);
-        return $subscriptionService;
+      $this->app['subscriptions.service'] = $this->app->share(function (){
+        $subscriptionsService = new Services\common\payments\SubscriptionsService($this->app["db"]);
+        $subscriptionsService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $subscriptionsService;
+      });
+
+      $this->app['mandates.service'] = $this->app->share(function (){
+        $mandatesService = new Services\common\payments\MandatesService($this->app["db"]);
+        $mandatesService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $mandatesService;
+      });
+
+      $this->app['payments.service'] = $this->app->share(function (){
+        $paymentsService = new Services\common\payments\PaymentsService($this->app["db"]);
+        $paymentsService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $paymentsService;
+      });
+
+      $this->app['refunds.service'] = $this->app->share(function (){
+        $refundsService = new Services\common\payments\RefundsService($this->app["db"]);
+        $refundsService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $refundsService;
+      });
+
+      $this->app['payouts.service'] = $this->app->share(function (){
+        $payoutsService = new Services\common\payments\PayoutsService($this->app["db"]);
+        $payoutsService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $payoutsService;
+      });
+
+      $this->app['events.service'] = $this->app->share(function (){
+        $eventsService = new Services\common\payments\EventsService($this->app["db"]);
+        $eventsService->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $eventsService;
       });
 
       $this->app['payments.setup.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service'], $this->app['subscription.service']);
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service'], $this->app['subscriptions.service']);
         return $setUpService;
       });
 
       $this->app['payments.manage.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscription.service']);
+        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscriptions.service']);
         return $setUpService;
+      });
+
+      $this->app['payments.events.service'] = $this->app->share(function (){
+        $paymentEventsService = new Services\payments\manage\PaymentEventsService($this->app['events.service'], $this->app['mandates.service'], $this->app['payments.service'], $this->app['subscriptions.service'], $this->app['refunds.service'], $this->app['payouts.service']);
+        return $paymentEventsService;
       });
 
       $this->app['notification.service'] = $this->app->share(function () {
