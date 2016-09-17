@@ -1,14 +1,15 @@
 angular.module('Pardna')
-.controller('GroupDetailsCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$filter', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', GroupDetailsCtrl]);
+.controller('GroupDetailsCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$filter', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'paymentService', GroupDetailsCtrl]);
 
-function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateParams, jwtHelper, localStorageService, userService, groupService) {
+function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateParams, jwtHelper, localStorageService, userService, groupService, paymentService) {
 
   $scope.user = userService.user;
   $scope.ui = {data: {}};
   $scope.showConfirm = showConfirm;
+  $scope.setupPayment = setupPayment;
 
   // $stateParams.id,
- 
+
   function loadDetails(id) {
       groupService.details({id: id}).success(function(data) {
         $scope.ui.data = data;
@@ -31,7 +32,10 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
           .targetEvent(ev)
           .ok('Ok')
           .cancel('Cancel');
-    $mdDialog.show(confirm).then(function() {
+    $mdDialog.show(confirm).then(function(d) {
+      // alert("confirmed");
+      // console.log(d);
+      setupPayment({id: $scope.ui.data.id});
       // $scope.status = 'You decided to get rid of your debt.';
     }, function() {
       // $scope.status = 'You decided to keep your debt.';
@@ -51,6 +55,20 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
                 .hideDelay(3000)
             );
       });
+  }
+
+  function setupPayment(params){
+    paymentService.getPaymentUrl(params).success(function(data) {
+      $window.location.href = data.payment_url;
+      //$scope.ui.groupInvitationList = data;
+    }).error(function(error) {
+      $mdToast.show(
+            $mdToast.simple()
+              .content('Application error getting payment url')
+              .position("top right")
+              .hideDelay(3000)
+          );
+    });
   }
 
 

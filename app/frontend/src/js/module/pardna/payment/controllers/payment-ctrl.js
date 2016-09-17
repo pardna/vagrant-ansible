@@ -9,7 +9,7 @@ function PaymentCtrl($scope, $location, $mdToast, paymentService) {
   searchParams.membership_number = getParameterByName("membership_number");
   searchParams.group_id = getParameterByName("group_id");
   //searchParams.signature = getParameterByName("signature");
-  console.log(searchParams);
+  // console.log(searchParams);
   if (searchParams && searchParams !== "null" && searchParams !== "undefined"){
     confirmPayment(searchParams);
   }

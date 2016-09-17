@@ -1,0 +1,44 @@
+<div id="content" class="app-content" role="">
+	<div class="box">
+		<div ui-view="nav"></div>
+		<div class="box-row"> 
+			<div class="box-cell">
+				<div class="col-xs-12 pardna-container">
+					<div class="card pardna-details col-md-10 col-xs-12">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-12 pardna-row">
+									<md-content class="md-padding">
+										<md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect>
+											<!--
+											<md-tab ng-repeat="tab in tabs" ng-disabled="tab.disabled" label="{{tab.title}}">
+												<div ui-view="{{ tab.id}}"></div>
+											</md-tab>
+											-->
+											<md-tab label="User Details">
+												<md-content class="md-padding">
+													<div ui-view="account-user"></div>
+												</md-content>
+											</md-tab>
+											<md-tab label="Bank Accounts - Direct Debit">
+												<md-content class="md-padding">
+													<div ui-view="account-direct-debit"></div>
+												</md-content>
+											</md-tab>
+											<md-tab label="Bank Accounts - Payouts">
+												<md-content class="md-padding">
+													<div ui-view="account-payout"></div>
+												</md-content>
+											</md-tab>
+										</md-tabs>
+									</md-content>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

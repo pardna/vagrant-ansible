@@ -92,9 +92,41 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                 requiresLogin: true
             })
             .state('payment-confirm', {
-                url: '/payment/confirm',
-                controller: 'PaymentCtrl',
-                templateUrl: 'module/pardna/payment/templates/payment-confirm.html',
+				url: '/payment/confirm',
+                views: {
+                  '': {
+                    controller: 'PaymentCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/payment-confirm.html'
+                  },
+                  'nav@payment-confirm': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
+			.state('account', { 
+				url: '/account',
+                views: { 
+                  '': {
+                    controller: 'AccountCtrl',
+                    'templateUrl' : 'module/pardna/user/templates/account.html'
+                  },
+                  'nav@account': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  },
+				  'account-direct-debit@account': { 
+					 controller: 'AccountDirectDebitCtrl',
+                    'templateUrl' : 'module/pardna/user/templates/account-direct-debit.html'
+                  },
+				  'account-payout@account': { 
+					 controller: 'AccountPayoutCtrl',
+                    'templateUrl' : 'module/pardna/user/templates/account-payout.html'
+                  },
+				  'account-user@account': { 
+					 controller: 'AccountUserCtrl',
+                    'templateUrl' : 'module/pardna/user/templates/account-user.html'
+                  }
+                }, 
                 requiresLogin: true
             })
             .state('user-add', {

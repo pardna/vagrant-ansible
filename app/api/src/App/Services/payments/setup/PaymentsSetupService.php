@@ -27,6 +27,8 @@ class PaymentsSetupService
 
     protected $subscriptionsService;
 
+    protected $endpoint = "http://192.168.33.99/app/frontend/dist/#/";
+
     public function __construct($redirectFlowService, $subscriptionsService){
         $this->redirectFlowService = $redirectFlowService;
         $this->subscriptionsService = $subscriptionsService;
@@ -82,7 +84,7 @@ class PaymentsSetupService
       }
       $membership_number = $user->getMembershipNumber();
       $group_id = $group["id"];
-      $success_redirect_url = "http://192.168.33.99/app/frontend/dist/#/payment/confirm?membership_number=" . $membership_number . "&group_id=" . $group_id;
+      $success_redirect_url = $this->endpoint . "/payment/confirm?membership_number=" . $membership_number . "&group_id=" . $group_id;
       $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,
