@@ -41,14 +41,15 @@ class PaymentsController extends AppController
   {
     try {
       $user = $this->getUser();
-      $group = $this->groupService->groupDetailsForUser($user, $id);
-      if ($group){
+      //$group = $this->groupService->groupDetailsForUser($user, $id);
+      //if ($group){
         $token = $this->getSessionId($user, $id);
+        $group = null;
         $url = $this->service->getRedirectUrl($token, $user, $group);
         return new JsonResponse(array("payment_url" => $url));
-      } else{
-        return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
-      }
+      //} else{
+      //  return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
+      //}
     } catch(\Exception $e) {
       throw new HttpException(409, "Error getting subscription url : " . $e->getMessage());
     }
