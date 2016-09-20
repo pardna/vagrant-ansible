@@ -37,21 +37,15 @@ class PaymentsController extends AppController
     $this->manageService = $manageService;
   }
 
-  public function getGroupPaymentsSubscriptionUrl($id)
+  public function getGroupPaymentsSubscriptionUrl(Request $request)
   {
     try {
-      $user = $this->getUser();
-      //$group = $this->groupService->groupDetailsForUser($user, $id);
-      //if ($group){
-        $token = $this->getSessionId($user, $id);
-        $group = null;
-        $url = $this->service->getRedirectUrl($token, $user, $group);
+        $user = $this->getUser();
+        $token = $this->getSessionToken($request);
+        $url = $this->service->getRedirectUrl($token, $user);
         return new JsonResponse(array("payment_url" => $url));
-      //} else{
-      //  return new JsonResponse(array("message" => "User does not have access to payments for this group" ));
-      //}
     } catch(\Exception $e) {
-      throw new HttpException(409, "Error getting subscription url : " . $e->getMessage());
+      throw new HttpException(503, "Error getting subscription url : " . $e->getMessage());
     }
   }
 
@@ -170,8 +164,10 @@ class PaymentsController extends AppController
     return false;
   }
 
-  protected function getSessionId($user, $group_id){
-    return "SESS_" . base64_encode($user->getId() . $user->getFullName() . $user->getMembershipNumber() . $group_id);
+  protected function getSessionToken($request){
+    $access_token = $request->server->get('HTTP_X_ACCESS_TOKEN');
+    $session_token = "PRDNA_SESS_" . $access_token;
+    return substr($session_token, 0, 50);
   }
 
 }

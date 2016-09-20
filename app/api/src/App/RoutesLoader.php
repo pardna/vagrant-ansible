@@ -383,7 +383,7 @@ class RoutesLoader
 
         //Payments set up
 
-        $api->post('/group/payments/getPaymentUrl/{id}', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
+        $api->post('/group/payments/getPaymentUrl', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
 
         $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
 

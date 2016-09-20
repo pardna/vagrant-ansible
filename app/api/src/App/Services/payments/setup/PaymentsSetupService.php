@@ -77,14 +77,10 @@ class PaymentsSetupService
       return $subscriptionResponseEntity;
     }
 
-    public function getRedirectUrl($token, $user, $group){
-      $description = "To set up recurring payment for " . $group["name"] . " Pardna.";
-      if (! $this->goCardlessProAPIUtils->descriptionIsOfCorrectLength($description)){
-        $description = "To set up payment for " . $group["name"] . "Pardna.";
-      }
+    public function getRedirectUrl($token, $user){
+      $description = "This will set up a mandate onto which you will be able to set up payments when you join a group";
       $membership_number = $user->getMembershipNumber();
-      $group_id = $group["id"];
-      $success_redirect_url = $this->endpoint . "/payment/confirm?membership_number=" . $membership_number . "&group_id=" . $group_id;
+      $success_redirect_url = $this->endpoint . "/payment/confirm?membership_number=" . $membership_number;
       $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,
