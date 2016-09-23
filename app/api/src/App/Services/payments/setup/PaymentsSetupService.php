@@ -27,10 +27,11 @@ class PaymentsSetupService
 
     protected $subscriptionsService;
 
-    protected $endpoint = "http://192.168.33.99/app/frontend/dist/#/";
+    protected $gocardless_success_redirect_url;
 
     public function __construct($redirectFlowService, $subscriptionsService){
         $this->redirectFlowService = $redirectFlowService;
+        $this->gocardless_success_redirect_url = $this->redirectFlowService->getSuccesssRedirectUrl();
         $this->subscriptionsService = $subscriptionsService;
         $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
     }
@@ -80,7 +81,7 @@ class PaymentsSetupService
     public function getRedirectUrl($token, $user){
       $description = "This will set up a mandate onto which you will be able to set up payments when you join a group";
       $membership_number = $user->getMembershipNumber();
-      $success_redirect_url = $this->endpoint . "/payment/confirm?membership_number=" . $membership_number;
+      $success_redirect_url = $this->gocardless_success_redirect_url . "?membership_number=" . $membership_number;
       $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,
@@ -90,20 +91,19 @@ class PaymentsSetupService
       return $this->getRedirectFlowResponse($response)->getRedirect_url();
     }
 
-    public function completeReturnFromRedirectFlow($token, $redirect_flow_id, $pardnagroup_member)
+    public function completeReturnFromRedirectFlow($token, $redirect_flow_id)
     {
       $response = $this->redirectFlowService->completeRedirectFlow($redirect_flow_id, [
         "params" => ["session_token" => $token]
       ]);
-      $this->storeGoCardlessCustomerInfo($response, $pardnagroup_member);
+      $this->storeGoCardlessCustomerInfo($response);
     }
 
-    public function storeGoCardlessCustomerInfo($response, $pardnagroup_member){
+    public function storeGoCardlessCustomerInfo($response){
       $redirectFlow = $this->getRedirectFlowResponse($response);
       $details = array();
       $links = $redirectFlow->getLinks();
       $details["gc_customer_id"] = $links->customer;
-      $details["pardnagroup_member_id"] = $pardnagroup_member[0]['id'];
       $details["gc_cust_bank_account"] = $links->customer_bank_account;
       $details["mandate_id"] = $links->mandate;
       $this->redirectFlowService->storeGoCardlessCustomerDetails($details);

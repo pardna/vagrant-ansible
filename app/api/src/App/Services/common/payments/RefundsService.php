@@ -8,7 +8,7 @@ class RefundsService extends BaseService
   protected $client;
 
   public function setGoCardlessProClient($client){
-    $this->client = $client->client;
+    $this->client = $client->getClient();
   }
 
   public function create($refund)

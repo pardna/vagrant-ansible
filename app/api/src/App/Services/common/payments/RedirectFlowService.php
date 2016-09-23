@@ -7,9 +7,10 @@ class RedirectFlowService extends BaseService
     protected $client;
     protected $gc_customersTable = "gocardless_customers";
     protected $gc_mandatesTable = "gocardless_mandates";
+    protected $configurationsTable = "configurations";
 
     public function setGoCardlessProClient($client){
-      $this->client = $client->client;
+      $this->client = $client->getClient();
     }
 
     public function getRedirectFlowUrl($params)
@@ -22,7 +23,8 @@ class RedirectFlowService extends BaseService
       return $this->client->redirectFlows()->complete($redirect_flow_id, $params);
     }
 
-    public function storeGoCardlessCustomerDetails($details){
+    public function storeGoCardlessCustomerDetails($details)
+    {
       if(!$this->gcCustomerExists($details["gc_customer_id"], $details["pardnagroup_member_id"])) {
 
         $member = array();
@@ -44,6 +46,12 @@ class RedirectFlowService extends BaseService
     public function gcCustomerExists($gcCustomerId, $pardnaGroupMemberId)
     {
       return $this->db->fetchAssoc("SELECT * FROM {$this->gc_customersTable} WHERE cust_id = ? AND pardnagroup_member_id = ?  LIMIT 1", array($gcCustomerId, $pardnaGroupMemberId));
+    }
+
+    public function getSuccesssRedirectUrl()
+    {
+      $res = $this->db->fetchAll("SELECT value FROM {$this->configurationsTable} WHERE name = 'gocardless_success_redirect_url'  LIMIT 1");
+      return $res[0]["value"];
     }
 
 }

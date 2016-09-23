@@ -11,7 +11,7 @@ class SubscriptionsService extends BaseService
   protected $subscriptionsTable = "gocardless_subscriptions";
 
   public function setGoCardlessProClient($client){
-    $this->client = $client->client;
+    $this->client = $client->getClient();
   }
 
   public function create($subscription)

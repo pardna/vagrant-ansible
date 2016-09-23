@@ -1,5 +1,7 @@
 <?php
+
 namespace Tests\Controllers;
+
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use App\Controllers\PaymentsController;
@@ -71,6 +73,112 @@ class PaymentsControllerTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testCompleteRedirectFlowSuccessfullyCreatesTheMandate()
+    {
+      $request = new Request();
+      $user = $this->getUser();
+      $request->createFromGlobals();
+      $parameters = array();
+      $parameters['membership_number'] = $user->getMembershipNumber();
+      $parameters['redirect_flow_id'] = 'RE0000779K3ENXF44ZKEF90Z8J48VZ7Q';
+      $request->request->set('membership_number', $parameters['membership_number']);
+      $request->request->set('redirect_flow_id', $parameters['redirect_flow_id']);
+
+      $paymentsSetupObserver = $this->getObserverForClassAndMethods(PaymentsSetupService::class, ['completeReturnFromRedirectFlow']);
+      $this->expectCompleteReturnFromRedirectFlowIsCalled($paymentsSetupObserver, $parameters['redirect_flow_id'], true);
+
+      $paymentsController = new PaymentsController($paymentsSetupObserver);
+      $paymentsController->setUser($user);
+      $json_response = $paymentsController->completeRedirectFlow($request);
+      $this->assertJsonStringEqualsJsonString(
+          $json_response->getContent(), json_encode(['message' => 'Mandate Successfully created'])
+      );
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function testCompleteRedirectFailsBecauseMembershipNumberDoNotMatch()
+    {
+      $request = new Request();
+      $user = $this->getUser();
+      $request->createFromGlobals();
+      $parameters = array();
+      $parameters['membership_number'] = 'FAKE_MEMBERSHIP_NUMBER';
+      $parameters['redirect_flow_id'] = 'RE0000779K3ENXF44ZKEF90Z8J48VZ7Q';
+      $request->request->set('membership_number', $parameters['membership_number']);
+      $request->request->set('redirect_flow_id', $parameters['redirect_flow_id']);
+
+      $paymentsSetupObserver = $this->getObserverForClassAndMethods(PaymentsSetupService::class, ['completeReturnFromRedirectFlow']);
+      $this->expectCompleteReturnFromRedirectFlowIsCalled($paymentsSetupObserver, $parameters['redirect_flow_id'], true);
+
+      $paymentsController = new PaymentsController($paymentsSetupObserver);
+      $paymentsController->setUser($user);
+      try{
+        $json_response = $paymentsController->completeRedirectFlow($request);
+      } catch(HttpException $e)
+      {
+        $this->assertEquals(401, $e->getStatusCode());
+        throw $e;
+      }
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function testCompleteReturns403HttpExceptionCouldNotCreateMandate()
+    {
+      $request = new Request();
+      $user = $this->getUser();
+      $request->createFromGlobals();
+      $parameters = array();
+      $parameters['membership_number'] = $user->getMembershipNumber();
+      $parameters['redirect_flow_id'] = 'RE0000779K3ENXF44ZKEF90Z8J48VZ7Q';
+      $request->request->set('membership_number', $parameters['membership_number']);
+      $request->request->set('redirect_flow_id', $parameters['redirect_flow_id']);
+
+      $paymentsSetupObserver = $this->getObserverForClassAndMethods(PaymentsSetupService::class, ['completeReturnFromRedirectFlow']);
+      $this->expectCompleteReturnFromRedirectFlowIsCalled($paymentsSetupObserver, $parameters['redirect_flow_id'], new \GoCardlessPro\Core\Exception\InvalidApiUsageException(new \Exception()));
+
+      $paymentsController = new PaymentsController($paymentsSetupObserver);
+      $paymentsController->setUser($user);
+      try{
+        $json_response = $paymentsController->completeRedirectFlow($request);
+      } catch(HttpException $e)
+      {
+        $this->assertEquals(403, $e->getStatusCode());
+        throw $e;
+      }
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function testCompleteReturns409HttpExceptionMandateAlreadyCompleted()
+    {
+      $request = new Request();
+      $user = $this->getUser();
+      $request->createFromGlobals();
+      $parameters = array();
+      $parameters['membership_number'] = $user->getMembershipNumber();
+      $parameters['redirect_flow_id'] = 'RE0000779K3ENXF44ZKEF90Z8J48VZ7Q';
+      $request->request->set('membership_number', $parameters['membership_number']);
+      $request->request->set('redirect_flow_id', $parameters['redirect_flow_id']);
+
+      $paymentsSetupObserver = $this->getObserverForClassAndMethods(PaymentsSetupService::class, ['completeReturnFromRedirectFlow']);
+      $this->expectCompleteReturnFromRedirectFlowIsCalled($paymentsSetupObserver, $parameters['redirect_flow_id'], new \GoCardlessPro\Core\Exception\InvalidStateException(new \Exception()));
+
+      $paymentsController = new PaymentsController($paymentsSetupObserver);
+      $paymentsController->setUser($user);
+      try{
+        $json_response = $paymentsController->completeRedirectFlow($request);
+      } catch(HttpException $e)
+      {
+        $this->assertEquals(409, $e->getStatusCode());
+        throw $e;
+      }
+    }
+
     public function getObserverForClassAndMethods($class, $methodsArray)
     {
       $observer = $this->getMockBuilder($class)
@@ -97,6 +205,29 @@ class PaymentsControllerTest extends \PHPUnit_Framework_TestCase
                        ->with(
                            $this->anything(),
                            $this->anything()
+                       )
+                      ->will($this->throwException($returnVal));
+        }
+      }
+    }
+
+    public function expectCompleteReturnFromRedirectFlowIsCalled($paymentsSetupObserver, $redirect_flow_id, $returnVal)
+    {
+      if (isset($returnVal)){
+        if (is_string($returnVal)){
+          $paymentsSetupObserver->expects($this->once())
+                       ->method('completeReturnFromRedirectFlow')
+                       ->with(
+                           $this->anything(),
+                           $this->stringContains($redirect_flow_id)
+                       )
+                       ->will($this->returnValue($returnVal));
+        } else if ($returnVal instanceof \Exception){
+          $paymentsSetupObserver->expects($this->once())
+                       ->method('completeReturnFromRedirectFlow')
+                       ->with(
+                           $this->anything(),
+                           $this->stringContains($redirect_flow_id)
                        )
                       ->will($this->throwException($returnVal));
         }

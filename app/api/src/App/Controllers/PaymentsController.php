@@ -57,19 +57,14 @@ class PaymentsController extends AppController
       if (strcmp($user->getMembershipNumber(), $data["membership_number"]) !== 0){
         throw new HttpException(401, "Could not confirm setting up of mandate");
       }
-      $token = $this->getSessionId($user, $data["group_id"]);
-      $pardnagroup_member = $this->groupService->getMember($data["group_id"], $user->getId());
-      $response = $this->service->completeReturnFromRedirectFlow($token, $data["redirect_flow_id"], $pardnagroup_member);
-      $this->groupService->dd_mandate_setup_completed($pardnagroup_member[0]["group_id"], $pardnagroup_member[0]["user_id"]);
+      $token = $this->getSessionToken($request);
+      $response = $this->service->completeReturnFromRedirectFlow($token, $data["redirect_flow_id"]);
       return new JsonResponse(array("message" => "Mandate Successfully created" ));
     } catch(\GoCardlessPro\Core\Exception\InvalidApiUsageException $e) {
-      throw new HttpException(409, "Could not complete the redirect flow : " . $e->getMessage());
+      throw new HttpException(403, "Could not complete the redirect flow : " . $e->getMessage());
     } catch(\GoCardlessPro\Core\Exception\InvalidStateException $e) {
       throw new HttpException(409, "Could not complete the redirect flow : " . $e->getMessage());
-    } catch(\Exception $e) {
-      var_dump($e);
-      throw new HttpException(409, "Could not confirm payment : " . $e->getMessage());
-    }
+    } 
   }
 
   public function getGroupStatus($id)

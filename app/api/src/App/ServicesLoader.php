@@ -54,7 +54,8 @@ class ServicesLoader
       });
 
       $this->app['gocardlesspro.client'] = $this->app->share(function (){
-        $gocardlessProClient = new Services\common\payments\GoCardlessProClient($this->app["db"], $this->app["gocardless_pro"], $this->app['gocardless_env']);
+        $gocardlessProClient = new Services\common\payments\GoCardlessProClient();
+        $gocardlessProClient->setClient($this->app["gocardless_pro"], $this->app['gocardless_env']);
         return $gocardlessProClient;
       });
 
