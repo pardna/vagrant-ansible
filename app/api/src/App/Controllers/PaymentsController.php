@@ -49,6 +49,43 @@ class PaymentsController extends AppController
     }
   }
 
+  public function getUserBankAccount($id)
+  {
+    return $this->getUserBankAccounts($id);
+  }
+
+  public function retrieveAllUserBankAccounts(Request $request)
+  {
+    return $this->getUserBankAccounts(null);
+  }
+
+  public function setUpPayment(Request $request)
+  {
+    $group_id = $request->request->get("group_id");
+    $user = $this->getUser();
+    $group = $this->groupService->groupDetailsForUser($user, $group_id);
+    $member = $this->groupService->getMember($group_id, $user->getId())[0];
+    if ($group && $member){
+      $bank_account_id = $request->request->get("bank_account_id");
+      $this->service->setUpPayment($member, $bank_account_id);
+      return new JsonResponse(array("message" => "Successfully set up payment"));
+    } else{
+      throw new HttpException(401, "User does not have access to payments for this group");
+    }
+
+  }
+
+  public function getUserBankAccounts($id)
+  {
+    try {
+        $user = $this->getUser();
+        $bank_accounts = $this->manageService->getUserBankAccounts($user, $id);
+        return new JsonResponse(array("bank_accounts" => $bank_accounts));
+    } catch(\Exception $e) {
+      throw new HttpException(503, "Error getting user bank accounts : " . $e->getMessage());
+    }
+  }
+
   public function completeRedirectFlow(Request $request)
   {
     try {
@@ -58,13 +95,13 @@ class PaymentsController extends AppController
         throw new HttpException(401, "Could not confirm setting up of mandate");
       }
       $token = $this->getSessionToken($request);
-      $response = $this->service->completeReturnFromRedirectFlow($token, $data["redirect_flow_id"]);
+      $response = $this->service->completeReturnFromRedirectFlow($user, $token, $data["redirect_flow_id"]);
       return new JsonResponse(array("message" => "Mandate Successfully created" ));
     } catch(\GoCardlessPro\Core\Exception\InvalidApiUsageException $e) {
       throw new HttpException(403, "Could not complete the redirect flow : " . $e->getMessage());
     } catch(\GoCardlessPro\Core\Exception\InvalidStateException $e) {
       throw new HttpException(409, "Could not complete the redirect flow : " . $e->getMessage());
-    } 
+    }
   }
 
   public function getGroupStatus($id)
@@ -74,7 +111,8 @@ class PaymentsController extends AppController
     return new JsonResponse($status);
   }
 
-  public function triggerMassSubscriptionCreation($id){
+  public function triggerMassSubscriptionCreation($id)
+  {
     try {
       $user = $this->getUser();
       $status = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $id);
@@ -94,9 +132,9 @@ class PaymentsController extends AppController
     try{
       $user = $this->getUser();
       $group = $this->groupService->groupDetailsForUser($user, $id);
-      $member = $this->groupService->getMember($id, $user->getId());
+      $member = $this->groupService->getMember($id, $user->getId())[0];
       if ($group && $member){
-        $response =  $this->service->createSubscription($group, $member[0]);
+        $response =  $this->service->createSubscription($group, $member);
         return new JsonResponse(array("message" => "Successfully created subscription"));
       } else{
         throw new HttpException(401, "User does not have access to payments for this group");

@@ -19,9 +19,7 @@ class PardnaGroupStatusService extends BaseService
       $members = $this->pardnaGroupService->getMembers($group_id);
       if (empty($members)){
         //return exception
-        return array(
-
-        );
+        return array();
       } else{
         if (! $this->areAllTheSlotsTaken($nb_slots, $members)){
           $reason = $this->getStatusReason("EMPSL");
@@ -101,7 +99,8 @@ class PardnaGroupStatusService extends BaseService
 
   public function hasUserSetupPayment($group_id, $user_id){
     $member = $this->pardnaGroupService->getMember($group_id, $user_id);
-    if ($member[0]['dd_mandate_setup'] == 1){
+    $mandate_id = $member[0]['dd_mandate_id'];
+    if (isset($mandate_id) && ! empty($mandate_id)){
       return true;
     } else{
       return false;

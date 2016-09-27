@@ -6,6 +6,8 @@ class MandatesService extends BaseService
 {
 
   protected $client;
+  protected $gc_mandatesTable = "gocardless_mandates";
+  protected $pardnagroup_membersTable = "pardnagroup_members";
 
   public function setGoCardlessProClient($client){
     $this->client = $client->getClient();
@@ -19,6 +21,16 @@ class MandatesService extends BaseService
   public function get($mandate_id)
   {
     return $this->client->mandates()->get($mandate_id);
+  }
+
+  public function getMandateAssociatedWithBankAccount($bank_account_id)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM {$this->gc_mandatesTable} WHERE cust_bank_account = ? LIMIT 1", array($bank_account_id));
+  }
+
+  public function updatePardnaGroupMemberWithMandate($group_id, $dd_mandate)
+  {
+    return $this->db->executeQuery('UPDATE pardnagroup_members set dd_mandate_id = ?, dd_mandate_status = ? WHERE id = ?', [$dd_mandate["id"], $dd_mandate["status"], $group_id]);
   }
 
   public function processEvent($event){

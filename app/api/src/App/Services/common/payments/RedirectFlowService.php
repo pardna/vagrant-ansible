@@ -25,16 +25,16 @@ class RedirectFlowService extends BaseService
 
     public function storeGoCardlessCustomerDetails($details)
     {
-      if(!$this->gcCustomerExists($details["gc_customer_id"], $details["pardnagroup_member_id"])) {
+      if(!$this->gcCustomerExists($details["gc_customer_id"], $details["user_id"])) {
 
         $member = array();
         $member["cust_id"] = $details["gc_customer_id"];
-        $member["pardnagroup_member_id"] = $details["pardnagroup_member_id"];
-        $member["cust_bank_account"] = $details["gc_cust_bank_account"];
+        $member["user_id"] = $details["user_id"];
 
         $mandate = array();
         $mandate["cust_id"] = $details["gc_customer_id"];
         $mandate["mandate_id"] = $details["mandate_id"];
+        $mandate["cust_bank_account"] = $details["gc_cust_bank_account"];
         $member = $this->appendCreatedModified($member);
         $this->db->insert($this->gc_customersTable, $member);
         $this->db->insert($this->gc_mandatesTable, $mandate);
@@ -43,9 +43,9 @@ class RedirectFlowService extends BaseService
       return false;
     }
 
-    public function gcCustomerExists($gcCustomerId, $pardnaGroupMemberId)
+    public function gcCustomerExists($gcCustomerId, $user_id)
     {
-      return $this->db->fetchAssoc("SELECT * FROM {$this->gc_customersTable} WHERE cust_id = ? AND pardnagroup_member_id = ?  LIMIT 1", array($gcCustomerId, $pardnaGroupMemberId));
+      return $this->db->fetchAssoc("SELECT * FROM {$this->gc_customersTable} WHERE cust_id = ? AND user_id = ?  LIMIT 1", array($gcCustomerId, $user_id));
     }
 
     public function getSuccesssRedirectUrl()
