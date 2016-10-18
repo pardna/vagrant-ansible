@@ -10,7 +10,7 @@ class EventsService extends BaseService
   protected $gc_events_links = "gocardless_events_links";
 
   public function setGoCardlessProClient($client){
-    $this->client = $client->client;
+    $this->client = $client->getClient();
   }
 
   public function listAll($params)

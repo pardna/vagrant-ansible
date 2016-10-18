@@ -383,7 +383,7 @@ class RoutesLoader
 
         //Payments set up
 
-        $api->post('/group/payments/getPaymentUrl/{id}', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
+        $api->post('/group/payments/getPaymentUrl', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
 
         $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
 
@@ -395,9 +395,18 @@ class RoutesLoader
 
         $api->post('/group/subscriptions/get/{id}', "pardna.payments.controller:getSubscription");
 
+        $api->post('/group/payment/setup', "pardna.payments.controller:setUpPayment");
+
+        // User Account
+
+        $api->get('/user/bankaccounts/{id}', "pardna.payments.controller:getUserBankAccount");
+
+        $api->post('/user/bankaccounts', "pardna.payments.controller:retrieveAllUserBankAccounts");
+
         //Payments events
 
         $api->post('/payments/events/process/{event_id}', "payments.events.controller:processEvent");
+
 
         $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"], $api);
     }

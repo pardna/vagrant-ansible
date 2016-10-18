@@ -6,6 +6,7 @@ use App\Entity\SubscriptionResponseEntity;
 use App\utils\GoCardlessProAPIUtils;
 use App\Entity\RedirectFlowEntity;
 use App\utils\exceptions\PaymentSetupException;
+use App\Entity\MandateEntity;
 
 class PaymentsSetupService
 {
@@ -27,11 +28,13 @@ class PaymentsSetupService
 
     protected $subscriptionsService;
 
-    protected $endpoint = "http://192.168.33.99/app/frontend/dist/#/";
+    protected $gocardless_success_redirect_url;
 
-    public function __construct($redirectFlowService, $subscriptionsService){
+    public function __construct($redirectFlowService, $subscriptionsService, $mandatesService){
         $this->redirectFlowService = $redirectFlowService;
+        $this->gocardless_success_redirect_url = $this->redirectFlowService->getSuccesssRedirectUrl();
         $this->subscriptionsService = $subscriptionsService;
+        $this->mandatesService = $mandatesService;
         $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
     }
 
@@ -67,6 +70,16 @@ class PaymentsSetupService
       return $array;
     }
 
+    public function getMandateResponse($response){
+      $mandate = new MandateEntity();
+      $obj_vars = get_class_vars(get_class($mandate));
+      foreach ($obj_vars as $key => $value)
+      {
+          $mandate->$key = $this->getReflectedValue('\Mandate', $key, $response);
+      }
+      return $mandate;
+    }
+
     public function getSubscriptionResponse($response){
       $subscriptionResponseEntity = new SubscriptionResponseEntity();
       $obj_vars = get_class_vars(get_class($subscriptionResponseEntity));
@@ -77,14 +90,10 @@ class PaymentsSetupService
       return $subscriptionResponseEntity;
     }
 
-    public function getRedirectUrl($token, $user, $group){
-      $description = "To set up recurring payment for " . $group["name"] . " Pardna.";
-      if (! $this->goCardlessProAPIUtils->descriptionIsOfCorrectLength($description)){
-        $description = "To set up payment for " . $group["name"] . "Pardna.";
-      }
+    public function getRedirectUrl($token, $user){
+      $description = "This will set up a mandate onto which you will be able to set up payments when you join a group";
       $membership_number = $user->getMembershipNumber();
-      $group_id = $group["id"];
-      $success_redirect_url = $this->endpoint . "/payment/confirm?membership_number=" . $membership_number . "&group_id=" . $group_id;
+      $success_redirect_url = $this->gocardless_success_redirect_url . "?membership_number=" . $membership_number;
       $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,
@@ -94,23 +103,36 @@ class PaymentsSetupService
       return $this->getRedirectFlowResponse($response)->getRedirect_url();
     }
 
-    public function completeReturnFromRedirectFlow($token, $redirect_flow_id, $pardnagroup_member)
+    public function completeReturnFromRedirectFlow($user, $token, $redirect_flow_id)
     {
       $response = $this->redirectFlowService->completeRedirectFlow($redirect_flow_id, [
         "params" => ["session_token" => $token]
       ]);
-      $this->storeGoCardlessCustomerInfo($response, $pardnagroup_member);
+      $this->storeGoCardlessCustomerInfo($user, $response);
     }
 
-    public function storeGoCardlessCustomerInfo($response, $pardnagroup_member){
+    public function storeGoCardlessCustomerInfo($user, $response)
+    {
       $redirectFlow = $this->getRedirectFlowResponse($response);
       $details = array();
       $links = $redirectFlow->getLinks();
       $details["gc_customer_id"] = $links->customer;
-      $details["pardnagroup_member_id"] = $pardnagroup_member[0]['id'];
+      $details["user_id"] = $user->getId();
       $details["gc_cust_bank_account"] = $links->customer_bank_account;
       $details["mandate_id"] = $links->mandate;
       $this->redirectFlowService->storeGoCardlessCustomerDetails($details);
+    }
+
+    public function setUpPayment($member, $bank_account_id)
+    {
+      $gc_mandate = $this->mandatesService->getMandateAssociatedWithBankAccount($bank_account_id);
+      $mandate_id = $gc_mandate["mandate_id"];
+      $mandate_response = $this->mandatesService->get($mandate_id);
+      $mandate = $this->getMandateResponse($mandate_response);
+      $dd_mandate = array();
+      $dd_mandate['id'] = $mandate->getId();
+      $dd_mandate['status'] = $mandate->getStatus();
+      $this->mandatesService->updatePardnaGroupMemberWithMandate($member['id'], $dd_mandate);
     }
 
     public function triggerPardnaGroupCreateMembersSubscriptions($group, $members){
@@ -136,12 +158,13 @@ class PaymentsSetupService
     //This is going to create a payment plan/subscription to take payment for many customers at once
     //Returns the link which the customer will use to navigate to payment set up
     public function createSubscription($group, $member){
-      $gocardless_customer = $this->subscriptionsService->getGoCardlessCustomer($member['id']);
+      $mandate_id = $member["dd_mandate_id"];
+      //Need to investigate what to do with status
+      $mandate_status = $member["dd_mandate_status"];
 
-      if ($gocardless_customer){
-        $gc_customer = $gocardless_customer[0];
-        if ($this->subscriptionsService->mandateHasSubscriptions($gc_customer['mandate_id'])){
-          $gocardless_subscriptions = $this->subscriptionsService->getMandatesSubscriptions($gc_customer['mandate_id']);
+      if (isset($mandate_id)){
+        if ($this->subscriptionsService->mandateHasSubscriptions($mandate_id)){
+          $gocardless_subscriptions = $this->subscriptionsService->getMandatesSubscriptions($mandate_id);
           foreach ($gocardless_subscriptions as $gocardless_subscription) {
             $response = $this->subscriptionsService->get($gocardless_subscription['subscription_id']);
             $subscription = $this->getSubscriptionResponse($response);
@@ -152,7 +175,7 @@ class PaymentsSetupService
           }
         }
 
-        $createSubscriptionRequest = $this->createSubscriptionRequest($group, $gc_customer);
+        $createSubscriptionRequest = $this->createSubscriptionRequest($group, $mandate_id);
         $createSubscriptionResponse = $this->subscriptionsService->create(["params" => $this->objectToArray($createSubscriptionRequest)]);
         $subscriptionResponse = $this->getSubscriptionResponse($createSubscriptionResponse);
 
@@ -160,7 +183,7 @@ class PaymentsSetupService
         $subscription = $this->getSubscriptionResponse($getSubscriptionResponse);
 
         $logSubscription = array();
-        $logSubscription['mandate_id'] = $gc_customer['mandate_id'];
+        $logSubscription['mandate_id'] = $mandate_id;
         $logSubscription['subscription_id'] = $subscriptionResponse->getId();
         $logSubscription['status'] = $subscription->getStatus();
 
@@ -172,7 +195,7 @@ class PaymentsSetupService
       }
     }
 
-    public function createSubscriptionRequest($group, $gc_customer){
+    public function createSubscriptionRequest($group, $mandate_id){
       $subscription = new SubscriptionRequestEntity();
       $amount = $this->convertAmountIntoCentsOrPences($group["amount"]);
       $subscription->setAmount($amount);
@@ -188,7 +211,7 @@ class PaymentsSetupService
       $subscription->setName("Pardna " . $group["name"]);
       $subscription->setInterval(1);
       $links = array();
-      $links['mandate'] = $gc_customer['mandate_id'];
+      $links['mandate'] = $mandate_id;
       $subscription->setLinks($links);
       return $subscription;
     }

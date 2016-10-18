@@ -3,6 +3,7 @@ namespace App\Services\payments\manage;
 use App\Services\common\BaseService;
 use App\Entity\SubscriptionResponseEntity;
 use App\utils\GoCardlessProAPIUtils;
+use App\Entity\BankAccountEntity;
 
 class PaymentsManageService extends BaseService
 {
@@ -22,8 +23,9 @@ class PaymentsManageService extends BaseService
 
   protected $subscriptionsService;
 
-  public function __construct($subscriptionsService){
+  public function __construct($subscriptionsService, $customerBankAccountService){
       $this->subscriptionsService = $subscriptionsService;
+      $this->customerBankAccountService = $customerBankAccountService;
       $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
   }
 
@@ -46,6 +48,17 @@ class PaymentsManageService extends BaseService
     }
     return $subscriptionResponseEntity;
   }
+
+  public function getBankAccountResponse($response){
+    $bankaccount = new BankAccountEntity();
+    $obj_vars = get_class_vars(get_class($bankaccount));
+    foreach ($obj_vars as $key => $value)
+    {
+        $bankaccount->$key = $this->getReflectedValue('\CustomerBankAccount', $key, $response);
+    }
+    return $bankaccount;
+  }
+
 
   //Returns customer using subscription_id
   public function getGoCardlessCustomerForSubscriptionId($subscription_id){
@@ -71,9 +84,22 @@ class PaymentsManageService extends BaseService
     $this->subscriptionsService->updateStatus($subscription_id, $cancelSubscriptionResponse->getStatus());
   }
 
-  // This is going to be used to return gocardless customer bank accounts associated with a group
-  public function getASingleCustomerBankAccounts($group, $member){
-
+  public function getUserBankAccounts($user, $id){
+    $customer_bank_accounts = array();
+    if (isset($id)){
+      $response = $this->getBankAccountResponse($this->customerBankAccountService->get($id));
+      array_push($customer_bank_accounts, $response);
+    } else{
+      $gc_customers = $this->customerBankAccountService->getGoCardlessCustomerForUserId($user->getId());
+      foreach ($gc_customers as $gc_customer) {
+        $cust_bank_account_id = $gc_customer["cust_bank_account"];
+        if (isset($cust_bank_account_id) && ! empty($cust_bank_account_id)){
+          $response = $this->getBankAccountResponse($this->customerBankAccountService->get($cust_bank_account_id));
+          array_push($customer_bank_accounts, $response);
+        }
+      }
+    }
+    return $customer_bank_accounts;
   }
 
 

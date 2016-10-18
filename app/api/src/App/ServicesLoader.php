@@ -54,8 +54,15 @@ class ServicesLoader
       });
 
       $this->app['gocardlesspro.client'] = $this->app->share(function (){
-        $gocardlessProClient = new Services\common\payments\GoCardlessProClient($this->app["db"], $this->app["gocardless_pro"], $this->app['gocardless_env']);
+        $gocardlessProClient = new Services\common\payments\GoCardlessProClient();
+        $gocardlessProClient->setClient($this->app["gocardless_pro"], $this->app['gocardless_env']);
         return $gocardlessProClient;
+      });
+
+      $this->app['customerbankaccounts.service'] = $this->app->share(function (){
+        $bankaccounts = new Services\common\payments\CustomerBankAccountsService($this->app["db"]);
+        $bankaccounts->setGoCardlessProClient($this->app['gocardlesspro.client']);
+        return $bankaccounts;
       });
 
       $this->app['redirectflow.service'] = $this->app->share(function (){
@@ -101,12 +108,12 @@ class ServicesLoader
       });
 
       $this->app['payments.setup.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service'], $this->app['subscriptions.service']);
+        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['redirectflow.service'], $this->app['subscriptions.service'], $this->app['mandates.service']);
         return $setUpService;
       });
 
       $this->app['payments.manage.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscriptions.service']);
+        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscriptions.service'], $this->app['customerbankaccounts.service']);
         return $setUpService;
       });
 
