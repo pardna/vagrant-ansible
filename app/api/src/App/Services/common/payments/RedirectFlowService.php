@@ -26,21 +26,27 @@ class RedirectFlowService extends BaseService
     public function storeGoCardlessCustomerDetails($details)
     {
       if(!$this->gcCustomerExists($details["gc_customer_id"], $details["user_id"])) {
-
-        $member = array();
-        $member["cust_id"] = $details["gc_customer_id"];
-        $member["user_id"] = $details["user_id"];
-
-        $mandate = array();
-        $mandate["cust_id"] = $details["gc_customer_id"];
-        $mandate["mandate_id"] = $details["mandate_id"];
-        $mandate["cust_bank_account"] = $details["gc_cust_bank_account"];
-        $member = $this->appendCreatedModified($member);
-        $this->db->insert($this->gc_customersTable, $member);
-        $this->db->insert($this->gc_mandatesTable, $mandate);
-        return true;
+        $this->storeGoCardlessCustomerInformation($details);
+        $this->storeGoCardlessMandateInformation($details);
       }
-      return false;
+    }
+
+    public function storeGoCardlessMandateInformation($details)
+    {
+      $mandate = array();
+      $mandate["cust_id"] = $details["gc_customer_id"];
+      $mandate["mandate_id"] = $details["mandate_id"];
+      $mandate["cust_bank_account"] = $details["gc_cust_bank_account"];
+      $this->db->insert($this->gc_mandatesTable, $mandate);
+    }
+
+    public function storeGoCardlessCustomerInformation($details)
+    {
+      $member = array();
+      $member["cust_id"] = $details["gc_customer_id"];
+      $member["user_id"] = $details["user_id"];
+      $member = $this->appendCreatedModified($member);
+      $this->db->insert($this->gc_customersTable, $member);
     }
 
     public function gcCustomerExists($gcCustomerId, $user_id)

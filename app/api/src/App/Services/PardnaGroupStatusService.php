@@ -10,6 +10,30 @@ class PardnaGroupStatusService extends BaseService
     return $this;
   }
 
+  public function getStatus(){
+    // 1) getPardnaGroupStatus
+    // 2) getUserStatus
+  }
+
+  /*
+  * 1) Checks whether the start date of the pardna is in the future
+  * 2) Checks whether all the slots are taken
+  */
+  public function getPardnaGroupStatus(){
+
+  }
+
+  /*
+  * 1) Checks whether the start date of the pardna is in the future
+  * 2) Checks whether all the slots are taken
+  */
+  public function getUserStatus(){
+
+  }
+
+  //Upgrade this service to be able to be able to return status not ready to
+  //Need to split this function into small functions
+  //Need to get createSubscription to check status for reason not to create a subscription (e.g. )
   public function getUserRelatedGroupStatus($user, $group_id){
     $response;
     $response["reason"] = array();
