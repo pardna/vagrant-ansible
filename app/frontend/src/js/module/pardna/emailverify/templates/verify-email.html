@@ -1,0 +1,49 @@
+<div id="content" class="app-content">
+    <div class="box">
+        <div ui-view="nav"></div>
+        <!-- Content -->
+        <div class="box-row">
+            <div class="box-cell">
+                <!-- uiView:  -->
+                <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="page">
+                                <div class="flash notice-box"><span ng-bind="email_validate_message"></span></div>
+
+                                <div role="main" class="main">
+
+                                    <div id="resend_email_verify" ng-show="email_verified == '0'" class="box-center-form">
+                                        <h1 class="box-heading">Confirm your email</h1>
+
+                                        <p>After you created your account we sent you a confirmation email. You need to check that out before you can sign in.</p>
+
+                                        <p>If you didn't receive the email we can send you another one.</p>
+
+                                        <h2 class="box-heading">Re-send confirmation email</h2>
+
+                                        <form accept-charset="UTF-8" action="/confirm" class="new_confirmation" id="new_confirmation" method="post">
+                                            <div style="margin:0;padding:0;display:inline">
+                                                <input name="utf8" type="hidden" value="✓">
+                                                <input name="authenticity_token" type="hidden" value="0mB1a3+upY7tYHew2RkgJ8jzEKxyJNLD8Gt5691ws/Y=">
+                                            </div>
+
+                                            <div class="input-group ill-input initialised">
+                                                <label for="confirmation_username">Username</label>
+                                                <input id="confirmation_username" name="confirmation[username]" size="30" type="text">
+                                            </div>
+
+                                            <input name="commit" type="submit" value="Send">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / -->
+        </div>
+    </div>
+</div>

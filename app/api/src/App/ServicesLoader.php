@@ -10,11 +10,23 @@ class ServicesLoader
     }
     public function bindServicesIntoContainer()
     {
-        $this->app['users.service'] = $this->app->share(function () {
+
+      $this->app['configurations.service'] = $this->app->share(function (){
+        $configService = new Services\common\ConfigurationsService($this->app["db"]);
+        return $configService;
+      });
+
+      $this->app['email.validator.service'] = $this->app->share(function (){
+        $emailValidatorService = new Services\common\email\emailValidatorService($this->app["db"]);
+        $emailValidatorService->setConfigurationsService($this->app['configurations.service']);
+        return $emailValidatorService;
+      });
+
+      $this->app['users.service'] = $this->app->share(function () {
         $twillioClient = new \Services_Twilio($this->app["twillio"]["account_sid"], $this->app["twillio"]["account_token"]);
         $service = new Services\UsersService($this->app["db"]);
         $service->setTwillioCLient($twillioClient);
-
+        $service->setEmailValidatorService($this->app['email.validator.service']);
         return $service;
       });
 

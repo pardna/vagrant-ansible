@@ -48,10 +48,4 @@ class RedirectFlowService extends BaseService
       return $this->db->fetchAssoc("SELECT * FROM {$this->gc_customersTable} WHERE cust_id = ? AND user_id = ?  LIMIT 1", array($gcCustomerId, $user_id));
     }
 
-    public function getSuccesssRedirectUrl()
-    {
-      $res = $this->db->fetchAll("SELECT value FROM {$this->configurationsTable} WHERE name = 'gocardless_success_redirect_url'  LIMIT 1");
-      return $res[0]["value"];
-    }
-
 }

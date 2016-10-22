@@ -325,6 +325,8 @@ class RoutesLoader
         $api->post('/user/send-code', "users.controller:sendCode");
 
         $api->post('/user/verify', "users.controller:verify");
+        $api->post('/user/verify-email', "users.controller:verifyEmail");
+        $api->post('/user/resend-confirmation-email', "users.controller:resendConfirmationEmail");
         $api->get('/relationships', "users.controller:relationships");
 
         $api->post('/pardna/group', "pardna.group.controller:save");
@@ -385,7 +387,7 @@ class RoutesLoader
 
         $api->post('/group/payments/getPaymentUrl', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
         $api->post('/group/payments/getPaymentUrl/{id}', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
-        
+
         $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
 
         $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");

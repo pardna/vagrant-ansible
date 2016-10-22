@@ -171,9 +171,8 @@ class UsersController
       $firstname = $user['firstname'];
       $lastname = $user['lastname'];
 
-
-      $link = $this->generateVerifyEmailConfirmationLink();
-       $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
+      $link = $this->usersService->getConfirmEmailLink($userId);
+      $this->mandrillMailService->sendEmailConfirmation($firstname, $lastname, $user['email'], $link);
       // $this->mailService->subscribeUserToMailList($user['email'], $firstname, $lastname);
 
       // $this->mailChimpsService->subscribeUserToMailList($user['email'], $firstname, $lastname);
@@ -284,16 +283,43 @@ class UsersController
     }
   }
 
-  public function generateVerifyEmailConfirmationLink() {
-    return "http://www.channel4.com/programmes/a-place-in-the-sun-2015-2016/on-demand/59661-042";
+  public function resendConfirmationEmail(Request $request){
+    $data = $request->request->all();
+    $user = $this->usersService->getByEmail($data["email"]);
+    //subscribe user to mail list
+    if (! empty($user)){
+      $link = $this->usersService->getConfirmEmailLink($user['id']);
+      $this->mandrillMailService->sendEmailConfirmation($user['firstname'], $user['lastname'], $user['email'], $link);
+      return new JsonResponse(array("message" => "Confirmation email sent" ));
+    } else{
+      throw new HttpException(401, "User not found");
+    }
+  }
+
+  public function verifyEmail(Request $request){
+    try {
+      $data = $request->request->all();
+      $response = $this->usersService->verifyEmail($data);
+      if ($response['success'] == true){
+        return new JsonResponse(array("message" => "Email has been successfully verified" ));
+      } else{
+        if (array_key_exists("reason",$response)){
+          if ($response['reason'] === 'expired'){
+            throw new HttpException(409, "Sorry, that confirmation link has expired. Please try again.");
+          } else if ($response['reason'] === 'verified'){
+            throw new HttpException(410, "Email has already been verified");
+          }
+        }
+        throw new HttpException(401, "Confirmation Link not recognised");
+      }
+    } catch(\Exception $e) {
+      throw new HttpException(409, "Could not verify email : " . $e->getMessage());
+    }
   }
 
   public function getDataFromRequest(Request $request)
   {
     return  $request->request->get("user");
   }
-
-
-
 
 }

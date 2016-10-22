@@ -28,11 +28,11 @@ class PaymentsSetupService
 
     protected $subscriptionsService;
 
-    protected $gocardless_success_redirect_url;
+    protected $configService;
 
-    public function __construct($redirectFlowService, $subscriptionsService, $mandatesService){
+    public function __construct($configService, $redirectFlowService, $subscriptionsService, $mandatesService){
         $this->redirectFlowService = $redirectFlowService;
-        $this->gocardless_success_redirect_url = $this->redirectFlowService->getSuccesssRedirectUrl();
+        $this->configService = $configService;
         $this->subscriptionsService = $subscriptionsService;
         $this->mandatesService = $mandatesService;
         $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
@@ -93,7 +93,9 @@ class PaymentsSetupService
     public function getRedirectUrl($token, $user){
       $description = "This will set up a mandate onto which you will be able to set up payments when you join a group";
       $membership_number = $user->getMembershipNumber();
-      $success_redirect_url = $this->gocardless_success_redirect_url . "?membership_number=" . $membership_number;
+
+      $success_redirect_url = $this->configService->getConfigValue('gocardless_success_redirect_url');
+      $success_redirect_url .= "?membership_number=" . $membership_number;
       $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,

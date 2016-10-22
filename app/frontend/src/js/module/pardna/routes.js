@@ -92,7 +92,7 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                 requiresLogin: true
             })
             .state('payment-confirm', {
-				url: '/payment/confirm',
+				        url: '/payment/confirm',
                 views: {
                   '': {
                     controller: 'PaymentCtrl',
@@ -104,9 +104,19 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                 },
                 requiresLogin: true
             })
-			.state('account', { 
-				url: '/account',
-                views: { 
+            .state('email-verify', {
+				        url: '/account/email/verify',
+                views: {
+                  '': {
+                    controller: 'EmailVerifyCtrl',
+                    'templateUrl' : 'module/pardna/emailverify/templates/verify-email.html'
+                  }
+                },
+                requiresLogin: false
+            })
+    			  .state('account', {
+    				    url: '/account',
+                views: {
                   '': {
                     controller: 'AccountCtrl',
                     'templateUrl' : 'module/pardna/user/templates/account.html'
@@ -114,19 +124,19 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                   'nav@account': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   },
-				  'account-direct-debit@account': { 
-					 controller: 'AccountDirectDebitCtrl',
-                    'templateUrl' : 'module/pardna/user/templates/account-direct-debit.html'
-                  },
-				  'account-payout@account': { 
-					 controller: 'AccountPayoutCtrl',
-                    'templateUrl' : 'module/pardna/user/templates/account-payout.html'
-                  },
-				  'account-user@account': { 
-					 controller: 'AccountUserCtrl',
-                    'templateUrl' : 'module/pardna/user/templates/account-user.html'
-                  }
-                }, 
+      				  'account-direct-debit@account': {
+      					 controller: 'AccountDirectDebitCtrl',
+                          'templateUrl' : 'module/pardna/user/templates/account-direct-debit.html'
+                        },
+      				  'account-payout@account': {
+      					 controller: 'AccountPayoutCtrl',
+                          'templateUrl' : 'module/pardna/user/templates/account-payout.html'
+                        },
+      				  'account-user@account': {
+      					 controller: 'AccountUserCtrl',
+                          'templateUrl' : 'module/pardna/user/templates/account-user.html'
+                        }
+                },
                 requiresLogin: true
             })
             .state('user-add', {

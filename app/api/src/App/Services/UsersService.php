@@ -16,6 +16,7 @@ class UsersService extends BaseService implements UserProviderInterface
 
   protected $twillioClient;
   protected $accountService;
+  protected $emailValidatorService;
 
   public function __construct($db)
   {
@@ -30,6 +31,15 @@ class UsersService extends BaseService implements UserProviderInterface
   public function getTwillioClient() {
     return $this->twillioClient;
   }
+
+  public function setEmailValidatorService($emailValidatorService) {
+    $this->emailValidatorService = $emailValidatorService;
+  }
+
+  public function getEmailValidatorService() {
+    return $this->emailValidatorService;
+  }
+
 
   public function createMembershipNumber() {
      $digits = 8;
@@ -162,7 +172,7 @@ public function supportsClass($class)
 
   function save($user)
   {
-    
+
     $userExist = $this->getByEmail($user["email"]);
     if($userExist) {
       throw new HttpException(409,$user["email"] . " already registered");
@@ -282,6 +292,14 @@ public function supportsClass($class)
       $rnd = $rnd & $filter; // discard irrelevant bits
     } while ($rnd >= $range);
     return $min + $rnd;
+  }
+
+  function getConfirmEmailLink($user_id){
+    return $this->emailValidatorService->generateConfirmEmailLink($user_id);
+  }
+
+  function verifyEmail($data){
+    return $this->emailValidatorService->verifyEmail($data);
   }
 
   function getToken($length=32){
