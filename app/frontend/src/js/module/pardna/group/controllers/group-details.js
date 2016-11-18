@@ -1,13 +1,13 @@
 angular.module('Pardna')
-.controller('GroupDetailsCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$filter', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'paymentService', GroupDetailsCtrl]);
+.controller('GroupDetailsCtrl', ['$scope', '$state', '$window', '$mdToast', '$mdDialog', '$filter', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'paymentService', GroupDetailsCtrl]);
 
-function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateParams, jwtHelper, localStorageService, userService, groupService, paymentService) {
+function GroupDetailsCtrl($scope, $state, $window, $mdToast, $mdDialog, $filter, $stateParams, jwtHelper, localStorageService, userService, groupService, paymentService) {
 
   $scope.user = userService.user;
   $scope.ui = {data: {}};
   $scope.showConfirm = showConfirm;
   $scope.setupPayment = setupPayment;
-
+  $scope.group_id = $stateParams.id;
   // $stateParams.id,
 
   function loadDetails(id) {
@@ -34,9 +34,9 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
           .cancel('Cancel');
     $mdDialog.show(confirm).then(function(d) {
       // alert("confirmed");
-      // console.log(d);
-      setupPayment({id: $scope.ui.data.id});
-      // $scope.status = 'You decided to get rid of your debt.';
+      // console.log(d)
+      //setupPayment({id: $scope.ui.data.id});
+      $scope.status = 'You decided to get rid of your debt.';
     }, function() {
       // $scope.status = 'You decided to keep your debt.';
     });

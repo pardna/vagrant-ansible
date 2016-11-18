@@ -1,8 +1,8 @@
 angular.module('Pardna')
-    .controller('PaymentCtrl', ['$scope', '$location', '$mdToast', 'paymentService', PaymentCtrl]);
+    .controller('RedirectFlowCtrl', ['$scope', '$location', '$mdToast', 'paymentService', RedirectFlowCtrl]);
 
 
-function PaymentCtrl($scope, $location, $mdToast, paymentService) {
+function RedirectFlowCtrl($scope, $location, $mdToast, paymentService) {
   //var searchParams = $location.search();
   var searchParams = {};
   searchParams.redirect_flow_id = getParameterByName("redirect_flow_id");

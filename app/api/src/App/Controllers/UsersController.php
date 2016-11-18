@@ -288,9 +288,13 @@ class UsersController
     $user = $this->usersService->getByEmail($data["email"]);
     //subscribe user to mail list
     if (! empty($user)){
-      $link = $this->usersService->getConfirmEmailLink($user['id']);
-      $this->mandrillMailService->sendEmailConfirmation($user['firstname'], $user['lastname'], $user['email'], $link);
-      return new JsonResponse(array("message" => "Confirmation email sent" ));
+      if ($user['email_verified'] == '0'){
+        $link = $this->usersService->getConfirmEmailLink($user['id']);
+        $this->mandrillMailService->sendEmailConfirmation($user['firstname'], $user['lastname'], $user['email'], $link);
+        return new JsonResponse(array("message" => "Confirmation email sent" ));
+      } else{
+        throw new HttpException(409, "User is already confirmed");
+      }
     } else{
       throw new HttpException(401, "User not found");
     }

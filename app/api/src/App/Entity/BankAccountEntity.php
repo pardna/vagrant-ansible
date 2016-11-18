@@ -9,7 +9,7 @@ class BankAccountEntity
   public $bank_name;
   public $currency;
   public $country_code;
-  //public $customer_id;
+  public $created_at;
   public $metadata;
   public $enabled;
   public $links;
@@ -62,13 +62,13 @@ class BankAccountEntity
     $this->country_code = $country_code;
   }
 
-  // public function getCustomer_id(){
-  //   return $this->customer_id;
-  // }
-  //
-  // public function setCustomer_id($customer_id){
-  //   $this->customer_id = $customer_id;
-  // }
+  public function getCreated_at(){
+    return $this->customer_id;
+  }
+
+  public function setCreated_at($customer_id){
+    $this->customer_id = $customer_id;
+  }
 
   public function getMetadata(){
     return $this->metadata;

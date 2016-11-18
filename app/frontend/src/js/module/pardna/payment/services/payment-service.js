@@ -5,12 +5,16 @@ function PaymentService($http, env) {
   var urlBase = env.apiUrl;
   var dataFactory = {};
 
-  dataFactory.getPaymentUrl = function(groupDetails) {
-    return $http.post(urlBase + '/group/payments/getPaymentUrl/' + groupDetails.id);
+  dataFactory.getPaymentUrl = function() {
+    return $http.post(urlBase + '/group/payments/getPaymentUrl');
   };
 
   dataFactory.confirmPayment = function(params) {
     return $http.post(urlBase + '/payments/confirm', params);
+  };
+
+  dataFactory.setupPayment = function(params) {
+    return $http.post(urlBase + '/group/payment/setup', params);
   };
 
   return dataFactory;

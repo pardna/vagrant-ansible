@@ -95,12 +95,38 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
 				        url: '/payment/confirm',
                 views: {
                   '': {
-                    controller: 'PaymentCtrl',
-                    'templateUrl' : 'module/pardna/payment/templates/payment-confirm.html'
+                    controller: 'RedirectFlowCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/redirectflow-confirm.html'
                   },
                   'nav@payment-confirm': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   }
+                },
+                requiresLogin: true
+            })
+            .state('payment-setup', {
+				        url: '/payment/setup/:id',
+                views: {
+                  '': {
+                    controller: 'PaymentSetupCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/bankaccount-choose.html'
+                  },
+                  'nav@payment-setup': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
+            .state('payment-setup.confirm', {
+                url: '',
+                parent: 'payment-setup',
+                views: {
+                    '': {
+                        templateUrl: 'module/pardna/payment/templates/paymentsetup-confirm.html'
+                    },
+                    'nav@payment-setup.confirm': {
+                      'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                    },
                 },
                 requiresLogin: true
             })

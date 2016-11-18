@@ -49,6 +49,12 @@ function UserService($http, env, localStorageService, jwtHelper) {
 		return $http.get(urlBase + '/user/notifications');
 	};
 
+	dataFactory.getUserBankAccounts = function() {
+		return $http.post(urlBase + '/user/bankaccounts', {});
+	};
+
+
+
 	dataFactory.setToken(dataFactory.token);
 
 	return dataFactory;
