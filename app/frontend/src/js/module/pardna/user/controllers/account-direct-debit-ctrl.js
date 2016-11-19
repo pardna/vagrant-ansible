@@ -4,7 +4,7 @@ angular.module('Pardna')
 
 function AccountDirectDebitCtrl($scope, $window, $state, $mdToast, userService, localStorageService, jwtHelper, userService, groupService, paymentService) {
 	$scope.user = userService.user;
-	$scope.setupPayment = setupPayment;
+	$scope.redirectToPaymentsProvider = redirectToPaymentsProvider;
 	getUserBankAccounts();
 	console.log($scope.user);
 
@@ -21,8 +21,14 @@ function AccountDirectDebitCtrl($scope, $window, $state, $mdToast, userService, 
 		});
 	}
 
-	function setupPayment() {
-		paymentService.getPaymentUrl().success(function(data) {
+	function redirectToPaymentsProvider() {
+		var returnParams = {};
+    returnParams.state_id = $state.current.name;
+    returnParams.state_name = "Accounts";
+    var params = {
+			'return_to': returnParams
+		};
+		paymentService.getPaymentUrl(params).success(function(data) {
 			$window.location.href = data.payment_url;
 			//$scope.ui.groupInvitationList = data;
 		}).error(function(error) {

@@ -90,12 +90,13 @@ class PaymentsSetupService
       return $subscriptionResponseEntity;
     }
 
-    public function getRedirectUrl($token, $user){
+    public function getRedirectUrl($token, $user, $returnTo){
       $description = "This will set up a mandate onto which you will be able to set up payments when you join a group";
       $membership_number = $user->getMembershipNumber();
 
       $success_redirect_url = $this->configService->getConfigValue('gocardless_success_redirect_url');
-      $success_redirect_url .= "?membership_number=" . $membership_number;
+      $success_redirect_url = $this->setUrlParams($success_redirect_url, $membership_number, $returnTo);
+
       $response = $this->redirectFlowService->getRedirectFlowUrl([
         "params" => ["description" => $description,
                      "session_token" => $token,
@@ -103,6 +104,42 @@ class PaymentsSetupService
       ]);
 
       return $this->getRedirectFlowResponse($response)->getRedirect_url();
+    }
+
+    public function setUrlParams($success_redirect_url, $membership_number, $returnTo)
+    {
+      $success_redirect_url .= "?membership_number=" . $membership_number;
+      if (isset ($returnTo)){
+        if (array_key_exists('state_id', $returnTo)){
+          $state = $returnTo['state_id'];
+          $success_redirect_url .= "&return_state_id=" . $state;
+        }
+        if (array_key_exists('state_name', $returnTo)){
+          $state = $returnTo['state_name'];
+          $success_redirect_url .= "&return_state_name=" . $state;
+        }
+        if (array_key_exists('params', $returnTo)){
+          $params = $returnTo['params'];
+          $nb_of_params = count($params);
+          if (count($nb_of_params) > 1)
+          {
+            $count = 0;
+            $success_redirect_url .= "&return_params_count=" . count($params);
+          }
+          foreach($params as $key => $val)
+          {
+            if (isset ($count)){
+              $count++;
+              $success_redirect_url .= "&return_params_key_$count=" . $key;
+              $success_redirect_url .= "&return_params_value_$count=" . $val;
+            } else{
+              $success_redirect_url .= "&return_params_key=" . $key;
+              $success_redirect_url .= "&return_params_value=" . $val;
+            }
+          }
+        }
+      }
+      return $success_redirect_url;
     }
 
     public function completeReturnFromRedirectFlow($user, $token, $redirect_flow_id)

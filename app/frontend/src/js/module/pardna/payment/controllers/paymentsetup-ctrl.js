@@ -1,11 +1,12 @@
 angular.module('Pardna')
-    .controller('PaymentSetupCtrl', ['$scope', '$stateParams', '$state', '$location', '$mdToast', '$mdDialog', 'paymentService', 'userService', PaymentSetupCtrl]);
+    .controller('PaymentSetupCtrl', ['$scope', '$window', '$stateParams', '$state', '$location', '$mdToast', '$mdDialog', 'paymentService', 'userService', PaymentSetupCtrl]);
 
 
-function PaymentSetupCtrl($scope, $stateParams, $state, $location, $mdToast, $mdDialog, paymentService, userService) {
+function PaymentSetupCtrl($scope, $window, $stateParams, $state, $location, $mdToast, $mdDialog, paymentService, userService) {
   //var searchParams = $location.search();
   $scope.group_id = $stateParams.id;
   $scope.showConfirmBankAccount = showConfirmBankAccount;
+  $scope.redirectToPaymentsProvider = redirectToPaymentsProvider;
   getUserBankAccounts();
 
   function showConfirmBankAccount(bankaccount) {
@@ -52,6 +53,28 @@ function PaymentSetupCtrl($scope, $stateParams, $state, $location, $mdToast, $md
 			$mdToast.show(
 					$mdToast.simple()
 					.content('Application error setting up payments!')
+					.position("top right")
+					.hideDelay(3000)
+					);
+		});
+	}
+
+  function redirectToPaymentsProvider(prms) {
+    var returnParams = {};
+    returnParams.state_id = $state.current.name;
+    returnParams.state_name = "Setting_up_Pardna_group_Payments";
+    returnParams.params = prms;
+    var params = {
+			'return_to': returnParams
+		};
+    console.log(params)
+		paymentService.getPaymentUrl(params).success(function(data) {
+			$window.location.href = data.payment_url;
+			//$scope.ui.groupInvitationList = data;
+		}).error(function(error) {
+			$mdToast.show(
+					$mdToast.simple()
+					.content('Application error getting payment url')
 					.position("top right")
 					.hideDelay(3000)
 					);

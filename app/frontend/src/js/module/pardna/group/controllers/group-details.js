@@ -6,13 +6,11 @@ function GroupDetailsCtrl($scope, $state, $window, $mdToast, $mdDialog, $filter,
   $scope.user = userService.user;
   $scope.ui = {data: {}};
   $scope.showConfirm = showConfirm;
-  $scope.setupPayment = setupPayment;
   $scope.group_id = $stateParams.id;
-  // $stateParams.id,
-
   function loadDetails(id) {
       groupService.details({id: id}).success(function(data) {
         $scope.ui.data = data;
+        $scope.group_name = $scope.ui.data.name;
       }).error(function(error) {
         $mdToast.show(
               $mdToast.simple()
@@ -35,7 +33,6 @@ function GroupDetailsCtrl($scope, $state, $window, $mdToast, $mdDialog, $filter,
     $mdDialog.show(confirm).then(function(d) {
       // alert("confirmed");
       // console.log(d)
-      //setupPayment({id: $scope.ui.data.id});
       $scope.status = 'You decided to get rid of your debt.';
     }, function() {
       // $scope.status = 'You decided to keep your debt.';
@@ -57,29 +54,12 @@ function GroupDetailsCtrl($scope, $state, $window, $mdToast, $mdDialog, $filter,
       });
   }
 
-  function setupPayment(params){
-    paymentService.getPaymentUrl(params).success(function(data) {
-      $window.location.href = data.payment_url;
-      //$scope.ui.groupInvitationList = data;
-    }).error(function(error) {
-      $mdToast.show(
-            $mdToast.simple()
-              .content('Application error getting payment url')
-              .position("top right")
-              .hideDelay(3000)
-          );
-    });
+  // Format the start date that is returned from the database
+  function formatDate($scope) {
+      $scope.v = {
+          pay_date: Date.parse()
+      }
   }
-
-
-// Format the start date that is returned from the database
-function formatDate($scope) {
-    $scope.v = {
-        pay_date: Date.parse()
-    }
-}
-
-
 
   // console.log($scope.user);
   loadDetails($stateParams.id);

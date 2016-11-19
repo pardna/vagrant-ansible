@@ -42,7 +42,8 @@ class PaymentsController extends AppController
     try {
         $user = $this->getUser();
         $token = $this->getSessionToken($request);
-        $url = $this->service->getRedirectUrl($token, $user);
+        $returnTo = $request->request->get("return_to");
+        $url = $this->service->getRedirectUrl($token, $user, $returnTo);
         return new JsonResponse(array("payment_url" => $url));
     } catch(\Exception $e) {
       throw new HttpException(503, "Error getting subscription url : " . $e->getMessage());

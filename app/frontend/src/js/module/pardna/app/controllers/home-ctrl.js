@@ -10,7 +10,6 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   $scope.ui.userInvitationList = [];
   $scope.ui.relationships = [];
   $scope.acceptUserInvitation = acceptUserInvitation;
-  $scope.setupPayment = setupPayment;
   $scope.acceptGroupInvitation = acceptGroupInvitation;
   var originatorEv;
 
@@ -29,7 +28,7 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   }
 
   console.log($scope.user);
-  
+
 
   // Add new pardna
   $scope.data = {
@@ -108,20 +107,6 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
       $mdToast.show(
             $mdToast.simple()
               .content('Application error')
-              .position("top right")
-              .hideDelay(3000)
-          );
-    });
-  }
-
-  function setupPayment(params){
-    paymentService.getPaymentUrl(params).success(function(data) {
-      $window.location.href = data.payment_url;
-      //$scope.ui.groupInvitationList = data;
-    }).error(function(error) {
-      $mdToast.show(
-            $mdToast.simple()
-              .content('Application error getting payment url')
               .position("top right")
               .hideDelay(3000)
           );
