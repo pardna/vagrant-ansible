@@ -23,24 +23,48 @@ function EmailVerifyCtrl($scope, $location, $mdToast, emailVerifyService) {
   }
 
   function verifyEmail(params) {
-    emailVerifyService.verifyEmail(params).success(function(data) {
-      $scope.email_verified = '1';
-      $scope.email_validate_message = data.message;
-      $mdToast.show(
-        $mdToast.simple()
-          .content('Email has been successfully validated!!')
+
+    emailVerifyService.verifyEmail(params).then(
+      function successCallback(response) {
+        $scope.email_verified = '1';
+        $scope.email_validate_message = response.data.message;
+        $mdToast.show(
+          $mdToast.simple()
+            .content('Email has been successfully validated!!')
+            .position("top right")
+            .hideDelay(3000)
+        );
+      },
+      function errorCallback(response) {
+        $scope.email_verified = '0';
+        $scope.email_validate_message = response.error.message;
+        $mdToast.show(
+          $mdToast.simple()
+          .content(response.error.message)
           .position("top right")
           .hideDelay(3000)
-      );
-    }).error(function(error) {
-      $scope.email_verified = '0';
-      $scope.email_validate_message = error.message;
-      $mdToast.show(
-            $mdToast.simple()
-              .content(error.message)
-              .position("top right")
-              .hideDelay(3000)
-          );
+        );
     });
+
+    // emailVerifyService.verifyEmail(params).success(function(data) {
+    //   $scope.email_verified = '1';
+    //   $scope.email_validate_message = data.message;
+    //   $mdToast.show(
+    //     $mdToast.simple()
+    //       .content('Email has been successfully validated!!')
+    //       .position("top right")
+    //       .hideDelay(3000)
+    //   );
+    // }).error(function(error) {
+    //   $scope.email_verified = '0';
+    //   $scope.email_validate_message = error.message;
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content(error.message)
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
+
   }
 }

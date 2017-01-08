@@ -1,9 +1,15 @@
 (function() {
+
 angular.module('Pardna', ['app-parameters', 'ui.router', 'ngMaterial', 'ngMessages', 'LocalStorageModule', 'angular-jwt', 'angular-loading-bar']);
 
-angular.module('Pardna').config(function (localStorageServiceProvider) {
+angular.module('Pardna').config(['$mdIconProvider', '$mdThemingProvider', function ($mdIconProvider, $mdThemingProvider, localStorageServiceProvider) {
   // localStorageServiceProvider.setStorageType('sessionStorage');
-});
+  $mdIconProvider.icon('md-toggle-arrow', 'img/icons/toggle-arrow.svg', 48);
+  $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
+  $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
+  $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
+  $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
+}]);
 
 
 

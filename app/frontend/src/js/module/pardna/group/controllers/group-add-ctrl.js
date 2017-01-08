@@ -40,45 +40,87 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
   }
 
   function loadUserRelationships() {
-    userService.getRelationships({}).success(function(data) {
-      $scope.ui.relationships = data;
-    }).error(function(error) {
-      $mdToast.show(
-            $mdToast.simple()
-              .content('Application error')
-              .position("top right")
-              .hideDelay(3000)
-          );
+
+    userService.getRelationships({}).then(
+      function successCallback(response) {
+        $scope.ui.relationships = response.data;
+      },
+      function errorCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content('Application error')
+          .position("top right")
+          .hideDelay(3000)
+        );
     });
+
+    // userService.getRelationships({}).success(function(data) {
+    //   $scope.ui.relationships = data;
+    // }).error(function(error) {
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content('Application error')
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
+
   }
 
  // alert("changed 1");
 
   function add() {
     var pardna = getPardna();
-    groupService.add(pardna).success(function(data) {
-      $mdToast.simple()
-        .content('Pardna group created')
-        .position("top right")
-        .hideDelay(3000);
 
-      $state.go("home", {});
+    groupService.add(pardna).then(
+      function successCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content('Pardna group created')
+          .position("top right")
+          .hideDelay(3000)
+        );
 
-
-    }).error(function(error) {
-
-      console.log(error);
-      var message = "Save failed";
-      if(angular.isDefined(error.message)) {
-        message = error.message;
-      }
-      $mdToast.show(
-            $mdToast.simple()
-              .content(message)
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $state.go("home", {});
+      },
+      function errorCallback(response) {
+        console.log(response.data);
+        var message = "Save failed";
+        if(angular.isDefined(response.data.message)) {
+          message = response.data.message;
+        }
+        $mdToast.show(
+          $mdToast.simple()
+          .content(message)
+          .position("top right")
+          .hideDelay(3000)
+        );
     });
+
+    // groupService.add(pardna).success(function(data) {
+    //   $mdToast.simple()
+    //     .content('Pardna group created')
+    //     .position("top right")
+    //     .hideDelay(3000);
+    //
+    //   $state.go("home", {});
+    //
+    //
+    // }).error(function(error) {
+    //
+    //   console.log(error);
+    //   var message = "Save failed";
+    //   if(angular.isDefined(error.message)) {
+    //     message = error.message;
+    //   }
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content(message)
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
+
   }
 
   $scope.next = function() {

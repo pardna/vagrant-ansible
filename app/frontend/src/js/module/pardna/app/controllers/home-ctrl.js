@@ -2,6 +2,62 @@ angular.module('Pardna')
 .controller('HomeCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', 'jwtHelper', 'localStorageService', 'userService', 'groupService', 'inviteService', 'paymentService', HomeCtrl]);
 
 function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageService, userService, groupService, inviteService, paymentService) {
+  $scope.imagePath = 'img/washedout.png';
+  $scope.floatingAddSelectedMode = 'md-fling';
+  $scope.settings = [
+    { name: '10 January 2017', extraScreen: 'Wi-fi menu', icon: 'img/icons/ic_date_range_black_24px.svg', enabled: true },
+    { name: '10 June 2017', extraScreen: 'Bluetooth menu', icon: 'img/icons/ic_date_range_black_24px.svg', enabled: false },
+  ];
+
+    $scope.slot = [
+        {
+          type: 'Payout Date',
+          number: '10 January 2017',
+          options: {
+            icon: 'img/icons/ic_today_black_24px.svg'
+          }
+        },
+        {
+          type: 'Next payin date',
+          number: '10 June 2017',
+          options: {
+            icon: 'img/icons/ic_date_range_black_24px.svg'
+          }
+        }
+      ];
+
+
+
+    $scope.allContacts = loadContacts();
+    $scope.contacts = [$scope.allContacts[0]];
+
+    function loadContacts() {
+    var contacts = [
+      'Marina Augustine',
+      'Oddr Sarno',
+      'Nick Giannopoulos',
+      'Narayana Garner',
+      'Anita Gros',
+      'Megan Smith',
+      'Tsvetko Metzger',
+      'Hector Simek',
+      'Some-guy withalongalastaname'
+    ];
+
+    return contacts.map(function (c, index) {
+      var cParts = c.split(' ');
+      var contact = {
+        name: c,
+        email: cParts[0][0].toLowerCase() + '.' + cParts[1].toLowerCase() + '@example.com',
+        image: 'http://lorempixel.com/50/50/people?' + index
+      };
+      contact._lowername = contact.name.toLowerCase();
+      if (index == 1){
+        contact.admin = true;
+      }
+      return contact;
+    });
+  }
 
   $scope.user = userService.user;
   $scope.ui = {};
@@ -88,83 +144,153 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   };
 
   function loadList() {
-    groupService.list({}).success(function(data) {
-      $scope.ui.list = data;
-    }).error(function(error) {
+
+    groupService.list({}).then(function successCallback(response) {
+      $scope.ui.list = response.data;
+    }, function errorCallback(response) {
       $mdToast.show(
-            $mdToast.simple()
-              .content('Application error')
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $mdToast.simple()
+        .content('Application error')
+        .position("top right")
+        .hideDelay(3000)
+      );
     });
+
+  //   groupService.list({}).success(function(data) {
+  //     $scope.ui.list = data;
+  //   }).error(function(error) {
+  //     $mdToast.show(
+  //           $mdToast.simple()
+  //             .content('Application error')
+  //             .position("top right")
+  //             .hideDelay(3000)
+  //         );
+  //   });
   }
 
   function loadUserRelationships() {
-    userService.getRelationships({}).success(function(data) {
-      $scope.ui.relationships = data;
-    }).error(function(error) {
+
+    userService.getRelationships({}).then(function successCallback(response) {
+      $scope.ui.relationships = response.data;
+    }, function errorCallback(response) {
       $mdToast.show(
-            $mdToast.simple()
-              .content('Application error')
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $mdToast.simple()
+        .content('Application error')
+        .position("top right")
+        .hideDelay(3000)
+      );
     });
+
+  //   userService.getRelationships({}).success(function(data) {
+  //     $scope.ui.relationships = data;
+  //   }).error(function(error) {
+  //     $mdToast.show(
+  //       $mdToast.simple()
+  //       .content('Application error')
+  //       .position("top right")
+  //       .hideDelay(3000)
+  //     );
+  //   });
   }
 
   function loadGroupInvitations() {
-    inviteService.getGroupInvitations({}).success(function(data) {
-      $scope.ui.groupInvitationList = data;
-    }).error(function(error) {
+    inviteService.getGroupInvitations({}).then(function successCallback(response) {
+      $scope.ui.groupInvitationList = response.data;
+    }, function errorCallback(response) {
       $mdToast.show(
-            $mdToast.simple()
-              .content('Application error getting group invitations')
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $mdToast.simple()
+        .content('Application error getting group invitations')
+        .position("top right")
+        .hideDelay(3000)
+      );
     });
+
+    // inviteService.getGroupInvitations({}).success(function(data) {
+    //   $scope.ui.groupInvitationList = data;
+    // }).error(function(error) {
+    //   $mdToast.show(
+    //     $mdToast.simple()
+    //     .content('Application error getting group invitations')
+    //     .position("top right")
+    //     .hideDelay(3000)
+    //   );
+    // });
   }
 
   function loadUserInvitations() {
-    inviteService.getUserInvitations({}).success(function(data) {
-      $scope.ui.userInvitationList = data;
-    }).error(function(error) {
+    inviteService.getUserInvitations({}).then(function successCallback(response) {
+      $scope.ui.userInvitationList = response.data;
+    }, function errorCallback(response) {
       $mdToast.show(
-            $mdToast.simple()
-              .content('Application error getting user invitations')
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $mdToast.simple()
+        .content('Application error getting user invitations')
+        .position("top right")
+        .hideDelay(3000)
+      );
     });
+
+    // inviteService.getUserInvitations({}).success(function(data) {
+    //   $scope.ui.userInvitationList = data;
+    // }).error(function(error) {
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content('Application error getting user invitations')
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
   }
 
   function acceptUserInvitation(id) {
-    inviteService.acceptUserInvitation({id : id}).success(function(data) {
+    inviteService.acceptUserInvitation({id : id}).then(function successCallback(response) {
       loadUserInvitations();
       loadUserRelationships();
-    }).error(function(error) {
+    }, function errorCallback(response) {
       $mdToast.show(
-            $mdToast.simple()
-              .content('Application error accepting user invitation')
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $mdToast.simple()
+        .content('Application error accepting user invitation')
+        .position("top right")
+        .hideDelay(3000)
+      );
     });
+
+    // inviteService.acceptUserInvitation({id : id}).success(function(data) {
+    //   loadUserInvitations();
+    //   loadUserRelationships();
+    // }).error(function(error) {
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content('Application error accepting user invitation')
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
   }
 
   function acceptGroupInvitation(id) {
-    inviteService.acceptGroupInvitation({id : id}).success(function(data) {
+    inviteService.acceptGroupInvitation({id : id}).then(function successCallback(response) {
       loadUserInvitations();
       loadUserRelationships();
-    }).error(function(error) {
+    }, function errorCallback(response) {
       $mdToast.show(
-            $mdToast.simple()
-              .content('Application error accepting group invitation')
-              .position("top right")
-              .hideDelay(3000)
-          );
+        $mdToast.simple()
+        .content('Application error accepting group invitation')
+        .position("top right")
+        .hideDelay(3000)
+      );
     });
+
+    // inviteService.acceptGroupInvitation({id : id}).success(function(data) {
+    //   loadUserInvitations();
+    //   loadUserRelationships();
+    // }).error(function(error) {
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content('Application error accepting group invitation')
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
   }
 
   $scope.firstLogin = function(ev) {

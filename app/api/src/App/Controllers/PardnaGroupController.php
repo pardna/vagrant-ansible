@@ -41,13 +41,36 @@ class PardnaGroupController extends AppController
           $groups = $this->service->findByMemberId($user->getId());
           foreach ($groups as $key => $value) {
             $statusAndReason = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $groups[$key]["id"]);
+            $members = $this->service->getMembersIncludingPaymentDetails($groups[$key]["id"]);
+            $groups[$key]["members"] = $members;
+            $groups[$key]["member_key"] = $this->getMemberKey($members, $user->getId());
             $groups[$key]["status"] = $statusAndReason["status"];
             $groups[$key]["reason"] = $statusAndReason["reason"];
+            $groups[$key]["enddate"] = $this->calculateEndDate($groups[$key]["startdate"], $groups[$key]["frequency"], $groups[$key]["slots"]);
           }
           return new JsonResponse($groups);
         } catch(\Exception $e) {
           throw new HttpException(409,"Error getting list : " . $e->getMessage());
         }
+    }
+
+    public function getMemberKey($members, $user_id)
+    {
+      foreach ($members as $key => $member) {
+        if ($member["user_id"] == $user_id){
+          return $key;
+        }
+      }
+    }
+
+    public function calculateEndDate($startDate, $interval, $slots){
+      if (strcasecmp($interval, "monthly") == 0){
+        return date('Y-m-d', strtotime($startDate . ' + ' . $slots . ' months'));
+      } else if (strcasecmp($interval, "weekly") == 0){
+        $numberOfDaysOffset = 7 * intval($slots);
+        return date('Y-m-d', strtotime($startDate. ' + ' . $numberOfDaysOffset . ' days'));
+      }
+      return null;
     }
 
     public function details($id)

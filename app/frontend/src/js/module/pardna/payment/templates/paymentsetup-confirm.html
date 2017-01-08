@@ -1,5 +1,44 @@
-<div class="col-lg-12 col-md-12 col-sm-12">
+<div id="content" class="app-content" role="">
+  <div class="box">
+    <div ui-view="nav"></div>
+  </div>
+    <!-- Content -->
+    <div class=" box-row" id="firstLogin">
+      <div class="box-cell">
+        <!-- uiView:  -->
+        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <md-card md-theme="dark-blue">
+                <md-card-content>
+                <p> Please read the terms and conditions for using this bank account </p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button>GOT IT</md-button>
+                </md-card-actions>
+              </md-card>
+              <md-card>
+                <md-card-content>
+                <p> Details </p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button>GOT IT</md-button>
+                </md-card-actions>
+              </md-card>
+              <!-- <div class="group-details__header row no-gutter">
+                <div class="col-xs-12">
+                    <h1>Set up Payment<span ui-sref="group-details({id: group_id})" class="group-details__sub-nav">Back</span></h1>
+                </div>
+              </div>
+              <div>
+                  <span class="col-xs-6">To set up a new account, you'll be redirected to our payments provider</span>
+                  <md-button class="md-primary md-raised" ng-click="redirectToPaymentsProvider({id: group_id})"> Setup New Account </md-button>
+              </div> -->
 
-Payment Setup confirmed
-
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / -->
+    </div>
 </div>

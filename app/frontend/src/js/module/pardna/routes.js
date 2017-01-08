@@ -26,6 +26,18 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                   'nav@home': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   },
+                  'pardna-groups@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-pardna-groups.html'
+                  },
+                  'pardna-invites@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-pardna-invites.html'
+                  },
+                  'friends@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-friends.html'
+                  },
+                  'floating-add@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-floating-add.html'
+                  },
                   'confirmation@home': {
                     'templateUrl' : 'module/pardna/app/templates/home-confirmation.html'
                   }
@@ -117,14 +129,14 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                 },
                 requiresLogin: true
             })
-            .state('payment-setup.confirm', {
-                url: '',
-                parent: 'payment-setup',
+            .state('paymentsetup-confirm', {
+                url: '/payment/setup/confirm/:id',
                 views: {
                     '': {
+                        controller: 'PaymentSetupConfirmCtrl',
                         templateUrl: 'module/pardna/payment/templates/paymentsetup-confirm.html'
                     },
-                    'nav@payment-setup.confirm': {
+                    'nav@paymentsetup-confirm': {
                       'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                     },
                 },

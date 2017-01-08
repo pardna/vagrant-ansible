@@ -1,0 +1,62 @@
+<md-content class="md-padding">
+  <md-card>
+    <md-card-header>
+      <md-card-avatar>
+        <img class="md-user-avatar" src="img/100-2.jpeg"/>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-title">Hyane Moussassa</span>
+        <span class="md-subhead">Invited You!!!</span>
+      </md-card-header-text>
+      <md-button class="md-raised md-primary">Join</md-button>
+    </md-card-header>
+    <md-card-content>
+      <p>
+        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+      </p>
+    </md-card-content>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Pardesta</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-list class="md-dense" flex>
+        <md-divider ></md-divider>
+        <md-subheader class="md-no-sticky">Details</md-subheader>
+        <md-list-item class="md-2-line" ng-repeat="phone in phones">
+          <md-icon md-svg-icon="{{phone.options.icon}}" ng-if="phone.options.icon" ng-class="{'md-avatar-icon': phone.options.avatarIcon}"></md-icon>
+          <img ng-src="{{phone.options.face}}?25" class="md-avatar" alt="{{phone.options.face}}"
+               ng-if="phone.options.face"/>
+          <div class="md-list-item-text" ng-class="{'md-offset': phone.options.offset }">
+            <p> {{ phone.type }} </p>
+            <h3> {{ phone.number }} </h3>
+          </div>
+          <md-button class="md-secondary md-icon-button" ng-click="doSecondaryAction($event)" ng-if="phone.options.actionIcon" aria-label="call">
+            <md-icon md-svg-icon="{{phone.options.actionIcon}}"></md-icon>
+          </md-button>
+        </md-list-item>
+    </md-list>
+    <div layout="column" ng-cloak="" class="chipsdemoContactChips" >
+      <md-list class="fixedRows">
+      <md-divider ></md-divider>
+      <md-subheader class="md-no-sticky">Members</md-subheader>
+        <md-list-item class="md-2-line contact-item" ng-repeat="(index, contact) in allContacts"
+            ng-if="contacts.indexOf(contact) < 0">
+          <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
+          <div class="md-list-item-text compact">
+            <h3>{{contact.name}}<md-badge class="md-warn" ng-if="contact.admin != null">Group Admin</md-badge></h3>
+            <p>{{contact.email}}</p>
+          </div>
+        </md-list-item>
+        <md-list-item class="md-2-line contact-item selected" ng-repeat="(index, contact) in contacts">
+          <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
+          <div class="md-list-item-text compact">
+            <h3>{{contact.name}}</h3>
+            <p>{{contact.email}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
+  </md-card>
+</md-content>

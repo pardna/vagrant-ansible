@@ -53,6 +53,11 @@ function UserService($http, env, localStorageService, jwtHelper) {
 		return $http.post(urlBase + '/user/bankaccounts', {});
 	};
 
+	dataFactory.getBankAccount = function(id) {
+		return $http.get(urlBase + '/user/bankaccounts', id);
+	};
+
+
 
 
 	dataFactory.setToken(dataFactory.token);

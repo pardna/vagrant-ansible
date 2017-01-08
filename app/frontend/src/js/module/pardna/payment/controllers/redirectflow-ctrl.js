@@ -9,7 +9,9 @@ function RedirectFlowCtrl($scope, $location, $state, $mdToast, paymentService) {
   searchParams.membership_number = getParameterByName("membership_number");
   $scope.returnStateId = getParameterByName("return_state_id");
   var returnStateName = getParameterByName("return_state_name");
-  $scope.returnStateName = returnStateName.replace(/_/g, ' ');
+  if (returnStateName){
+    $scope.returnStateName = returnStateName.replace(/_/g, ' ');
+  }
   $scope.redirectToState = redirectToState;
   var return_params_count = getParameterByName("return_params_count");
   if (! return_params_count){
@@ -55,22 +57,44 @@ function RedirectFlowCtrl($scope, $location, $state, $mdToast, paymentService) {
   }
 
   function confirmPayment(params) {
-    paymentService.confirmPayment(params).success(function(data) {
-      if (data.id){
-        $mdToast.show(
-          $mdToast.simple()
+
+    paymentService.confirmPayment(params).then(
+      function successCallback(response) {
+        if (response.data.id){
+          $mdToast.show(
+            $mdToast.simple()
             .content('Payment confirmed')
             .position("top right")
             .hideDelay(3000)
-        );
-      }
-    }).error(function(error) {
-      $mdToast.show(
-            $mdToast.simple()
-              .content('Confirm payment error')
-              .position("top right")
-              .hideDelay(3000)
           );
+        }
+      },
+      function errorCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content('Confirm payment error')
+          .position("top right")
+          .hideDelay(3000)
+        );
     });
+
+    // paymentService.confirmPayment(params).success(function(data) {
+    //   if (data.id){
+    //     $mdToast.show(
+    //       $mdToast.simple()
+    //         .content('Payment confirmed')
+    //         .position("top right")
+    //         .hideDelay(3000)
+    //     );
+    //   }
+    // }).error(function(error) {
+    //   $mdToast.show(
+    //         $mdToast.simple()
+    //           .content('Confirm payment error')
+    //           .position("top right")
+    //           .hideDelay(3000)
+    //       );
+    // });
+
   }
 }

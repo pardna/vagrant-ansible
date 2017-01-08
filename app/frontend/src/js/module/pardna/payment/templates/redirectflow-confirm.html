@@ -1,28 +1,28 @@
 <div id="content" class="app-content">
   <div class="box">
     <div ui-view="nav"></div>
+  </div>
     <!-- Content -->
-    <div class="box-row">
-      <div class="box-cell">
-        <!-- uiView:  -->
-        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="box-row">
+    <div class="box-cell">
+      <!-- uiView:  -->
+      <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
 
-				          Payment Page
+			          Payment Page
 
-                  <div id="redirects">
-                    <br />
-                    <br />
-                    <span ng-show="returnStateId != null">
-                    <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="redirectToState(returnStateId)">Return To {{returnStateName}}</a>
-                    </span>
-                  </div>
-            </div>
+                <div id="redirects">
+                  <br />
+                  <br />
+                  <span ng-show="returnStateId != null">
+                  <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="redirectToState(returnStateId)">Return To {{returnStateName}}</a>
+                  </span>
+                </div>
           </div>
         </div>
       </div>
-      <!-- / -->
     </div>
+    <!-- / -->
   </div>
 </div>

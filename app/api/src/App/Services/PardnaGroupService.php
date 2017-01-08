@@ -109,6 +109,25 @@ class PardnaGroupService extends BaseService
     return false;
   }
 
+  public function getMembersIncludingPaymentDetails($id)
+  {
+    $members = $this->getMembers($id);
+    foreach ($members as $key => $member) {
+      if (empty($member["dd_mandate_id"])){
+        $members[$key]["allow_choose_payment"] = true;
+        $members[$key]["payment_status"] = "SETUP REQUIRED";
+      } else{
+        $members[$key]["allow_edit_payment"] = true;
+        if (! empty($member["dd_mandate_status"])){
+          $members[$key]["payment_status"] = strtoupper(str_replace("_", " ", $member["dd_mandate_status"]));
+        } else {
+          $members[$key]["payment_status"] = "AWAITING CONFIRM FROM PAYMENT PROVIDER";
+        }
+      }
+    }
+    return $members;
+  }
+
   public function getUnclaimedSlot($slots, $position) {
     foreach ($slots as $key => $slot) {
       if($slot["position"] == $position) {
