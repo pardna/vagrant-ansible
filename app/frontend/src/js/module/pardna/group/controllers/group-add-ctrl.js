@@ -6,7 +6,12 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
   $scope.user = userService.user;
   $scope.ui = {};
   $scope.ui.relationships = [];
-
+  $scope.data = {
+    selectedIndex: 0,
+    secondLocked:  true,
+    secondLabel:   "Item Two",
+    bottom:        false
+  };
 
   $scope.pardna = {
     name : "",
