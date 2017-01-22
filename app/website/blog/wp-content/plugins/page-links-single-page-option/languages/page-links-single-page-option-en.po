@@ -1,0 +1,215 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Page Links\n"
+"POT-Creation-Date: 2014-01-22 16:25-0300\n"
+"PO-Revision-Date: 2014-01-22 16:25-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.3\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../page-links-install.php:47
+msgid "Sorry, you do not have suffient permissions to activate this plugin."
+msgstr "Sorry, you do not have suffient permissions to activate this plugin."
+
+#: ../page-links-options.php:62 ../page-links-options.php:63
+msgid "Page-Links Plus"
+msgstr "Page-Links Plus"
+
+#: ../page-links-options.php:72 ../page-links-options.php:73
+#: ../pages/page-plugin-options.php:52
+#: ../single-view/single-view-options.php:95 ../single-view/single-view.php:91
+msgid "Single Page"
+msgstr "Single Page"
+
+#: ../page-links.php:36
+msgid "Settings"
+msgstr "Settings"
+
+#: ../pages/page-plugin-options.php:10
+msgid "You are not allowed to call this page directly."
+msgstr "You are not allowed to call this page directly."
+
+#: ../pages/page-plugin-options.php:76
+msgid "Next"
+msgstr "Next"
+
+#: ../pages/page-plugin-options.php:77
+msgid "Preview"
+msgstr "Preview"
+
+#: ../pages/page-plugin-options.php:78
+msgid "First"
+msgstr "First"
+
+#: ../pages/page-plugin-options.php:79
+msgid "Last"
+msgstr "Last"
+
+#: ../pages/page-plugin-options.php:255
+msgid ""
+"built Page-Links Plus for one reason: to provide the WordPress community "
+"with an integrated, comprehensive pagination solution."
+msgstr ""
+"built Page-Links Plus for one reason: to provide the WordPress community "
+"with an integrated, comprehensive pagination solution."
+
+#: ../pages/page-plugin-options.php:256
+msgid ""
+"Whether you're a WordPress developer, site manager, or lay user, Page-Links "
+"Plus can help you set up, customize, and manage your site's pagination "
+"quickly and easily."
+msgstr ""
+"Whether you're a WordPress developer, site manager, or lay user, Page-Links "
+"Plus can help you set up, customize, and manage your site's pagination "
+"quickly and easily."
+
+#: ../pages/page-plugin-options.php:259
+msgid "Learn More"
+msgstr "Learn More"
+
+#: ../pages/page-plugin-options.php:260
+msgid "Add Pagination Styles"
+msgstr "Add Pagination Styles"
+
+#: ../pages/page-plugin-options.php:260
+msgid ""
+"Easily style Page-Link-generated page lists and manage associated parameters."
+msgstr ""
+"Easily style Page-Link-generated page lists and manage associated parameters."
+
+#: ../pages/page-plugin-options.php:263
+msgid "Add Auto &amp; Scrolling Pagination"
+msgstr "Add Auto &amp; Scrolling Pagination"
+
+#: ../pages/page-plugin-options.php:263
+msgid ""
+"Paginate pages and posts quickly and uniformly and integrate custom-length, "
+"scrolling page lists."
+msgstr ""
+"Paginate pages and posts quickly and uniformly and integrate custom-length, "
+"scrolling page lists."
+
+#: ../pages/page-plugin-options.php:266
+msgid "Add All Three Modules"
+msgstr "Add All Three Modules"
+
+#: ../pages/page-plugin-options.php:266
+msgid ""
+"Manage pagination site-wide with WordPress' intuitive administration "
+"framework."
+msgstr ""
+"Manage pagination site-wide with WordPress' intuitive administration "
+"framework."
+
+#: ../pages/page-plugin-options.php:271
+msgid "is running the complete Page-Links Plus framework."
+msgstr "is running the complete Page-Links Plus framework."
+
+#: ../pages/page-plugin-options.php:276
+msgid "Learn more about"
+msgstr "Learn more about"
+
+#: ../pages/page-plugin-options.php:277
+#, php-format
+msgid "Plugin %s documentation and resources"
+msgstr "Plugin %s documentation and resources"
+
+#: ../pages/page-plugin-options.php:278
+msgid "Browse SH's other WordPress plugins"
+msgstr "Browse SH's other WordPress plugins"
+
+#: ../pages/page-plugin-options.php:279
+msgid "Like the plugin?"
+msgstr "Like the plugin?"
+
+#: ../pages/page-plugin-options.php:279
+msgid "Create a discussion post"
+msgstr "Create a discussion post"
+
+#: ../pages/page-plugin-options.php:279
+msgid "or send us a message via Twitter"
+msgstr "or send us a message via Twitter"
+
+#: ../pages/page-plugin-options.php:279
+msgid "or"
+msgstr "or"
+
+#: ../pages/page-plugin-options.php:280
+#, php-format
+msgid ""
+"Contact SH %s and/or connect with us on %s Facebook,%s %s Twitter,%s and %s "
+"Google+"
+msgstr ""
+"Contact SH %s and/or connect with us on %s Facebook,%s %s Twitter,%s and %s "
+"Google+"
+
+#: ../pages/page-plugin-options.php:291
+msgid "Settings saved."
+msgstr "Settings saved."
+
+#: ../single-view/single-view-options.php:44
+msgid "Globally enable a single-page option for all page link lists."
+msgstr "Globally enable a single-page option for all page link lists."
+
+#: ../single-view/single-view-options.php:54
+msgid "Single page link:"
+msgstr "Single page link:"
+
+#: ../single-view/single-view-options.php:64
+msgid ""
+"After enabling, users can also activate the single-page view by appending \"?"
+"singlepage=1\" to the end of any page or post (e.g., http://sampleurl.com/"
+"page-title?singlepage=1)."
+msgstr ""
+"After enabling, users can also activate the single-page view by appending \"?"
+"singlepage=1\" to the end of any page or post (e.g., http://sampleurl.com/"
+"page-title?singlepage=1)."
+
+#: ../single-view/single-view-options.php:70
+msgid "Enable a 'Single Page' option for these post types:"
+msgstr "Enable a 'Single Page' option for these post types:"
+
+#: ../single-view/single-view-options.php:96
+msgid ""
+"<p>While the WordPress <a href=\"http://codex.wordpress.org/Styling_Page-"
+"Links\" target=\"_blank\">Page-Link tag</a> makes integrating page links "
+"rather effortless, it doesn't offer a native single-page option. Addressing "
+"this limitation, the basic Page-Links Plus plugin adds this option to "
+"WordPress page lists.</p><p>The Single Page module also serves as the basic "
+"framework for the <a href=\"http://pagelinksplus.com/\" target=\"_blank"
+"\">other Page-Links Plus modules</a>.</p>"
+msgstr ""
+"<p>While the WordPress <a href=\"http://codex.wordpress.org/Styling_Page-"
+"Links\" target=\"_blank\">Page-Link tag</a> makes integrating page links "
+"rather effortless, it doesn't offer a native single-page option. Addressing "
+"this limitation, the basic Page-Links Plus plugin adds this option to "
+"WordPress page lists.</p><p>The Single Page module also serves as the basic "
+"framework for the <a href=\"http://pagelinksplus.com/\" target=\"_blank"
+"\">other Page-Links Plus modules</a>.</p>"
+
+#~ msgid "and"
+#~ msgstr "and"
+
+#~ msgid "suggestions"
+#~ msgstr "suggestions"
+
+#~ msgid "Submit a testimonial"
+#~ msgstr "Submit a testimonial"
+
+#~ msgid "Contact SH"
+#~ msgstr "Contact SH"
+
+#~ msgid "and/or link up with us on"
+#~ msgstr "and/or link up with us on"
+
+#~ msgid "Text for single link:"
+#~ msgstr "Text for single link:"

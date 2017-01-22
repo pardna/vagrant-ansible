@@ -1,0 +1,26 @@
+///////////////////////////////////////////
+    Material Lite theme - Change log
+///////////////////////////////////////////
+
+#1.0.6 - 22 October, 2015
+    * Fix theme review bugs
+
+#1.0.5 - 16 October, 2015
+    * Fix theme review bugs
+
+#1.0.4 - 10 October, 2015
+    * Fix theme review bugs
+
+#1.0.3 - 7 October, 2015
+    * Fix theme review bugs
+	
+#1.0.2 - 29 September, 2015
+    * Fix bug for text domain
+    * Fix bug for embed video & twitter
+	* Few design bug
+
+#1.0.1 - 28 July, 2015
+    * Change Screen shot
+	
+#1.0.0 - 27 July, 2015
+    * Theme release !!!

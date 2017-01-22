@@ -1,0 +1,111 @@
+/*
+Theme Name: Material Lite
+Theme URI: http://www.ghuwad.com/wordpress-themes/material-lite
+Author: Ghuwad, siddhapurahitesh
+Author URI: http://www.ghuwad.com/
+Description: Meterial Lite is material style WordPress template. Meterial Lite uses `Material Design Lite`(http://www.getmdl.io/) package by Google. Its fully compatible with all latest device (desktop, mobile)
+Version: 1.0.6
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: material-lite
+Tags: one-column, two-columns, right-sidebar, fixed-layout, fluid-layout, responsive-layout, custom-colors, custom-header, flexible-header, sticky-post, threaded-comments
+*/
+img.size-full,
+img.size-large,
+img.wp-post-image {
+	height: auto;
+	max-width: 100%;
+}
+embed,
+iframe,
+object,
+video {
+	max-width: 100%;
+}
+.alignleft {
+    float: left;
+}
+.alignright {
+    float: right;
+}
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+figure.wp-caption.alignleft, img.alignleft {
+    margin: 5px 20px 5px 0;
+}
+.wp-caption.alignleft {
+    margin: 5px 10px 5px 0;
+}
+figure.wp-caption.alignright, img.alignright {
+    margin: 5px 0 5px 20px;
+}
+.wp-caption.alignright {
+    margin: 5px 0 5px 10px;
+}
+img.aligncenter {
+    margin: 5px auto;
+}
+img.alignnone {
+    margin: 5px 0;
+}
+.wp-caption {
+    background-color: #ccc;
+    padding: 3px;
+    border-radius: 0px 0px 3px 3px;
+}
+.wp-caption .wp-caption-text, .entry-caption, .gallery-caption {
+    color: #220e10;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
+    margin: 2px 0;
+    text-align: center;
+}
+div.wp-caption.alignright img[class*="wp-image-"] {
+    float: right;
+}
+div.wp-caption.alignright .wp-caption-text {
+    padding-left: 10px;
+}
+img.wp-smiley, .rsswidget img {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0;
+}
+.wp-caption.alignleft + ul, .wp-caption.alignleft + ol {
+    list-style-position: inside;
+}
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.screen-reader-text:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+    clip: auto !important;
+    color: #21759b;
+    display: block;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000; /* Above WP toolbar. */
+}
