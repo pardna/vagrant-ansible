@@ -1,0 +1,39 @@
+<div id="content" class="app-content" role="">
+  <div class="box">
+    <div ui-view="nav"></div>
+  </div>
+    <!-- Content -->
+    <div class=" box-row" id="firstLogin">
+      <div class="box-cell">
+        <!-- uiView:  -->
+        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <md-card md-theme="dark-blue">
+                <md-card-content>
+                <h4>Payment Status</h4>
+                <md-list flex>
+                  <md-list-item>
+                   <p> Status </p>
+                   <p> {{payment_status}} </p>
+                 </md-list-item>
+                </md-list>
+                </md-card-content>
+              </md-card>
+              <div class="bankaccounts__details">
+                <bankaccount-card
+                    accountnumberending="{{selectedbankaccount.account_number_ending}}"
+                    bankname="{{selectedbankaccount.bank_name}}"
+                    accountholdername="{{selectedbankaccount.account_holder_name}}"
+                    theme="forest" ng-click="showBankAccountDetails(selectedbankaccount, $event)"></bankaccount-card>
+              </div>
+              <div ng-show="allow_change_account" layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" ui-sref="payment-setup({id: group_id})">CHANGE ACCOUNT</md-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / -->
+    </div>
+</div>

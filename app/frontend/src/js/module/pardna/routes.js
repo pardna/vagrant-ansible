@@ -35,9 +35,6 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                   'friends@home': {
                     'templateUrl' : 'module/pardna/app/templates/home-friends.html'
                   },
-                  'floating-add@home': {
-                    'templateUrl' : 'module/pardna/app/templates/home-floating-add.html'
-                  },
                   'confirmation@home': {
                     'templateUrl' : 'module/pardna/app/templates/home-confirmation.html'
                   }
@@ -124,6 +121,19 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                     'templateUrl' : 'module/pardna/payment/templates/bankaccount-choose.html'
                   },
                   'nav@payment-setup': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
+            .state('paymentstatus', {
+				        url: '/payment/status/:id',
+                views: {
+                  '': {
+                    controller: 'PaymentStatusCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/paymentstatus.html'
+                  },
+                  'nav@paymentstatus': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   }
                 },

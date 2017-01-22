@@ -28,6 +28,11 @@ class MandatesService extends BaseService
     return $this->db->fetchAssoc("SELECT * FROM {$this->gc_mandatesTable} WHERE cust_bank_account = ? LIMIT 1", array($bank_account_id));
   }
 
+  public function getBankAccountAssociatedWithMandate($mandate_id)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM {$this->gc_mandatesTable} WHERE mandate_id = ? LIMIT 1", array($mandate_id));
+  }
+
   public function updatePardnaGroupMemberWithMandate($group_id, $dd_mandate)
   {
     return $this->db->executeQuery('UPDATE pardnagroup_members set dd_mandate_id = ?, dd_mandate_status = ? WHERE id = ?', [$dd_mandate["id"], $dd_mandate["status"], $group_id]);

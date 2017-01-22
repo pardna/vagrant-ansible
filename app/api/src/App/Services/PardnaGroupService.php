@@ -109,6 +109,25 @@ class PardnaGroupService extends BaseService
     return false;
   }
 
+  public function getGroupMemberIncludingPaymentDetails($user, $groupId)
+  {
+    $response;
+    $member = $this->getMember($groupId, $user->getId())[0];
+    if (empty($member["dd_mandate_id"])){
+      $response["setup_completed"] = false;
+    } else{
+      $response["setup_completed"] = true;
+      $response["mandate_id"] = $member["dd_mandate_id"];
+      $response["allow_edit_payment"] = true;
+      if (! empty($member["dd_mandate_status"])){
+        $response["status"] = strtoupper(str_replace("_", " ", $member["dd_mandate_status"]));
+      } else {
+        $response["status"] = "AWAITING CONFIRM FROM PAYMENT PROVIDER";
+      }
+    }
+    return $response;
+  }
+
   public function getMembersIncludingPaymentDetails($id)
   {
     $members = $this->getMembers($id);

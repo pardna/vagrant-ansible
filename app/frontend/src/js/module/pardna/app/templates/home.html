@@ -1,4 +1,9 @@
 <div id="content" class="app-content" role="">
+  <nav mfb-menu position="br" effect="zoomin" label="Close"
+       active-icon="ion-close-round" resting-icon="ion-plus-round"
+       toggling-method="click">
+    <button mfb-button icon="ion-android-person-add" label="Add group" ui-sref="group-add"></button>
+  </nav>
   <div class="box">
     <div ui-view="nav"></div>
     <!-- Content -->
@@ -41,9 +46,9 @@
 
   <div ng-cloak>
     <md-content class="md-padding" layout-xs="column" layout="row">
-      <div flex-gt-sm="20" ui-view="friends" flex >
+      <div flex-gt-sm="25" ui-view="friends" flex >
       </div>
-      <div flex-xs flex-gt-xs="70" layout="column">
+      <div flex-xs flex-gt-xs="75" layout="column">
         <md-tabs class="md-accent md-dynamic-height" md-selected="1" md-border-bottom md-autoselect>
           <md-tab label="Invites">
             <div ui-view="pardna-invites"></div>
@@ -54,8 +59,8 @@
 
         </md-tabs>
       </div>
-      <div ui-view="floating-add">
-      </div>
+      <!-- <div ui-view="floating-add">
+      </div> -->
     </md-content>
   </div>
   <!-- / content -->

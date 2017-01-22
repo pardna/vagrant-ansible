@@ -26,7 +26,9 @@
     "angular-jwt": "0.0.9",
     "angular-loading-bar": "~0.6.0",
     "angular-local-storage": "~0.2.2",
-    "angular-material-expansion-panel": "~0.7.1"
+    "angular-material-expansion-panel": "~0.7.1",
+    "ng-material-floating-button": "ng-mfb#~0.6.2",
+    "Ionicons": "ionicons#~2.0.1"
   },
   "resolutions": {
     "angular": "~1.6.x"

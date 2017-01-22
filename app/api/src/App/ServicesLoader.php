@@ -125,7 +125,7 @@ class ServicesLoader
       });
 
       $this->app['payments.manage.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscriptions.service'], $this->app['customerbankaccounts.service']);
+        $setUpService = new Services\payments\manage\PaymentsManageService($this->app['subscriptions.service'], $this->app['customerbankaccounts.service'], $this->app['mandates.service']);
         return $setUpService;
       });
 

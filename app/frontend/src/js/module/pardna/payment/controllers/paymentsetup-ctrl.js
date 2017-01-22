@@ -26,40 +26,38 @@ function PaymentSetupCtrl($scope, $window, $stateParams, $state, $location, $mdT
   $scope.group_id = $stateParams.id;
   $scope.showConfirmBankAccount = showConfirmBankAccount;
   $scope.redirectToPaymentsProvider = redirectToPaymentsProvider;
-  getUserBankAccounts();
+  getBankAccountsNotSelected();
   $scope.chooseBankAccount = chooseBankAccount;
 
-  $scope.showDirectDebitTerms = function(bankaccount, ev) {
+  $scope.showBankAccountDetails = function(bankaccount, ev) {
     $scope.chosenBankAccount = bankaccount;
+    $scope.allowSetupPayment = true;
     $mdDialog.show({
-      controller: DialogController,
-      templateUrl: 'module/pardna/payment/templates/directdebit_terms.tmpl.html',
+      controller: PaymentSetupCtrl,
+      templateUrl: 'module/pardna/payment/templates/bankaccount-details.tmpl.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose:true,
-      scope: this,
+      scope: $scope,        // use parent scope in template
+      preserveScope: true,
       fullscreen: true // Only for -xs, -sm breakpoints.
     })
-    .then(function(answer) {
-      $scope.status = 'You said the information was "' + answer + '".';
-    }, function() {
-      $scope.status = 'You cancelled the dialog.';
+    .then(function(bankacc) {
+      setupPayment(bankacc);
     });
   };
 
-  function DialogController($scope, $mdDialog) {
-    $scope.hide = function() {
-      $mdDialog.hide();
-    };
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
 
-    $scope.cancel = function() {
-      $mdDialog.cancel();
-    };
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
 
-    $scope.answer = function(answer) {
-      $mdDialog.hide(answer);
-    };
-  }
+  $scope.bankacc = function(bankacc) {
+    $mdDialog.hide(bankacc);
+  };
 
   function chooseBankAccount (bankaccount){
     $scope.chosenBankAccount = bankaccount;
@@ -87,8 +85,53 @@ function PaymentSetupCtrl($scope, $window, $stateParams, $state, $location, $mdT
     });
   };
 
-  function getUserBankAccounts() {
+  function getBankAccountsNotSelected(){
+    paymentService.getUserGroupPaymentStatus({id: $scope.group_id}).then(
+      function successCallback(response) {
+        $scope.payment_setup_completed = response.data.payment_status.setup_completed;
+        if ($scope.payment_setup_completed){
+            $scope.payment_account = response.data.payment_status.payment_account;
+        }
+        getOtherUserBankAccounts();
+      },
+      function errorCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content('Application error getting user payment status')
+          .position("top right")
+          .hideDelay(3000)
+        );
+    });
+  }
 
+
+  function getOtherUserBankAccounts() {
+    userService.getUserBankAccounts().then(
+      function successCallback(response) {
+        if ($scope.payment_account){
+          var bankaccounts = response.data.bank_accounts;
+          var otherBankAccounts = [];
+          for (var i in bankaccounts) {
+            if (bankaccounts[i].id != $scope.payment_account.id){
+              otherBankAccounts.push(bankaccounts[i]);
+            }
+          }
+          $scope.bankaccounts = otherBankAccounts;
+        } else{
+          $scope.bankaccounts = response.data.bank_accounts;
+        }
+      },
+      function errorCallback(response) {
+        $mdToast.show(
+  				$mdToast.simple()
+  				.content('Application error getting user bank accounts')
+  				.position("top right")
+  				.hideDelay(3000)
+				);
+    });
+	}
+
+  function getUserBankAccounts() {
     userService.getUserBankAccounts().then(
       function successCallback(response) {
         $scope.bankaccounts = response.data.bank_accounts;
@@ -101,22 +144,9 @@ function PaymentSetupCtrl($scope, $window, $stateParams, $state, $location, $mdT
   				.hideDelay(3000)
 				);
     });
-
-		// userService.getUserBankAccounts().success(function(data) {
-		// 	$scope.bankaccounts = data.bank_accounts;
-		// }).error(function(error) {
-		// 	$mdToast.show(
-		// 			$mdToast.simple()
-		// 			.content('Application error getting user bank accounts')
-		// 			.position("top right")
-		// 			.hideDelay(3000)
-		// 			);
-		// });
-
 	}
 
-  function getBankAccountById(id)
-  {
+  function getBankAccountById(id){
     var bankaccounts = $scope.bankaccounts;
     for (var i=0; i < bankaccounts.length; i++){
       if (bankaccounts[i].id == id){
@@ -130,9 +160,14 @@ function PaymentSetupCtrl($scope, $window, $stateParams, $state, $location, $mdT
     params.group_id = $stateParams.id;
     params.bank_account_id = bankaccount.id;
 
-    userService.setupPayment(params).then(
+    paymentService.setupPayment(params).then(
       function successCallback(response) {
-
+        $mdToast.show(
+  				$mdToast.simple()
+  				.content('Account has been chosen!')
+  				.position("top right")
+  				.hideDelay(3000)
+				);
       },
       function errorCallback(response) {
         $mdToast.show(
@@ -142,17 +177,6 @@ function PaymentSetupCtrl($scope, $window, $stateParams, $state, $location, $mdT
   				.hideDelay(3000)
 				);
     });
-
-		// userService.setupPayment(params).success(function(data) {
-    //
-		// }).error(function(error) {
-		// 	$mdToast.show(
-		// 			$mdToast.simple()
-		// 			.content('Application error setting up payments!')
-		// 			.position("top right")
-		// 			.hideDelay(3000)
-		// 			);
-		// });
 
 	}
 

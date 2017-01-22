@@ -23,9 +23,10 @@ class PaymentsManageService extends BaseService
 
   protected $subscriptionsService;
 
-  public function __construct($subscriptionsService, $customerBankAccountService){
+  public function __construct($subscriptionsService, $customerBankAccountService, $mandatesService){
       $this->subscriptionsService = $subscriptionsService;
       $this->customerBankAccountService = $customerBankAccountService;
+      $this->mandatesService = $mandatesService;
       $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
   }
 
@@ -82,6 +83,13 @@ class PaymentsManageService extends BaseService
     $response = $this->subscriptionsService->cancel($subscription_id);
     $cancelSubscriptionResponse = $this->getSubscriptionResponse($response);
     $this->subscriptionsService->updateStatus($subscription_id, $cancelSubscriptionResponse->getStatus());
+  }
+
+  public function getBankAccountAssociatedWithMandate($user, $mandate_id)
+  {
+    $res = $this->mandatesService->getBankAccountAssociatedWithMandate($mandate_id);
+    $bankaccounts = $this->getUserBankAccounts($user, $res["cust_bank_account"], true);
+    return $bankaccounts[0];
   }
 
   public function getUserBankAccounts($user, $id){

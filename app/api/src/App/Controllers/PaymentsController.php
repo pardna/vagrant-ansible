@@ -60,6 +60,16 @@ class PaymentsController extends AppController
     return $this->getUserBankAccounts(null);
   }
 
+  public function userGroupPaymentStatus($id)
+  {
+    $user = $this->getUser();
+    $response = $this->groupService->getGroupMemberIncludingPaymentDetails($user, $id);
+    if ($response["setup_completed"]){
+      $response["payment_account"] = $this->manageService->getBankAccountAssociatedWithMandate($user, $response["mandate_id"]);
+    }
+    return new JsonResponse(array("payment_status" => $response));
+  }
+
   public function setUpPayment(Request $request)
   {
     $group_id = $request->request->get("group_id");

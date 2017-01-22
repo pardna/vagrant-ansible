@@ -1,4 +1,4 @@
-\<div id="content" class="app-content" role="">
+<div id="content" class="app-content" role="">
   <div class="box">
     <div ui-view="nav"></div>
   </div>
@@ -9,63 +9,23 @@
         <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
+              <nav mfb-menu position="br" effect="zoomin" label="Close"
+                   active-icon="ion-close-round" resting-icon="ion-plus-round"
+                   toggling-method="click">
+                <button mfb-button icon="ion-card" label="Add New Card" ng-click="redirectToPaymentsProvider()"></button>
+              </nav>
               <md-card md-theme="dark-blue">
                 <md-card-content>
-                <p> Choose the bank account to set up payment for </p>
+                <p> Choose the bank account to set up payment for or add a new card</p>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                   <md-button>GOT IT</md-button>
                 </md-card-actions>
               </md-card>
-              <!-- <div class="group-details__header row no-gutter">
-                <div class="col-xs-12">
-                    <h1>Set up Payment<span ui-sref="group-details({id: group_id})" class="group-details__sub-nav">Back</span></h1>
-                </div>
-              </div>
-              <div>
-                  <span class="col-xs-6">To set up a new account, you'll be redirected to our payments provider</span>
-                  <md-button class="md-primary md-raised" ng-click="redirectToPaymentsProvider({id: group_id})"> Setup New Account </md-button>
-              </div> -->
               <div class="bankaccounts__details">
-
-                      <md-card class="bankaccount-card" ng-repeat="bankaccount in bankaccounts" ng-click="showDirectDebitTerms(bankaccount, $event)">
-                      <md-card-title>
-                      <md-card-title-text>
-                        <!--<img src="//logo.clearbit.com/barclays.com?size=80&greyscale=true">-->
-                        <span class="u-pull-start">
-                        <span>{{ bankaccount.account_holder_name }}</span>
-                        <span class="show-list__item-title">
-                          ••••••{{ bankaccount.account_number_ending }}
-                        </span>
-                        <span>{{ bankaccount.bank_name }}</span>
-                        </span>
-                      </md-card-title-text>
-                      </md-card-title>
-                    </md-card>
-
-                    <md-fab-toolbar md-open="false" count="0"
-                                    md-direction="left" style="bottom: 45px; right: 24px;">
-                      <md-fab-trigger class="align-with-text">
-                        <md-button aria-label="menu" class="md-fab md-primary">
-                          <md-icon md-svg-src="img/icons/ic_add_black_24px.svg"></md-icon>
-                        </md-button>
-                      </md-fab-trigger>
-
-                      <md-toolbar>
-                        <md-fab-actions class="md-toolbar-tools">
-                          <md-button aria-label="comment" class="md-icon-button">
-                            <md-icon md-svg-src="img/icons/ic_menu_48px.svg"></md-icon>
-                          </md-button>
-                          <md-button aria-label="label" class="md-icon-button">
-                            <md-icon md-svg-src="img/icons/ic_mode_edit_black_24px.svg"></md-icon>
-                          </md-button>
-                          <md-button aria-label="photo" class="md-icon-button">
-                            <md-icon md-svg-src="img/icons/ic_mode_edit_black_24px.svg"></md-icon>
-                          </md-button>
-                        </md-fab-actions>
-                      </md-toolbar>
-                    </md-fab-toolbar>
-
+                <div ng-repeat="bankaccount in bankaccounts">
+                  <bankaccount-card accountnumberending="{{bankaccount.account_number_ending}}" bankname="{{bankaccount.bank_name}}" accountholdername="{{bankaccount.account_holder_name}}" theme="forest" ng-click="showBankAccountDetails(bankaccount, $event)"></bankaccount-card>
+                </div>
               </div>
             </div>
           </div>

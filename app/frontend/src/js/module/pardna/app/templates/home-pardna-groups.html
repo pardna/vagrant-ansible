@@ -65,7 +65,7 @@
           </div>
         </div>
         <md-button ng-if="group.members[group.member_key].allow_choose_payment" class="md-secondary" ui-sref="payment-setup({id: group.id})">Choose Payment</md-button>
-        <md-button ng-if="group.members[group.member_key].allow_edit_payment" class="md-secondary md-icon-button" ui-sref="payment-setup({id: group.id})" aria-label="call">
+        <md-button ng-if="group.members[group.member_key].allow_edit_payment" class="md-secondary md-icon-button" ui-sref="paymentstatus({id: group.id})" aria-label="call">
           <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
         </md-button>
       </md-list-item>

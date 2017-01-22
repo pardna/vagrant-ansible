@@ -2,7 +2,8 @@
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>{{chosenBankAccount.id}}</h2>
+        <h2 ng-show="{{allowSetupPayment}}">Setup Payment</h2>
+        <h2 ng-show="{{! allowSetupPayment}}">Bank Account Details</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <md-icon md-svg-src="img/icons/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
@@ -12,62 +13,55 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <h4>Details</h4>
+        <h4 ng-show="{{allowSetupPayment}}">Details</h4>
         <md-list flex>
           <md-list-item class="md-3-line" ng-click="null">
             <div class="md-list-item-text" layout="column">
               <h4>Status</h4>
-              <p>Enabled</p>
+              <p ng-show="{{chosenBankAccount.enabled}}">Enabled</p>
+              <p ng-show="{{! chosenBankAccount.enabled}}">Disabled</p>
             </div>
           </md-list-item>
           <md-list-item class="md-3-line" ng-click="null">
             <div class="md-list-item-text" layout="column">
               <h4>Created</h4>
-              <p>19 November 2016</p>
+              <p>{{chosenBankAccount.created_at | date:'d MMMM y'}}</p>
             </div>
           </md-list-item>
           <md-list-item class="md-3-line" ng-click="null">
             <div class="md-list-item-text" layout="column">
               <h4>Account holder</h4>
-              <p>Tobias Newton</p>
+              <p>{{chosenBankAccount.account_holder_name}}</p>
             </div>
           </md-list-item>
           <md-list-item class="md-3-line" ng-click="null">
             <div class="md-list-item-text" layout="column">
               <h4>Account no. ending</h4>
-              <p>••••••11</p>
+              <p>••••••{{chosenBankAccount.account_number_ending}}</p>
             </div>
           </md-list-item>
           <md-list-item class="md-3-line" ng-click="null">
             <div class="md-list-item-text" layout="column">
               <h4>Bank Name</h4>
-              <p>BARCLAYS BANK PLC</p>
+              <p>{{chosenBankAccount.bank_name}}</p>
             </div>
           </md-list-item>
         </md-list>
-        <h4>Terms & Conditions</h4>
-        <div flex>
-          <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
-            You agree to the full terms and conditions
-          </md-checkbox>
+        <div ng-show="{{allowSetupPayment}}">
+          <h4>Terms & Conditions</h4>
+          <div flex>
+            <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
+              You agree to the full terms and conditions
+            </md-checkbox>
+          </div>
         </div>
       </div>
     </md-dialog-content>
 
-    <md-dialog-actions layout="row">
+    <md-dialog-actions ng-show="{{allowSetupPayment}}" layout="row">
       <div layout="row" layout-align="center center">
-        <md-button class="md-warn md-raised md-hue-2" ng-click="answer('useful')">SETUP PAYMENT</md-button>
+        <md-button class="md-warn md-raised md-hue-2" ng-click="bankacc(chosenBankAccount)">SETUP PAYMENT</md-button>
       </div>
-      <!-- <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
-        More on Wikipedia
-      </md-button>
-      <span flex></span>
-      <md-button ng-click="answer('not useful')">
-       Not Useful
-      </md-button>
-      <md-button ng-click="answer('useful')">
-        Useful
-      </md-button> -->
     </md-dialog-actions>
   </form>
 </md-dialog>

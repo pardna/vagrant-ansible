@@ -17,5 +17,9 @@ function PaymentService($http, env) {
     return $http.post(urlBase + '/group/payment/setup', params);
   };
 
+  dataFactory.getUserGroupPaymentStatus = function(params) {
+    return $http.get(urlBase + '/group/user/payments/status/' + params.id);
+  };
+
   return dataFactory;
 }

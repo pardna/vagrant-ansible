@@ -389,6 +389,8 @@ class RoutesLoader
 
         $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
 
+        $api->get('/group/user/payments/status/{id}', "pardna.payments.controller:userGroupPaymentStatus");
+
         $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
 
         $api->post('/group/subscriptions/create/{id}', "pardna.payments.controller:createSubscription");

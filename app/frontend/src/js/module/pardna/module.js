@@ -1,6 +1,6 @@
 (function() {
 
-angular.module('Pardna', ['app-parameters', 'ui.router', 'ngMaterial', 'ngMessages', 'LocalStorageModule', 'angular-jwt', 'angular-loading-bar']);
+angular.module('Pardna', ['app-parameters', 'ui.router', 'ngMaterial', 'ngMessages', 'LocalStorageModule', 'angular-jwt', 'angular-loading-bar', 'ng-mfb']);
 
 angular.module('Pardna').config(['$mdIconProvider', '$mdThemingProvider', function ($mdIconProvider, $mdThemingProvider, localStorageServiceProvider) {
   // localStorageServiceProvider.setStorageType('sessionStorage');
@@ -9,9 +9,23 @@ angular.module('Pardna').config(['$mdIconProvider', '$mdThemingProvider', functi
   $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
   $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
   $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
-}]);
-
-
+}])
+.directive('bankaccountCard', function () {
+  return {
+    restrict: 'E',
+    templateUrl: 'module/pardna/payment/templates/bankaccountCard.tmpl.html',
+    scope: {
+      name: '@',
+      theme: '@',
+      accountnumberending: '@',
+      bankname: '@',
+      accountholdername: '@'
+    },
+    controller: function ($scope) {
+      $scope.theme = $scope.theme || 'default';
+    }
+  }
+});
 
 angular.module('Pardna').run(function($rootScope, $state, localStorageService, jwtHelper, userService) {
   $rootScope.$on('$stateChangeStart', function(e, to) {
