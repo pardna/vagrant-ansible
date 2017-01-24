@@ -32,7 +32,8 @@ var paths = {
 	svg: 'src/svg/**.*',
 	images: 'src/img/**/*.*',
 	templates: 'src/js/**/*.html',
-	styles: 'src/less/**/*.less',
+	styles: ['src/less/**/*.less'],
+	scss: ['src/scss/**/*.scss'],
 	index: 'src/index.html',
 	config: 'src/js/config/',
 	parameter: 'src/js/config/parameters.js',
@@ -163,6 +164,26 @@ gulp.task('compile-less', function() {
 
 
 
+/**********/
+
+/*global require*/
+(function (r) {
+    'use strict';
+    var scss = r('gulp-scss');
+    var gulp = r('gulp');
+    gulp.task('compile-scss', function () {
+        gulp.src(
+            paths.scss
+        ).pipe(scss(
+            {"bundleExec": true}
+        )).pipe(gulp.dest(paths.outputDir + 'css'));
+    });
+}(require));
+
+/***********/
+ 
+ 
+
 /**
  * Watch src
  */
@@ -170,6 +191,7 @@ gulp.task('watch', function() {
 
 	gulp.watch([paths.styles], ['custom-less']);
 	gulp.watch([paths.styles], ['compile-less']);
+	gulp.watch([paths.styles], ['compile-scss']);
 	gulp.watch([paths.images], ['copy-images']);
 	gulp.watch([paths.templates], ['copy-templates', 'concatenate-templates']);
 	// gulp.watch([paths.templates], []);
