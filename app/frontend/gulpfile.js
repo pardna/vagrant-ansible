@@ -1,19 +1,20 @@
 var gulp = require('gulp'),
-		less = require('gulp-less'),
-		usemin = require('gulp-usemin'),
-		wrap = require('gulp-wrap'),
-		connect = require('gulp-connect'),
-		watch = require('gulp-watch'),
-		templateCache = require('gulp-angular-templatecache'),
-		minifyCss = require('gulp-minify-css'),
-		minifyJs = require('gulp-uglify'),
-		concat = require('gulp-concat'),
-		rename = require('gulp-rename'),
-		minifyHtml = require('gulp-minify-html'),
-		replace = require('gulp-replace-task'),
-		argv = require('yargs').argv,
-		fs = require('fs-utils'),
-		gutil = require('gulp-util');
+    less = require('gulp-less'),
+    sass = require('gulp-sass'),
+    usemin = require('gulp-usemin'),
+    wrap = require('gulp-wrap'),
+    connect = require('gulp-connect'),
+    watch = require('gulp-watch'),
+    templateCache = require('gulp-angular-templatecache'),
+    minifyCss = require('gulp-minify-css'),
+    minifyJs = require('gulp-uglify'),
+    concat = require('gulp-concat'),
+    rename = require('gulp-rename'),
+    minifyHtml = require('gulp-minify-html'),
+    replace = require('gulp-replace-task'),
+    argv = require('yargs').argv,
+    fs = require('fs-utils'),
+    gutil = require('gulp-util');
 // var es = require('event-stream');
 
 // var uglify = require('gulp-uglify');
@@ -32,8 +33,8 @@ var paths = {
 	svg: 'src/svg/**.*',
 	images: 'src/img/**/*.*',
 	templates: 'src/js/**/*.html',
-	styles: ['src/less/**/*.less'],
-	scss: ['src/scss/**/*.scss'],
+	styles: ('src/less/**/*.less'),
+	sassstyles: ['src/sass/*.scss'],
 	index: 'src/index.html',
 	config: 'src/js/config/',
 	parameter: 'src/js/config/parameters.js',
@@ -49,8 +50,9 @@ gulp.task('usemin', function() {
 	return gulp.src(paths.index)
 			.pipe(usemin({
 				 less: ['concat', less()],
+                 sass: ['concat', sass()],
 				 // js: [minifyJs(), 'concat'],
-                                 js: [minifyJs()],
+                 js: [minifyJs()],
 				 css: [minifyCss({keepSpecialComments: 0}), 'concat'],
 				 html: [minifyHtml({empty: true})]
 			}))
@@ -83,7 +85,7 @@ gulp.task('replace', function() {
 
 gulp.task('bootstrap', ['replace']);
 gulp.task('copy-assets', ['copy-images', 'copy-templates', 'concatenate-templates', 'copy-fonts', 'copy-svg', 'copy-data', 'copy-bower_fonts']);
-gulp.task('build-custom', ['custom-js', 'custom-less']);
+gulp.task('build-custom', ['custom-js', 'custom-sass', 'custom-less']);
 
 gulp.task('copy-images', function() {
 	return gulp.src(paths.images)
@@ -120,9 +122,6 @@ gulp.task('copy-bower_fonts', function() {
 			}))
 			.pipe(gulp.dest(paths.outputDir + 'lib'));
 });
-
-
-
 
 
 
@@ -166,21 +165,40 @@ gulp.task('compile-less', function() {
 
 /**********/
 
-/*global require*/
-(function (r) {
-    'use strict';
-    var scss = r('gulp-scss');
-    var gulp = r('gulp');
-    gulp.task('compile-scss', function () {
-        gulp.src(
-            paths.scss
-        ).pipe(scss(
-            {"bundleExec": true}
-        )).pipe(gulp.dest(paths.outputDir + 'css'));
-    });
-}(require));
 
-/***********/
+
+/***************** SCSS ******************/
+/**
+ * Compile scss
+ */
+gulp.task('custom-sass', function() {
+	gulp.src(paths.sassstyles)
+			.pipe(sass())
+			.pipe(concat('pardna.css'))
+            .pipe(gulp.dest(paths.outputDir + 'css/'))
+ 			.pipe(minifyCss())
+			.pipe(rename('pardna.min.css'))
+			.pipe(gulp.dest(paths.outputDir + 'css/'));
+});
+
+gulp.task('copy-data', function() {
+	return;
+	return gulp.src(paths.data)
+			.pipe(gulp.dest(paths.outputDir + 'data'));
+});
+
+/**
+ * Compile scss
+ */
+gulp.task('compile-sass', function() {
+	return gulp.src(paths.sassstyles)
+			.pipe(sass())
+			.pipe(gulp.dest(paths.outputDir + 'css'));
+});
+
+/***************** /SCSS ******************/
+
+
  
  
 
@@ -191,7 +209,8 @@ gulp.task('watch', function() {
 
 	gulp.watch([paths.styles], ['custom-less']);
 	gulp.watch([paths.styles], ['compile-less']);
-	gulp.watch([paths.styles], ['compile-scss']);
+	gulp.watch([paths.sassstyles], ['custom-sass']);
+	gulp.watch([paths.sassstyles], ['compile-sass']);
 	gulp.watch([paths.images], ['copy-images']);
 	gulp.watch([paths.templates], ['copy-templates', 'concatenate-templates']);
 	// gulp.watch([paths.templates], []);

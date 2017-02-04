@@ -16,8 +16,10 @@
                     <h2>{{ ui.data.name }}</h2>
                 </div>
               </div>
-              <div class="row group-details__slots">
-                <div class="slot" ng-repeat="slot in ui.slots">
+              <div class="row group-details__slots slots{{ui.slots.length}}">
+                <div class="slot" ng-repeat="slot in ui.slots" ng-repeat="item in ui.slots = (items | notEmpty)">
+                   
+                    
                       <a class="thumbnail" ng-click="showConfirm(slot)" ng-if="!slot.claimed">
                         Available Slot {{ slot.position }}
                           <span class="slot__payout-date">Payout date:</span>
