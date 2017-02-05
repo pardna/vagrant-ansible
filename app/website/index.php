@@ -130,7 +130,7 @@
 
 A group of individuals come together to make repeated contributions and withdrawals to and from a common fund. 
 
-Here at Pardna.com you can conduct your group's saving and lending and borrowing on a secure platform that makes the whole process easy! </p>      
+Here at Pardna.com you can conduct your group's saving, lending and borrowing on a secure platform that makes the whole process easy! </p>      
           </div>
         </div>
 </div>    

@@ -61,7 +61,7 @@
 
         <div class="col s12 l12">
             <div class="col s12 l3 footer__social"><a href="http://www.fb.com/PardnaMoney" target="_blank"><span class="footer__social--facebook"></span> fb.com/pardnamoney</a></div>
-            <div class="col s12 l3 footer__social"><a href="http://www.twitter.com/pardnamoney" target="_blank"><span class="footer__social--twitter"></span> @pardna</a></div>
+            <div class="col s12 l3 footer__social"><a href="http://www.twitter.com/pardna" target="_blank"><span class="footer__social--twitter"></span> @pardna</a></div>
             <div class="col s12 l3 footer__social"><a href="mailto:contact@pardna.com" ><span class="footer__social--email"></span> contact@pardna.com</a></div>
             <div class="col s12 l3 footer__social"><span class="footer__social--phone"><i class="material-icons">phone</i></span> 0844 351 0808</div>
         </div>

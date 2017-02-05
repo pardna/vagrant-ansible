@@ -88,7 +88,7 @@ nav .brand-logo {
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: Aller Light;
+    font-family: Aller Light,aller_lightregular,Arial;
 }
 
 p {
@@ -114,7 +114,7 @@ a.brand-logo {
 
 #index-banner h1 {
     text-shadow: #000 1px 1px;
-    font-family: Aller Light;
+    font-family: Aller Light,aller_lightregular,Arial;
     font-size: 2.5em;
     padding: 0 0.75rem;
 }
@@ -313,4 +313,65 @@ nav ul a {
     left: 0 !important;
     -webkit-transform: translateX(0%) !important;
     transform: translateX(0%) !important;    
+}
+
+/****/
+
+
+/** Aller Lite Font **/
+
+@font-face {
+    font-family: "allerbold";
+    src: url("../fonts/aller/aller_bd-webfont.woff2") format("woff2"),
+         url("../fonts/aller/aller_bd-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "allerbold_italic";
+    src: url("../fonts/aller/aller_bdit-webfont.woff2") format("woff2"),
+         url("../fonts/aller/aller_bdit-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "alleritalic";
+    src: url("../fonts/aller/aller_it-webfont.woff2") format("woff2"),
+         url("../fonts/aller/aller_it-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "aller_lightregular";
+    src: url("../fonts/aller/aller_lt-webfont.woff2") format("woff2"),
+         url("../fonts/aller/aller_lt-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "aller_lightitalic";
+    src: url("../fonts/aller/aller_ltit-webfont.woff2") format("woff2"),
+         url("../fonts/aller/aller_ltit-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "allerregular";
+    src: url("../fonts/aller/aller_rg-webfont.woff2") format("woff2"),
+         url("../fonts/aller/aller_rg-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "aller_displayregular";
+    src: url("../fonts/aller/allerdisplay-webfont.woff2") format("woff2"),
+         url("../fonts/aller/allerdisplay-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
 }
