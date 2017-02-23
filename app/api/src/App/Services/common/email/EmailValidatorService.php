@@ -16,7 +16,9 @@ class EmailValidatorService extends BaseService
   }
 
   function generateConfirmEmailLink($user_id){
-    $email_validate_url = $this->configService->getConfigValue('email_validate_url');
+    $base_url = $this->configService->getConfigValue('base_url');
+    $email_valid_endpt = $this->configService->getConfigValue('email_validate_endpoint');
+    $email_validate_url = $base_url . $email_valid_endpt;
 
     $selector = bin2hex(random_bytes(8));
     $token = bin2hex(random_bytes(32));

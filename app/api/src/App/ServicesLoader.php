@@ -32,6 +32,8 @@ class ServicesLoader
 
       $this->app['invitation.service'] = $this->app->share(function () {
         $service = new Services\InvitationService($this->app["db"]);
+        $service->setMandrillMailService($this->app['mandrill.mail.service']);
+        $service->setConfigurationsService($this->app['configurations.service']);
         return $service;
       });
 

@@ -25,6 +25,7 @@ class RoutesLoader
         $this->app['invitation.controller'] = $this->app->share(function () {
             $controller = new Controllers\InvitationController($this->app['invitation.service']);
             $controller->setApp($this->app);
+            $controller->setPardnaGroupService($this->app['pardna.group.service']);
             if($this->app['security.token_storage']->getToken()->getUser()) {
               $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
             }
@@ -380,6 +381,9 @@ class RoutesLoader
 
         $api->post('/invite/accept/user', "invitation.controller:acceptUserInvitation");
         $api->post('/invite/accept/group', "invitation.controller:acceptGroupInvitation");
+
+        $api->post('/invite/ignore/user', "invitation.controller:ignoreUserInvitation");
+        $api->post('/invite/ignore/group', "invitation.controller:ignoreGroupInvitation");
 
         $api->post('/user/notifications', "users.controller:notifications");
 

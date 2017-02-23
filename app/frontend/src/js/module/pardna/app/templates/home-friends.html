@@ -1,16 +1,16 @@
 <md-toolbar layout="row">
   <div class="md-toolbar-tools card-heading">
-    <span>Friends ({{ allContacts.length }})</span>
+    <span>Friends ({{ ui.relationships.length }})</span>
   </div>
 </md-toolbar>
 <md-content>
   <md-list flex>
 
-    <md-list-item class="md-2-line contact-item selected" ng-repeat="(index, contact) in allContacts">
-      <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
+    <md-list-item class="md-2-line contact-item selected" ng-repeat="relation in ui.relationships">
+      <img ng-src="img/100-2.jpeg" class="md-avatar" alt="{{relation.fullname}}" />
       <div class="md-list-item-text compact">
-        <h3>{{contact.name}}</h3>
-        <p>{{contact.email}}</p>
+        <h3>{{relation.fullname}}</h3>
+        <p>{{relation.email}}</p>
       </div>
     </md-list-item>
   </md-list>

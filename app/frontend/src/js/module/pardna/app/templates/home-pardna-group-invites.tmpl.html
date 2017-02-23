@@ -1,0 +1,52 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Invite Friends</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div layout="row" layout-align="end center">
+        <md-button ng-show="selectedcontacts > 0" class="md-raised md-primary">Invite</md-button>
+        <md-button class="md-icon-button" ng-click="showInviteByEmail()" aria-label="Invite by email">
+          <md-icon md-svg-icon="img/icons/ic_email_black_48px.svg"></md-icon>
+        </md-button>
+        <md-button ng-click="showInviteFriends()" class="md-icon-button" aria-label="Invite">
+          <md-icon md-svg-icon="img/icons/ic_search_black_48px.svg"></md-icon>
+        </md-button>
+      </div>
+      <md-card ng-show="inviteserviceresponse.success" md-theme="dark-blue">
+        <md-card-content>
+        <p id="message"> Successfully messaged your friends</p>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button>GOT IT</md-button>
+        </md-card-actions>
+      </md-card>
+      <md-card ng-show="inviteserviceresponse.failure" md-theme="dark-orange">
+        <md-card-content>
+        <p id="message"> Unable to send emails!!</p>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button>GOT IT</md-button>
+        </md-card-actions>
+      </md-card>
+      <div id="invite-friends" ng-show="invitestate.byfriends">
+        <div class="row">
+          <md-list-item ng-repeat="person in ui.relationships" ng-init="person.selected = false">
+            <img alt="{{ person.fullname }}" ng-src="img/100-2.jpeg" class="md-avatar" />
+            <p>{{ person.fullname }}</p>
+            <md-checkbox class="md-secondary" ng-change="personStateChanged(person.selected)" ng-model="person.selected"></md-checkbox>
+          </md-list-item>
+        </div>
+      </div>
+      <div id="invite-by-email" ng-show="invitestate.byemail">
+        <invitebyemail-card inviteserviceresponse="inviteserviceresponse" invite="invite" modal="true" group="group" ></invitebyemail-card>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

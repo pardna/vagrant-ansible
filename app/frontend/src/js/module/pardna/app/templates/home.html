@@ -1,5 +1,5 @@
 <div id="content" class="app-content" role="">
-  <nav mfb-menu position="br" effect="zoomin" label="Close"
+  <nav ng-show="user.verified != '1'" mfb-menu position="br" effect="zoomin" label="Close"
        active-icon="ion-close-round" resting-icon="ion-plus-round"
        toggling-method="click">
     <button mfb-button icon="ion-android-person-add" label="Add group" ui-sref="group-add"></button>
@@ -31,7 +31,7 @@
                       </div>
                   </div>
                   <span class="verify" ng-show="user.verified != '1'">
-                     <span class="verify-text"><h3>Verify Your Account</h3>In order start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
+                     <span class="verify-text"><h3>Verify Your Account</h3>In order to start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
                   <a class="md-btn md-raised p-h-md pink md-ink-ripple" ng-click="sendCode($event)">Send Code</a>
                   <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="verifyCode($event)">Verify Account</a>
                   </span>

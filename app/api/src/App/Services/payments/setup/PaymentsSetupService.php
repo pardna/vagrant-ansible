@@ -93,8 +93,9 @@ class PaymentsSetupService
     public function getRedirectUrl($token, $user, $returnTo){
       $description = "This will set up a mandate onto which you will be able to set up payments when you join a group";
       $membership_number = $user->getMembershipNumber();
-
-      $success_redirect_url = $this->configService->getConfigValue('gocardless_success_redirect_url');
+      $base_url = $this->configService->getConfigValue('base_url');
+      $success_redirect_endpt = $this->configService->getConfigValue('gocardless_success_redirect_endpoint');
+      $success_redirect_url = $base_url . $success_redirect_endpt;
       $success_redirect_url = $this->setUrlParams($success_redirect_url, $membership_number, $returnTo);
 
       $response = $this->redirectFlowService->getRedirectFlowUrl([

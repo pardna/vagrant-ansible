@@ -109,6 +109,17 @@ class PardnaGroupService extends BaseService
     return false;
   }
 
+  public function getNextAvailableClaimPosition($groupId)
+  {
+    $groupSlots = $this->getGroupSlots($groupId);
+    foreach ($groupSlots as $groupSlot) {
+      if (! $groupSlot["claimed"]){
+        return $groupSlot["position"];
+      }
+    }
+    return null;
+  }
+
   public function getGroupMemberIncludingPaymentDetails($user, $groupId)
   {
     $response;
@@ -215,7 +226,22 @@ class PardnaGroupService extends BaseService
     return false;
   }
 
+  public function getPardnagroupDetailsInvite($invitation){
+    $members = $this->getMembersIncludingPaymentDetails($invitation["id"]);
+    $invitation["members"] = $members;
+    $invitation["enddate"] = $this->calculateEndDate($invitation["startdate"], $invitation["frequency"], $invitation["slots"]);
+    return $invitation;
+  }
 
+  public function calculateEndDate($startDate, $interval, $slots){
+    if (strcasecmp($interval, "monthly") == 0){
+      return date('Y-m-d', strtotime($startDate . ' + ' . $slots . ' months'));
+    } else if (strcasecmp($interval, "weekly") == 0){
+      $numberOfDaysOffset = 7 * intval($slots);
+      return date('Y-m-d', strtotime($startDate. ' + ' . $numberOfDaysOffset . ' days'));
+    }
+    return null;
+  }
 
   public function saveGroupAndEmails($data, $user) {
 
@@ -251,6 +277,11 @@ class PardnaGroupService extends BaseService
       return $this->findById($groupId);
     }
     return false;
+  }
+
+  public function getInvitesForGroup($id)
+  {
+    return $this->invitationService->getInvitesForGroup($id);
   }
 
   public function details($id) {

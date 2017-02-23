@@ -26,5 +26,13 @@ function InviteService($http, env) {
     return $http.post(urlBase + '/invite/accept/group', params);
   };
 
+  dataFactory.ignoreUserInvitation = function(params) {
+    return $http.post(urlBase + '/invite/ignore/user', params);
+  };
+
+  dataFactory.ignoreGroupInvitation = function(params) {
+    return $http.post(urlBase + '/invite/ignore/group', params);
+  };
+
   return dataFactory;
 }

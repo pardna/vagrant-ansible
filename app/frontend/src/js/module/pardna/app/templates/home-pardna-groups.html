@@ -10,6 +10,9 @@
         <md-button class="md-icon-button" aria-label="Favorite">
           <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
         </md-button>
+        <md-button ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-icon-button" aria-label="Invite">
+          <md-icon md-svg-icon="img/icons/ic_person_add_black_64px.svg"></md-icon>
+        </md-button>
         <md-button class="md-icon-button" aria-label="Share">
           <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
         </md-button>
@@ -106,5 +109,26 @@
         </div>
       </md-list-item>
     </md-list>
+    <div>
+      <md-divider ></md-divider>
+      <md-subheader class="md-no-sticky">Invites</md-subheader>
+      <md-chips
+        ng-show="!!group.invitee_emails.length"
+        ng-model="group.invitee_emails"
+        readonly="true"
+        md-removable="true"
+        placeholder="Invite someone"
+        delete-button-label="Remove Invitee"
+        delete-hint="Press delete to cancel invite to group"></md-chips>
+      <div layout="row" layout-align="end center">
+        <md-button layout-align="center end" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-secondary md-icon-button" aria-label="call">
+          <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
+        </md-button>
+      </div>
+        <!-- <md-button layout-align="center end" ng-click="showInvitesModal($event)" class="md-secondary md-icon-button" aria-label="call">
+          <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
+        </md-button> -->
+
+    </div>
   </md-card>
 </md-content>

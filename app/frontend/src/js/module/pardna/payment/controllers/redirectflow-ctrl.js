@@ -15,19 +15,19 @@ function RedirectFlowCtrl($scope, $location, $state, $mdToast, paymentService) {
   $scope.redirectToState = redirectToState;
   var return_params_count = getParameterByName("return_params_count");
   if (! return_params_count){
-    $scope.returnStateParams = [];
+    $scope.returnStateParams = {};
     if (return_params_count > 1)
     {
       for (var count = 1; count <= return_params_count; count++){
-        var return_params_key = getParameterByName("return_params_key");
-        var return_params_value = getParameterByName("return_params_value");
+        var return_params_key = getParameterByName("return_params_key_".concat(count));
+        var return_params_value = getParameterByName("return_params_value_".concat(count));
         if (return_params_key && return_params_value){
           $scope.returnStateParams [return_params_key] = return_params_value;
         }
       }
     } else {
-      var return_params_key = getParameterByName("return_params_key_".concat(count));
-      var return_params_value = getParameterByName("return_params_value_".concat(count));
+      var return_params_key = getParameterByName("return_params_key");
+      var return_params_value = getParameterByName("return_params_value");
       if (return_params_key && return_params_value){
         $scope.returnStateParams [return_params_key] = return_params_value;
       }
@@ -52,8 +52,7 @@ function RedirectFlowCtrl($scope, $location, $state, $mdToast, paymentService) {
 
   function redirectToState(stateId)
   {
-    var params = $scope.returnStateParams;
-    $state.go(stateId, JSON.stringify(params));
+    $state.go(stateId, $scope.returnStateParams);
   }
 
   function confirmPayment(params) {

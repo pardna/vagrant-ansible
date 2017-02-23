@@ -25,8 +25,79 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
           }
         }
       ];
+    $scope.inviteserviceresponse = {
+      'success': false,
+      'failure': false
+    };
 
+    $scope.selectedFriends = ["mouse", "dog"];
+    $scope.friends = ["mouse", "dog", "cat", "bird"];
 
+    $scope.showInvitesModal = function(group, ev) {
+      $scope.invite = {
+        'message' : 'I would like to invite you to join pardna group ' + group.name + ' on Pardna.com',
+        'emails' : ''
+      };
+
+      $scope.invitestate = {
+        'byfriends' : true,
+        'byemail' : false
+      }
+
+      $scope.group = group;
+
+      $mdDialog.show({
+        controller: HomeCtrl,
+        templateUrl: 'module/pardna/app/templates/home-pardna-group-invites.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:true,
+        scope: $scope,        // use parent scope in template
+        preserveScope: true,
+        fullscreen: true // Only for -xs, -sm breakpoints.
+      })
+      .then(function(bankacc) {
+
+      });
+    };
+
+    $scope.showInviteByEmail = function (){
+      $scope.invitestate.byfriends = false;
+      $scope.invitestate.byemail = true;
+    };
+
+    $scope.showInviteFriends = function (){
+      $scope.invitestate.byfriends = true;
+      $scope.invitestate.byemail = false;
+    };
+
+    $scope.returnFromInvite = function (){
+      if ($scope.invitebyemail.show){
+        showInviteFriends();
+      } else{
+        cancel();
+      }
+    };
+
+    $scope.hide = function() {
+      $mdDialog.hide();
+      $state.reload();
+    };
+
+    $scope.cancel = function() {
+      $mdDialog.cancel();
+      $state.reload();
+    };
+
+    $scope.selectedcontacts = 0;
+
+    $scope.personStateChanged = function (selected){
+      if (selected){
+        $scope.selectedcontacts = $scope.selectedcontacts + 1;
+      } else{
+        $scope.selectedcontacts = $scope.selectedcontacts - 1;
+      }
+    }
 
     $scope.allContacts = loadContacts();
     $scope.contacts = [$scope.allContacts[0]];
@@ -67,6 +138,7 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   $scope.ui.relationships = [];
   $scope.acceptUserInvitation = acceptUserInvitation;
   $scope.acceptGroupInvitation = acceptGroupInvitation;
+  $scope.ignoreUserInvitation = ignoreUserInvitation;
   var originatorEv;
 
   loadList();
@@ -253,22 +325,40 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
         .hideDelay(3000)
       );
     });
-
-    // inviteService.acceptUserInvitation({id : id}).success(function(data) {
-    //   loadUserInvitations();
-    //   loadUserRelationships();
-    // }).error(function(error) {
-    //   $mdToast.show(
-    //         $mdToast.simple()
-    //           .content('Application error accepting user invitation')
-    //           .position("top right")
-    //           .hideDelay(3000)
-    //       );
-    // });
   }
 
   function acceptGroupInvitation(id) {
     inviteService.acceptGroupInvitation({id : id}).then(function successCallback(response) {
+      loadUserInvitations();
+      loadUserRelationships();
+      loadGroupInvitations();
+      loadList();
+    }, function errorCallback(response) {
+      $mdToast.show(
+        $mdToast.simple()
+        .content('Application error accepting group invitation')
+        .position("top right")
+        .hideDelay(3000)
+      );
+    });
+  }
+
+  function ignoreUserInvitation(id) {
+    inviteService.ignoreUserInvitation({id : id}).then(function successCallback(response) {
+      loadUserInvitations();
+      loadUserRelationships();
+    }, function errorCallback(response) {
+      $mdToast.show(
+        $mdToast.simple()
+        .content('Application error accepting user invitation')
+        .position("top right")
+        .hideDelay(3000)
+      );
+    });
+  }
+
+  function ignoreGroupInvitation(id) {
+    inviteService.ignoreGroupInvitation({id : id}).then(function successCallback(response) {
       loadUserInvitations();
       loadUserRelationships();
     }, function errorCallback(response) {
@@ -279,18 +369,6 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
         .hideDelay(3000)
       );
     });
-
-    // inviteService.acceptGroupInvitation({id : id}).success(function(data) {
-    //   loadUserInvitations();
-    //   loadUserRelationships();
-    // }).error(function(error) {
-    //   $mdToast.show(
-    //         $mdToast.simple()
-    //           .content('Application error accepting group invitation')
-    //           .position("top right")
-    //           .hideDelay(3000)
-    //       );
-    // });
   }
 
   $scope.firstLogin = function(ev) {

@@ -1,5 +1,23 @@
+<md-card ng-show="!!ui.userInvitationList.length" md-theme="{{ showDarkTheme ? 'dark-orange' : 'default' }}" md-theme-watch>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Received Invitations</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-header ng-repeat="invitee in ui.userInvitationList">
+    <md-card-avatar style="margin-left: 0px; margin-right: 12px;">
+      <img class="md-user-avatar" src="img/100-2.jpeg"/>
+    </md-card-avatar>
+    <md-card-header-text>
+      <span class="md-title">{{invitee.fullname}}</span>
+      <span class="md-subhead">Wants to be friends with you!!!</span>
+    </md-card-header-text>
+    <md-button class="md-raised md-primary" ng-click="acceptUserInvitation(invitee.invitation_id)">ACCEPT</md-button>
+    <md-button class="md-primary" ng-click="ignoreUserInvitation(invitee.invitation_id)">IGNORE</md-button>
+  </md-card-header>
+</md-card>
 <md-content class="md-padding">
-  <md-card>
+  <md-card ng-repeat="group in ui.groupInvitationList">
     <md-card-header>
       <md-card-avatar>
         <img class="md-user-avatar" src="img/100-2.jpeg"/>
@@ -8,55 +26,68 @@
         <span class="md-title">Hyane Moussassa</span>
         <span class="md-subhead">Invited You!!!</span>
       </md-card-header-text>
-      <md-button class="md-raised md-primary">Join</md-button>
+      <md-button class="md-raised md-primary" ng-click="acceptGroupInvitation(group.invitation_id)">Join</md-button>
     </md-card-header>
     <md-card-content>
-      <p>
-        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
-        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
-      </p>
+      <p>{{group.message}}</p>
     </md-card-content>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Pardesta</span>
+        <span class="md-headline">{{group.name}}</span>
       </md-card-title-text>
     </md-card-title>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-card-icon-actions>
+        <md-button class="md-icon-button" aria-label="Favorite">
+          <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="Share">
+          <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
+        </md-button>
+      </md-card-icon-actions>
+    </md-card-actions>
     <md-list class="md-dense" flex>
-        <md-divider ></md-divider>
-        <md-subheader class="md-no-sticky">Details</md-subheader>
-        <md-list-item class="md-2-line" ng-repeat="phone in phones">
-          <md-icon md-svg-icon="{{phone.options.icon}}" ng-if="phone.options.icon" ng-class="{'md-avatar-icon': phone.options.avatarIcon}"></md-icon>
-          <img ng-src="{{phone.options.face}}?25" class="md-avatar" alt="{{phone.options.face}}"
-               ng-if="phone.options.face"/>
-          <div class="md-list-item-text" ng-class="{'md-offset': phone.options.offset }">
-            <p> {{ phone.type }} </p>
-            <h3> {{ phone.number }} </h3>
-          </div>
-          <md-button class="md-secondary md-icon-button" ng-click="doSecondaryAction($event)" ng-if="phone.options.actionIcon" aria-label="call">
-            <md-icon md-svg-icon="{{phone.options.actionIcon}}"></md-icon>
-          </md-button>
-        </md-list-item>
-    </md-list>
-    <div layout="column" ng-cloak="" class="chipsdemoContactChips" >
-      <md-list class="fixedRows">
       <md-divider ></md-divider>
-      <md-subheader class="md-no-sticky">Members</md-subheader>
-        <md-list-item class="md-2-line contact-item" ng-repeat="(index, contact) in allContacts"
-            ng-if="contacts.indexOf(contact) < 0">
-          <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
-          <div class="md-list-item-text compact">
-            <h3>{{contact.name}}<md-badge class="md-warn" ng-if="contact.admin != null">Group Admin</md-badge></h3>
-            <p>{{contact.email}}</p>
-          </div>
-        </md-list-item>
-        <md-list-item class="md-2-line contact-item selected" ng-repeat="(index, contact) in contacts">
-          <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
-          <div class="md-list-item-text compact">
-            <h3>{{contact.name}}</h3>
-            <p>{{contact.email}}</p>
-          </div>
-        </md-list-item>
-      </md-list>
-    </div>
+      <md-subheader class="md-no-sticky">Details</md-subheader>
+      <md-list-item class="md-2-line" class="startdate">
+        <md-icon md-svg-icon="img/icons/ic_today_black_24px.svg"></md-icon>
+        <div class="md-list-item-text">
+          <p> Start Date </p>
+          <h3> {{group.startdate | date:'d MMMM y'}} </h3>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line" class="endtime">
+        <md-icon md-svg-icon="img/icons/ic_date_range_black_24px.svg"></md-icon>
+        <div class="md-list-item-text">
+          <p> End Date </p>
+          <h3> {{group.enddate | date:'d MMMM y'}} </h3>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line" class="frequency">
+        <md-icon md-svg-icon="img/icons/ic_schedule_black_24px.svg"></md-icon>
+        <div class="md-list-item-text">
+          <p> Frequency </p>
+          <h3> {{group.frequency}} </h3>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line" class="amount">
+        <md-icon md-svg-icon="img/icons/ic_attach_money_black_24px.svg"></md-icon>
+        <div class="md-list-item-text">
+          <p> Amount </p>
+          <h3> {{group.amount | currency: group.currency}} </h3>
+        </div>
+      </md-list-item>
+    </md-list>
+    <md-list class="fixedRows">
+      <md-divider></md-divider>
+     <md-subheader class="md-no-sticky">Members</md-subheader>
+      <md-list-item class="md-2-line contact-item" ng-repeat="(index, member) in group.members">
+        <img ng-src="http://lorempixel.com/50/50/people?{{index}}" class="md-avatar" alt="{{member.fullname}}" />
+        <div class="md-list-item-text compact">
+          <h3>{{member.fullname}}<md-badge class="md-warn" ng-if="member.user_id == group.admin">Group Admin</md-badge></h3>
+          <p>{{member.email}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
   </md-card>
 </md-content>
