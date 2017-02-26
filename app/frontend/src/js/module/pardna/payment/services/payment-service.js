@@ -21,5 +21,9 @@ function PaymentService($http, env) {
     return $http.get(urlBase + '/group/user/payments/status/' + params.id);
   };
 
+  dataFactory.createSubscriptions = function(params) {
+    return $http.get(urlBase + '/group/subscriptions/create/' + params.id);
+  };
+
   return dataFactory;
 }

@@ -374,6 +374,7 @@ class RoutesLoader
 
         $api->get('/pardna/group/details/{id}', "pardna.group.controller:details");
         $api->get('/pardna/group/slots/{id}', "pardna.group.controller:slots");
+        $api->get('/pardna/group/confirm/{id}', "pardna.group.controller:confirmPardna");
 
         $api->post('/invite', "invitation.controller:save");
         $api->get('/invite/group', "invitation.controller:readGroupInvitations");
@@ -397,11 +398,13 @@ class RoutesLoader
 
         $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
 
-        $api->post('/group/subscriptions/create/{id}', "pardna.payments.controller:createSubscription");
+        $api->get('/group/subscriptions/create/{id}', "pardna.payments.controller:triggerMassSubscriptionCreation");
 
-        $api->post('/group/subscriptions/cancel/{id}', "pardna.payments.controller:cancelSubscription");
+        $api->get('/group/subscription/create/{id}', "pardna.payments.controller:createSubscription");
 
-        $api->post('/group/subscriptions/get/{id}', "pardna.payments.controller:getSubscription");
+        $api->get('/group/subscription/cancel/{id}', "pardna.payments.controller:cancelSubscription");
+
+        $api->get('/group/subscription/get/{id}', "pardna.payments.controller:getSubscription");
 
         $api->post('/group/payment/setup', "pardna.payments.controller:setUpPayment");
 

@@ -42,11 +42,15 @@ class PardnaGroupController extends AppController
           foreach ($groups as $key => $value) {
             $statusAndReason = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $groups[$key]["id"]);
             $members = $this->service->getMembersIncludingPaymentDetails($groups[$key]["id"]);
+            $slots = $this->service->getGroupSlots($groups[$key]["id"]);
             $groups[$key]["members"] = $members;
             $groups[$key]["member_key"] = $this->getMemberKey($members, $user->getId());
             $groups[$key]["status"] = $statusAndReason["status"];
             $groups[$key]["reason"] = $statusAndReason["reason"];
-            $groups[$key]["enddate"] = $this->service->calculateEndDate($groups[$key]["startdate"], $groups[$key]["frequency"], $groups[$key]["slots"]);
+            $enddate = $this->service->calculateEndDate($groups[$key]["startdate"], $groups[$key]["frequency"], $groups[$key]["slots"]);
+            $groups[$key]["pardna_confirmed"] = $this->service->pardnaBeenConfirmed($groups[$key]["id"], $groups[$key]["startdate"], $enddate);;
+            $groups[$key]["pardna_slots"] = $slots;
+            $groups[$key]["enddate"] = $enddate;
             $invites = $this->service->getInvitesForGroup($groups[$key]["id"]);
             $groups[$key]["invites"] = $invites;
             $invitees = array();
@@ -108,6 +112,22 @@ class PardnaGroupController extends AppController
           throw new HttpException(409,"Cannot save group account : " . $e->getMessage());
         }
 
+    }
+
+    public function confirmPardna($id)
+    {
+      try {
+        $user = $this->getUser();
+        if ($this->service->isUserAdmin($id, $user)){
+          $group = $this->service->findById($id);
+          $this->service->confirmPardna($group);
+          return new JsonResponse(array("message" => "Pardna confirmed"));
+        } else{
+          throw new HttpException(403,"Cannot confirm pardna : User is not admin");
+        }
+      } catch(\Exception $e) {
+        throw new HttpException(409,"Cannot confirm pardna : " . $e->getMessage());
+      }
     }
 
 }

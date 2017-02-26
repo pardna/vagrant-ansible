@@ -126,13 +126,18 @@ class PaymentsController extends AppController
   {
     try {
       $user = $this->getUser();
-      $status = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $id);
-      if ($this->isReadyForSetup($status)){
-        $group = $this->groupService->groupDetailsForUser($user, $id);
-        $members = $this->groupService->getMembers($id, $user->getId());
-        $this->service->triggerPardnaGroupCreateMembersSubscriptions($group, $members);
+      if ($this->groupService->isUserAdmin($id, $user)){
+        $status = $this->pardnaGroupStatusService->getUserRelatedGroupStatus($user, $id);
+        if ($this->isReadyForSetup($status)){
+          $group = $this->groupService->groupDetailsForUser($user, $id);
+          $members = $this->groupService->getMembers($id, $user->getId());
+          $this->service->triggerPardnaGroupCreateMembersSubscriptions($group, $members);
+          return new JsonResponse(array("message" => "Successfully created subscriptions" ));
+        } else {
+          throw new HttpException(401, "Could not create subscriptions : Some slots are empty");
+        }
       } else{
-        throw new HttpException(401, "Could not create subscriptions : Some slots are empty");
+        throw new HttpException(403,"Cannot confirm pardna : User is not admin");
       }
     } catch(PaymentSetupException $e) {
       throw new HttpException(401, "Could not set up payments for all users in group " . $e->getMessage());

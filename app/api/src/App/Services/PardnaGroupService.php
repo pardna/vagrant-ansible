@@ -16,6 +16,7 @@ class PardnaGroupService extends BaseService
   protected $memberTable = "pardnagroup_members";
   protected $paymentTable = "pardnagroup_payments";
   protected $slotTable = "pardnagroup_slots";
+  protected $confirmedTable = "pardnagroup_confirmed";
   protected $invitationService;
   protected $maximumSlots = 12;
   protected $minimumSlots = 4;
@@ -302,6 +303,47 @@ class PardnaGroupService extends BaseService
       }
     }
     return $emails;
+  }
+
+  public function confirmPardna($pardna)
+  {
+    $enddate = $this->calculateEndDate($pardna["startdate"], $pardna["frequency"], $pardna["slots"]);
+    if (! $this->pardnaBeenConfirmed($pardna["id"], $pardna["startdate"], $enddate) && ! $this->doesAnotherPardnaExist($pardna["id"], $enddate)){
+      $confirmreq = array(
+        "pardnagroup_id" => $pardna["id"],
+        "startdate" => $pardna["startdate"],
+        "enddate" => $enddate
+      );
+      return $this->confirm($confirmreq);
+    } else{
+      throw new \Exception("Cannot create pardna at this time as it already exist and confirmed");
+    }
+  }
+
+  public function isUserAdmin($id, $user)
+  {
+    $group = $this->findById($id);
+    if ($group && $user->getId() == $group["admin"]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function confirm($pardna)
+  {
+    $this->db->insert($this->confirmedTable, $pardna);
+    return $this->findById($this->db->lastInsertId());
+  }
+
+  public function pardnaBeenConfirmed($id, $startdate, $enddate)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM {$this->confirmedTable} WHERE pardnagroup_id = ? AND startdate = ? AND enddate = ? LIMIT 1", array($id, $startdate, $enddate));
+  }
+
+  public function doesAnotherPardnaExist($id, $enddate)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM {$this->confirmedTable} WHERE pardnagroup_id = ? AND enddate < ? LIMIT 1", array($id, $enddate));
   }
 
   public function exists($group)

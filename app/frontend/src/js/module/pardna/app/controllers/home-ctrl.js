@@ -139,6 +139,7 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
   $scope.acceptUserInvitation = acceptUserInvitation;
   $scope.acceptGroupInvitation = acceptGroupInvitation;
   $scope.ignoreUserInvitation = ignoreUserInvitation;
+  $scope.confirmPardna = confirmPardna;
   var originatorEv;
 
   loadList();
@@ -214,6 +215,24 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
       $scope.user = userService.user;
     });
   };
+
+  $scope.claimedSlotsCount = function (slots){
+    var count = 0
+    for (var i = 0; i < slots.length; i++) {
+      if (slots[i].claimed){
+        count ++;
+      }
+    }
+    return count;
+  }
+
+  $scope.pardnaSlot = function (pardnaslots){
+    for (var i = 0; i < pardnaslots.length; i++) {
+      if (pardnaslots[i].membership_number == $scope.user.membership_number){
+        return pardnaslots[i];
+      }
+    }
+  }
 
   function loadList() {
 
@@ -312,6 +331,34 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
     //       );
     // });
   }
+
+  function confirmPardna(id) {
+    groupService.confirmPardna({id : id}).then(function successCallback(response) {
+      loadList();
+      createSubscriptions(id);
+    }, function errorCallback(response) {
+      $mdToast.show(
+        $mdToast.simple()
+        .content('Application error whilst confirming pardna')
+        .position("top right")
+        .hideDelay(3000)
+      );
+    });
+  }
+
+  function createSubscriptions(id) {
+    paymentService.createSubscriptions({id : id}).then(function successCallback(response) {
+
+    }, function errorCallback(response) {
+      $mdToast.show(
+        $mdToast.simple()
+        .content('Application error whilst creating subscriptions for pardna')
+        .position("top right")
+        .hideDelay(3000)
+      );
+    });
+  }
+
 
   function acceptUserInvitation(id) {
     inviteService.acceptUserInvitation({id : id}).then(function successCallback(response) {

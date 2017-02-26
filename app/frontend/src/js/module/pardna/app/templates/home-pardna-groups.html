@@ -2,7 +2,10 @@
   <md-card ng-repeat="group in ui.list">
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">{{group.name}}</span>
+        <span class="md-headline">{{group.name}} &nbsp;
+          <md-icon ng-if="group.pardna_confirmed" md-svg-src="img/icons/ic_lock_black_24px.svg"></md-icon>
+          <md-icon ng-if="! group.pardna_confirmed" md-svg-src="img/icons/ic_lock_open_black_24px.svg"></md-icon>
+        </span>
       </md-card-title-text>
     </md-card-title>
     <md-card-actions layout="row" layout-align="start center">
@@ -10,16 +13,17 @@
         <md-button class="md-icon-button" aria-label="Favorite">
           <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
         </md-button>
-        <md-button ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-icon-button" aria-label="Invite">
+        <md-button ng-show="group.user_id == group.admin" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-icon-button" aria-label="Invite">
           <md-icon md-svg-icon="img/icons/ic_person_add_black_64px.svg"></md-icon>
         </md-button>
         <md-button class="md-icon-button" aria-label="Share">
           <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Settings">
-          <md-icon md-svg-icon="img/icons/ic_settings_black_48px.svg"></md-icon>
-        </md-button>
       </md-card-icon-actions>
+      <md-button ng-show="group.user_id == group.admin && ! group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-fab md-primary md-hue-2" aria-label="Confirm Pardna">
+          <md-icon md-svg-src="img/icons/ic_check_white_24px.svg"></md-icon>
+      </md-button>
+      <!-- <md-button ng-show="group.user_id == group.admin" class="md-raised md-primary">Confirm Pardna</md-button> -->
     </md-card-actions>
     <md-list class="md-dense" flex>
       <md-divider ></md-divider>
@@ -81,10 +85,11 @@
         <div class="md-list-item-text">
           <p> Payout Date </p>
           <div ng-if="!group.members[group.member_key].slot_id">
-            <h3 md-colors="{color:'red'}"> CHOOSE SLOT </h3>
+            <h3 md-colors="{color:'green'}"> {{pardnaSlot(group.pardna_slots).pay_date | date:'d MMMM y'}}</h3>
+            <!-- <h3 md-colors="{color:'red'}"> CHOOSE SLOT </h3> -->
           </div>
         </div>
-        <md-button ng-if="!group.members[group.member_key].slot_id" class="md-secondary" ui-sref="group-details({id: group.id})">Choose Slot</md-button>
+        <md-button ng-if="!group.members[group.member_key].slot_id" class="md-secondary" ui-sref="group-details({id: group.id})">Change Slot</md-button>
         <md-button ng-if="group.members[group.member_key].slot_id" class="md-secondary md-icon-button" ui-sref="group-details({id: group.id})" aria-label="call">
           <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
         </md-button>
