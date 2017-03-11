@@ -31,7 +31,7 @@
     "Ionicons": "ionicons#~2.0.1"
   },
   "resolutions": {
-    "angular": "~1.6.x"
+    "angular": "~1.5.*"
   },
   "repository": {
     "type": "git",
