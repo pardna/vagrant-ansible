@@ -12,19 +12,19 @@
 @circleSize10: 650;
 @num10: 10;
 
-@circleSize9: 650;
+@circleSize9: 550;
 @num9: 9;
 
 @circleSize8: 480;
 @num8: 8;
 
-@circleSize7: 650;
+@circleSize7: 420;
 @num7: 7;
 
-@circleSize6: 650;
+@circleSize6: 360;
 @num6: 6;
 
-@circleSize5: 650;
+@circleSize5: 300;
 @num5: 5;
 
 @circleSize4: 260;
@@ -35,6 +35,7 @@
 	padding: 20px;
 	margin:auto;
     border: none;
+    background-image: none;
 }
 
 //base slot circle style
@@ -54,6 +55,10 @@
  .group-details__slots {
 	border-radius: 50%;
     border: 5px solid #6f2f6b;
+    background-image: url(../svg/p.svg);
+    background-position: center;
+    background-size: 40%;
+    background-repeat: no-repeat;
  }
     
 .group-details__slots > * {		
@@ -69,12 +74,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-12/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-12/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots12.group-details__slots {
@@ -89,12 +94,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-11/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-11/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots11.group-details__slots {
@@ -109,12 +114,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-10/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-10/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots10.group-details__slots {
@@ -129,12 +134,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-9/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-9/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots9.group-details__slots {
@@ -149,12 +154,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-8/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-8/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots8.group-details__slots {
@@ -169,12 +174,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-7/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-7/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots7.group-details__slots {
@@ -189,12 +194,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-6/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-6/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots6.group-details__slots {
@@ -209,12 +214,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-5/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-5/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots5.group-details__slots {
@@ -229,12 +234,12 @@
 		@angle: (360 / @item-count);
 		.cl(@i,@r) when (@i > 0) {
 			&:nth-of-type(@{i}) {
-				transform: rotate(@r * 1deg)  translate(unit(@circle-size-4/2,px)) rotate(@r * -1deg);
+				transform: rotate(@r * -1deg)  translate(unit(@circle-size-4/2,px)) rotate(@r * 1deg);
 			}
 			@rot: @r + @angle;
 			.cl(@i - 1,@rot);
 		}
-		.cl(@item-count,0);
+		.cl(@item-count,90);
 	} 
 }
 .slots4.group-details__slots {
