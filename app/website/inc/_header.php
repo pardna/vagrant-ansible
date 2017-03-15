@@ -1,14 +1,8 @@
-	<div class="row header">
-    	<div class="four columns logo"><a href="index.php"></a></div>
-
-        <div class="eight columns navigation responsive-menu">
-              <label for="hidden-checkbox1" class="expand-control button">Menu</label>
-              <input type="checkbox" id="hidden-checkbox1" class="expand-control">
-        	<ul class="navigation-list animated slideInDown ">
-            	<li><a href="#">How it works</a></li>
-                <li><a href="#">About us</a></li>
-                <li><a href="#">Blog</a></li>
-            </ul>
-            <a href="../frontend/prod/#/login" class="button button-primary">Log in</a>
-        </div>
+  <nav class="purple" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="https://www.pardna.com" class="brand-logo"></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="https://www.pardna.com/blog/">Blog</a></li>
+      </ul>
     </div>
+  </nav>

@@ -7,6 +7,8 @@ class UserEntity implements UserInterface {
   protected $username;
   protected $password;
   protected $fullname;
+  protected $firstname;
+  protected $lastname;
   protected $salt;
   protected $isActive;
   protected $verified;
@@ -15,7 +17,23 @@ class UserEntity implements UserInterface {
   protected $loginCount;
   protected $roles  =  array('ROLE_USER');
 
-  public function getUserapidetails() {
+  public function getFirstname() {
+	  return $this->firstname;
+  }
+
+  public function getLastname() {
+	  return $this->lastname;
+  }
+
+  public function setFirstname($firstname) {
+	  $this->firstname = $firstname;
+  }
+
+  public function setLastname($lastname) {
+	  $this->lastname = $lastname;
+  }
+
+    public function getUserapidetails() {
     return $this->userapidetails;
   }
 

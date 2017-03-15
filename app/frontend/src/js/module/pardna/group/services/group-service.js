@@ -9,6 +9,10 @@ function GroupService($http, env) {
     return $http.post(urlBase + '/pardna/group', params);
   };
 
+  dataFactory.confirmPardna = function(params) {
+    return $http.get(urlBase + '/pardna/group/confirm/' + params.id);
+  };
+
   dataFactory.list = function(params) {
     return $http.get(urlBase + '/pardna/group', params);
   };
@@ -20,7 +24,7 @@ function GroupService($http, env) {
 
   dataFactory.slots = function(params) {
     console.log(params);
-    return $http.get(urlBase + '/pardna/group/slots/' + params.id); 
+    return $http.get(urlBase + '/pardna/group/slots/' + params.id);
   };
 
   return dataFactory;

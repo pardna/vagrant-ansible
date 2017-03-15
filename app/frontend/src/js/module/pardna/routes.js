@@ -26,6 +26,15 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                   'nav@home': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   },
+                  'pardna-groups@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-pardna-groups.html'
+                  },
+                  'pardna-invites@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-pardna-invites.html'
+                  },
+                  'friends@home': {
+                    'templateUrl' : 'module/pardna/app/templates/home-friends.html'
+                  },
                   'confirmation@home': {
                     'templateUrl' : 'module/pardna/app/templates/home-confirmation.html'
                   }
@@ -54,7 +63,7 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                     controller: 'GroupDetailsCtrl',
                     'templateUrl' : 'module/pardna/group/templates/group-details.html',
                   },
-                  'nav@group-details': { 
+                  'nav@group-details': {
                     'templateUrl' : 'module/pardna/app/templates/home-nav.html'
                   }
                 },
@@ -88,6 +97,93 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                   'add-users@group-add': {
                     'templateUrl' : 'module/pardna/group/templates/add-users.html'
                   }
+                },
+                requiresLogin: true
+            })
+            .state('payment-confirm', {
+				        url: '/payment/confirm',
+                views: {
+                  '': {
+                    controller: 'RedirectFlowCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/redirectflow-confirm.html'
+                  },
+                  'nav@payment-confirm': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
+            .state('payment-setup', {
+				        url: '/payment/setup/:id',
+                views: {
+                  '': {
+                    controller: 'PaymentSetupCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/bankaccount-choose.html'
+                  },
+                  'nav@payment-setup': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
+            .state('paymentstatus', {
+				        url: '/payment/status/:id',
+                views: {
+                  '': {
+                    controller: 'PaymentStatusCtrl',
+                    'templateUrl' : 'module/pardna/payment/templates/paymentstatus.html'
+                  },
+                  'nav@paymentstatus': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  }
+                },
+                requiresLogin: true
+            })
+            .state('paymentsetup-confirm', {
+                url: '/payment/setup/confirm/:id',
+                views: {
+                    '': {
+                        controller: 'PaymentSetupConfirmCtrl',
+                        templateUrl: 'module/pardna/payment/templates/paymentsetup-confirm.html'
+                    },
+                    'nav@paymentsetup-confirm': {
+                      'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                    },
+                },
+                requiresLogin: true
+            })
+            .state('email-verify', {
+				        url: '/account/email/verify',
+                views: {
+                  '': {
+                    controller: 'EmailVerifyCtrl',
+                    'templateUrl' : 'module/pardna/emailverify/templates/verify-email.html'
+                  }
+                },
+                requiresLogin: false
+            })
+    			  .state('account', {
+    				    url: '/account',
+                views: {
+                  '': {
+                    controller: 'AccountCtrl',
+                    'templateUrl' : 'module/pardna/user/templates/account.html'
+                  },
+                  'nav@account': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  },
+      				  'account-direct-debit@account': {
+      					 controller: 'AccountDirectDebitCtrl',
+                          'templateUrl' : 'module/pardna/user/templates/account-direct-debit.html'
+                        },
+      				  'account-payout@account': {
+      					 controller: 'AccountPayoutCtrl',
+                          'templateUrl' : 'module/pardna/user/templates/account-payout.html'
+                        },
+      				  'account-user@account': {
+      					 controller: 'AccountUserCtrl',
+                          'templateUrl' : 'module/pardna/user/templates/account-user.html'
+                        }
                 },
                 requiresLogin: true
             })

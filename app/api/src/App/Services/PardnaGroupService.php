@@ -16,7 +16,26 @@ class PardnaGroupService extends BaseService
   protected $memberTable = "pardnagroup_members";
   protected $paymentTable = "pardnagroup_payments";
   protected $slotTable = "pardnagroup_slots";
+  protected $confirmedTable = "pardnagroup_confirmed";
   protected $invitationService;
+  protected $maximumSlots = 12;
+  protected $minimumSlots = 4;
+  protected $minimumAmount = 10;
+  protected $maximumAmount = 500;
+  protected $charges = array(
+    1 => 6,
+    2 => 5.5,
+    3 => 5.0,
+    4 => 4.5,
+    5 => 4.0,
+    6 => 3.5,
+    7 => 3.0,
+    8 => 2.5,
+    9 => 2.0,
+    10 => 1.5,
+    11 => 1.0,
+    12 => 0
+  );
 
   public function setInvitationService(InvitationService $invitationService) {
     $this->invitationService = $invitationService;
@@ -31,6 +50,21 @@ class PardnaGroupService extends BaseService
   {
 
     $group = $this->getGroupFromRequest($data, $user);
+    if($group["slots"] > count($this->charges)) {
+      throw new \Exception("Number of slots is greater than charge slots " . count($this->charges));
+    }
+    if($group["slots"] > $this->maximumSlots) {
+      throw new \Exception("Maximum number of slots is " . $this->maximumSlots);
+    }
+    if($group["slots"] < $this->minimumSlots) {
+      throw new \Exception("Minimum number of slots is " . $this->minimumSlots);
+    }
+    if($group["amount"] > $this->maximumAmount) {
+      throw new \Exception("Maximum amount is " . $this->maximumAmount);
+    }
+    if($group["amount"] < $this->minimumAmount) {
+      throw new \Exception("Minimum amount is " . $this->minimumAmount);
+    }
     $startDate = new \DateTime($group['startdate']);
     if ($startDate < new \DateTime())
     {
@@ -76,6 +110,55 @@ class PardnaGroupService extends BaseService
     return false;
   }
 
+  public function getNextAvailableClaimPosition($groupId)
+  {
+    $groupSlots = $this->getGroupSlots($groupId);
+    foreach ($groupSlots as $groupSlot) {
+      if (! $groupSlot["claimed"]){
+        return $groupSlot["position"];
+      }
+    }
+    return null;
+  }
+
+  public function getGroupMemberIncludingPaymentDetails($user, $groupId)
+  {
+    $response;
+    $member = $this->getMember($groupId, $user->getId())[0];
+    if (empty($member["dd_mandate_id"])){
+      $response["setup_completed"] = false;
+    } else{
+      $response["setup_completed"] = true;
+      $response["mandate_id"] = $member["dd_mandate_id"];
+      $response["allow_edit_payment"] = true;
+      if (! empty($member["dd_mandate_status"])){
+        $response["status"] = strtoupper(str_replace("_", " ", $member["dd_mandate_status"]));
+      } else {
+        $response["status"] = "AWAITING CONFIRM FROM PAYMENT PROVIDER";
+      }
+    }
+    return $response;
+  }
+
+  public function getMembersIncludingPaymentDetails($id)
+  {
+    $members = $this->getMembers($id);
+    foreach ($members as $key => $member) {
+      if (empty($member["dd_mandate_id"])){
+        $members[$key]["allow_choose_payment"] = true;
+        $members[$key]["payment_status"] = "SETUP REQUIRED";
+      } else{
+        $members[$key]["allow_edit_payment"] = true;
+        if (! empty($member["dd_mandate_status"])){
+          $members[$key]["payment_status"] = strtoupper(str_replace("_", " ", $member["dd_mandate_status"]));
+        } else {
+          $members[$key]["payment_status"] = "AWAITING CONFIRM FROM PAYMENT PROVIDER";
+        }
+      }
+    }
+    return $members;
+  }
+
   public function getUnclaimedSlot($slots, $position) {
     foreach ($slots as $key => $slot) {
       if($slot["position"] == $position) {
@@ -88,6 +171,14 @@ class PardnaGroupService extends BaseService
     throw new \Exception("Position does not exist in slot");;
   }
 
+  public function getChargePercent($position, $numberOfSlots) {
+    $chargeSlots = count($this->charges);
+    $key = ($chargeSlots+$position)-($numberOfSlots);
+    if(!isset($this->charges[$key])) {
+      throw new \Exception("Charge percentage slot " . $key . " does not exist");
+    }
+    return $this->charges[$key];
+  }
 
   public function createSlots($numberOfSlots, $group) {
     if($numberOfSlots > 24) {
@@ -106,8 +197,14 @@ class PardnaGroupService extends BaseService
         $slot = array(
           "pardnagroup_id" => $group["id"],
           "position" => $i,
-          "pay_date" => $startDate->format('Y-m-d')
+          "pay_date" => $startDate->format('Y-m-d'),
+          "total_contribution" => $numberOfSlots*$group["amount"],
+          "charge_percent" => $this->getChargePercent($i, $numberOfSlots),
         );
+
+        $slot["charge_amount"] = ($slot["total_contribution"]*$slot["charge_percent"])/100;
+        $slot["pay_amount"] = $slot["total_contribution"]-$slot["charge_amount"];
+
         $slot = $this->appendCreatedModified($slot);
         $this->db->insert($this->slotTable, $slot);
 
@@ -130,7 +227,22 @@ class PardnaGroupService extends BaseService
     return false;
   }
 
+  public function getPardnagroupDetailsInvite($invitation){
+    $members = $this->getMembersIncludingPaymentDetails($invitation["id"]);
+    $invitation["members"] = $members;
+    $invitation["enddate"] = $this->calculateEndDate($invitation["startdate"], $invitation["frequency"], $invitation["slots"]);
+    return $invitation;
+  }
 
+  public function calculateEndDate($startDate, $interval, $slots){
+    if (strcasecmp($interval, "monthly") == 0){
+      return date('Y-m-d', strtotime($startDate . ' + ' . $slots . ' months'));
+    } else if (strcasecmp($interval, "weekly") == 0){
+      $numberOfDaysOffset = 7 * intval($slots);
+      return date('Y-m-d', strtotime($startDate. ' + ' . $numberOfDaysOffset . ' days'));
+    }
+    return null;
+  }
 
   public function saveGroupAndEmails($data, $user) {
 
@@ -159,6 +271,20 @@ class PardnaGroupService extends BaseService
     return $group;
   }
 
+  public function groupDetailsForUser($user, $groupId) {
+    //var_dump($user->getId());
+    //var_dump($groupId);
+    if($this->memberExists($groupId, $user->getId())) {
+      return $this->findById($groupId);
+    }
+    return false;
+  }
+
+  public function getInvitesForGroup($id)
+  {
+    return $this->invitationService->getInvitesForGroup($id);
+  }
+
   public function details($id) {
     $group = $this->findById($id);
     $group["members"] = $this->getMembers($id);
@@ -177,6 +303,47 @@ class PardnaGroupService extends BaseService
       }
     }
     return $emails;
+  }
+
+  public function confirmPardna($pardna)
+  {
+    $enddate = $this->calculateEndDate($pardna["startdate"], $pardna["frequency"], $pardna["slots"]);
+    if (! $this->pardnaBeenConfirmed($pardna["id"], $pardna["startdate"], $enddate) && ! $this->doesAnotherPardnaExist($pardna["id"], $enddate)){
+      $confirmreq = array(
+        "pardnagroup_id" => $pardna["id"],
+        "startdate" => $pardna["startdate"],
+        "enddate" => $enddate
+      );
+      return $this->confirm($confirmreq);
+    } else{
+      throw new \Exception("Cannot create pardna at this time as it already exist and confirmed");
+    }
+  }
+
+  public function isUserAdmin($id, $user)
+  {
+    $group = $this->findById($id);
+    if ($group && $user->getId() == $group["admin"]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function confirm($pardna)
+  {
+    $this->db->insert($this->confirmedTable, $pardna);
+    return $this->findById($this->db->lastInsertId());
+  }
+
+  public function pardnaBeenConfirmed($id, $startdate, $enddate)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM {$this->confirmedTable} WHERE pardnagroup_id = ? AND startdate = ? AND enddate = ? LIMIT 1", array($id, $startdate, $enddate));
+  }
+
+  public function doesAnotherPardnaExist($id, $enddate)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM {$this->confirmedTable} WHERE pardnagroup_id = ? AND enddate < ? LIMIT 1", array($id, $enddate));
   }
 
   public function exists($group)
@@ -205,6 +372,17 @@ class PardnaGroupService extends BaseService
     return $data ? $data : array();
   }
 
+  public function getMember($groupId, $userId)
+  {
+    return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE user_id = ? AND group_id = ?  LIMIT 1", array($userId, $groupId));
+  }
+
+  public function getMemberByMemberId($member_id)
+  {
+    return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE id = ?  LIMIT 1", array($member_id));
+  }
+
+
   public function getMembers($id)
   {
     $data = $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE group_id = ?", array($id));
@@ -215,6 +393,15 @@ class PardnaGroupService extends BaseService
   {
     $data = $this->db->fetchAll("SELECT * FROM {$this->paymentTable} WHERE group_id = ?", array($id));
     return $data ? $data : array();
+  }
+
+  function dd_mandate_setup_completed($group_id, $user_id)
+  {
+    if($this->memberExists($group_id, $user_id)) {
+      return $this->db->update($this->memberTable, array("dd_mandate_setup" => 1), ['user_id' => $user_id, 'group_id' => $group_id]);
+    } else{
+      throw new HttpException(401,"User is not authorized to complete this operation");
+    }
   }
 
   public function findByMemberId($id)
@@ -234,5 +421,6 @@ class PardnaGroupService extends BaseService
     }
     return $slots;
   }
+
 
 }

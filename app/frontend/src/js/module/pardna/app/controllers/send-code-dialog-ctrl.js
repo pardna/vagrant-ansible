@@ -15,37 +15,66 @@ function SendCodeDialogCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, loc
 
   $scope.sendCode = function(form) {
     if(form.$valid) {
-      userService.sendCode($scope.user).success(function(data) {
-        // $state.go("home");
-        // $scope.page = "confirm";
-        $mdToast.show(
-          $mdToast.simple()
-          .content(data.message)
-          .position("top right")
-          .hideDelay(3000)
+      userService.sendCode($scope.user).then(
+        function successCallback(response) {
+          //$state.go("home");
+          // $scope.page = "confirm";
+          $mdToast.show(
+            $mdToast.simple()
+            .content(response.data.message)
+            .position("top right")
+            .hideDelay(3000)
           );
 
-          userService.setToken(data.token);
-
+          userService.setToken(response.data.token);
           $mdDialog.hide();
+        },
+        function errorCallback(response) {
+          $scope.status = 'Error occured : ';
 
+          if(typeof respone.data.message !== "undefined") {
+            $scope.status = $scope.status + respone.data.message;
+          }
 
-      }).error(function(error) {
-        $scope.status = 'Error occure : ';
-
-        if(typeof error.message !== "undefined") {
-          $scope.status = $scope.status + error.message;
-        }
-
-        $mdToast.show(
-          $mdToast.simple()
-          .content($scope.status)
-          .position("top right")
-          .hideDelay(3000)
+          $mdToast.show(
+            $mdToast.simple()
+            .content($scope.status)
+            .position("top right")
+            .hideDelay(3000)
           );
+        });
 
-      });
-  }
+      // userService.sendCode($scope.user).success(function(data) {
+      //   // $state.go("home");
+      //   // $scope.page = "confirm";
+      //   $mdToast.show(
+      //     $mdToast.simple()
+      //     .content(data.message)
+      //     .position("top right")
+      //     .hideDelay(3000)
+      //     );
+      //
+      //     userService.setToken(data.token);
+      //
+      //     $mdDialog.hide();
+      //
+      //
+      // }).error(function(error) {
+      //   $scope.status = 'Error occure : ';
+      //
+      //   if(typeof error.message !== "undefined") {
+      //     $scope.status = $scope.status + error.message;
+      //   }
+      //
+      //   $mdToast.show(
+      //     $mdToast.simple()
+      //     .content($scope.status)
+      //     .position("top right")
+      //     .hideDelay(3000)
+      //     );
+      //
+      // });
+    }
 
   };
 
@@ -56,38 +85,68 @@ function SendCodeDialogCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, loc
   $scope.verify = function(form) {
     if(form.$valid) {
       $scope.user.mobile = userService.user.mobile;
-    userService.verify($scope.user).success(function(data) {
-        userService.setToken(data.token);
-      $mdToast.show(
-        $mdToast.simple()
-        .content(data.message)
-        .position("top right")
-        .hideDelay(3000)
-        );
 
+      userService.verify($scope.user).then(
+        function successCallback(response) {
+          userService.setToken(response.data.token);
+          $mdToast.show(
+            $mdToast.simple()
+            .content(response.data.message)
+            .position("top right")
+            .hideDelay(3000)
+          );
+          $mdDialog.hide();
+          $scope.user = userService.user;
+          console.log($scope.user);
+          $scope.user.verified = userService.user.verified;
+        },
+        function errorCallback(response) {
+          $scope.status = 'Error occured : ';
+          if(typeof response.data.message !== "undefined") {
+            $scope.status = $scope.status + response.data.message;
+          }
 
-        $mdDialog.hide();
+          $mdToast.show(
+            $mdToast.simple()
+            .content($scope.status)
+            .position("top right")
+            .hideDelay(3000)
+          );
+      });
 
-                    $scope.user = userService.user;
-                    console.log($scope.user);
+    //   userService.verify($scope.user).success(function(data) {
+    //       userService.setToken(data.token);
+    //     $mdToast.show(
+    //       $mdToast.simple()
+    //       .content(data.message)
+    //       .position("top right")
+    //       .hideDelay(3000)
+    //       );
+    //
+    //
+    //     $mdDialog.hide();
+    //
+    //                 $scope.user = userService.user;
+    //                 console.log($scope.user);
+    //
+    //     $scope.user.verified = userService.user.verified;
+    //
+    // }).error(function(error) {
+    //   $scope.status = 'Error occured : ';
+    //   if(typeof error.message !== "undefined") {
+    //     $scope.status = $scope.status + error.message;
+    //   }
+    //
+    //   $mdToast.show(
+    //     $mdToast.simple()
+    //     .content($scope.status)
+    //     .position("top right")
+    //     .hideDelay(3000)
+    //     );
+    // });
 
-        $scope.user.verified = userService.user.verified;
+      $scope.page = "confirm";
 
-    }).error(function(error) {
-      $scope.status = 'Error occured : ';
-      if(typeof error.message !== "undefined") {
-        $scope.status = $scope.status + error.message;
-      }
-
-      $mdToast.show(
-        $mdToast.simple()
-        .content($scope.status)
-        .position("top right")
-        .hideDelay(3000)
-        );
-    });
-    $scope.page = "confirm";
-  };
-}
-
+    };
+  }
 }

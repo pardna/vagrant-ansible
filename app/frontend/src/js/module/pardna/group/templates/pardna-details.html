@@ -22,10 +22,7 @@
       <h4>Start date</h4>
       <div class="md-layout-row md-layout-sm-column col-sm-12 padding-0" flex layout="row" layout-align="space-between center">
 
-        <md-datepicker ng-model="pardna.startdate" md-placeholder="Enter date" class="ng-pristine ng-valid ng-isolate-scope md-default-theme ng-touched col-sm-8" tabindex="-1" aria-invalid="false" style="">111
-          <button class="md-datepicker-button md-icon-button md-button md-default-theme" ng-transclude="" type="button" tabindex="-1" aria-hidden="true" ng-click="ctrl.openCalendarPane($event)">222
-            <md-icon class="md-datepicker-calendar-icon ng-scope ng-isolate-scope md-default-theme" md-svg-icon="md-calendar" aria-label="md-calendar" role="img"><img src="svg/icon-calendar.svg" /><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fit="" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"></path></svg></md-icon></button>
-            <div class="md-datepicker-input-container" ng-class="{'md-datepicker-focused': ctrl.isFocused}" style=""><input class="md-datepicker-input" aria-haspopup="true" ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)" placeholder="Enter date" size="3"><button class="md-datepicker-triangle-button md-icon-button md-button md-default-theme" ng-transclude="" type="button" md-no-ink="" ng-click="ctrl.openCalendarPane($event)" aria-label="Open calendar"><div class="md-datepicker-expand-triangle ng-scope"></div></button></div></md-datepicker>
+        <md-datepicker ng-model="pardna.startdate" md-placeholder="Enter date" tabindex="-1" aria-invalid="false" style=""></md-datepicker>
           </div>
         </div>
       </div>
@@ -53,13 +50,11 @@
           </div>
         </div>
 
-
-
         <div class="col-sm-4">
           <h4>Weekly or monthly</h4>
           <md-radio-group ng-model="pardna.frequency">
-            <md-radio-button value="monthly" class="md-primary"> Monthly </md-radio-button>
-            <md-radio-button value="weekly"> Weekly </md-radio-button>
+            <md-radio-button value="Monthly" class="md-primary"> Monthly </md-radio-button>
+            <md-radio-button value="Weekly"> Weekly </md-radio-button>
           </md-radio-group>
         </div>
       </div>
@@ -67,8 +62,7 @@
       <div class="col-xs-12">
         <hr />
         <div class="lt p">
-          <button md-ink-ripple="" class="md-btn md-raised pull-left p-h-md pink" ng-click="previous()"> Previous </button>
-          <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md pink" ng-click="next()"> Next </button>
+          <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md pink col-xs-12 col-md-2" ng-click="next()"> Next </button>
 
         </div>
       </div>

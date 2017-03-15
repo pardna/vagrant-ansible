@@ -1,6 +1,7 @@
 <div id="content" class="app-content" role="">
   <div class="box">
     <div ui-view="nav"></div>
+  </div>
     <!-- Content -->
     <div class="box-row" id="firstLogin">
       <div class="box-cell">
@@ -10,40 +11,13 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
               <div class="row no-gutter">
                 <div class="col-xs-12">
-                  <div class="card">
-                    <div class="card-heading">
-                      <h3>Invite your friends by email</h3>
-                    </div>
-                    <div class="card-tools"> 
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <form ng-submit="sendInvitations()">
-                            <div class="form-group">
-                              <label for="message">Personalise your message</label>
-                              <textarea ng-model="invite.message" class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                              <label for="emailAddresses">Email addresses (Separate multiple emails with commas) </label>
-                              <input type="text" class="form-control" ng-model="invite.emails" id="emailAddresses" placeholder="">
-                            </div>
-                            <button type="submit" md-ink-ripple="" class="md-btn md-raised pull-right p-h-md blue"> INVITE </button>
-
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <invitebyemail-card invite="invite" theme="forest"></invitebyemail-card>
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>
       </div>
       <!-- / -->
     </div>
-  </div>
 </div>

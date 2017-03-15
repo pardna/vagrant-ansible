@@ -19,11 +19,13 @@
       "nesbot/Carbon": "~1.6",
       "respect/validation": "~0.9",
       "gocardless/gocardless": ">=0.4.2",
+      "gocardless/gocardless-pro": ">=0.9.4",
       "twilio/sdk": "~4.5",
       "cnam/security-jwt-service-provider":"1.*",
       "zircote/swagger-php": "^2.0",
-    "mandrill/mandrill": "^1.0",
-    "jms/serializer": "^1.1"
+      "mandrill/mandrill": "^1.0",
+      "jms/serializer": "^1.1",
+      "symfony/console": "v3.1"
     },
     "require-dev": {
       "phpunit/phpunit": "~4.1.4",

@@ -30,13 +30,20 @@ class MandrillMailService
     $this->mandrill->messages->sendTemplate($template_name, $template_content, $message);
   }
 
-  public function inviteEmailToPardnaGroup($email, $invitorFullName, $groupName){
-    $template_name = 'invite-email-to-pardna-group';
+  public function inviteEmailToPardnaGroup($email, $invitorFullName, $register_link, $groupName){
+    $template_name = 'invite-to-join-pardna-group';
     $message = array(
       'to' => array(array('email' => $email)),
       'subject' => 'You have been invited to join '. $groupName . ' group on Pardna Money',
       'merge_vars' => array(array(
-          'rcpt' => $email
+          'rcpt' => $email,
+          'vars' =>
+          array(
+            array(
+              'name' => 'REGISTER_LINK',
+              'content' => $register_link
+            )
+          )
         )
     ));
     $template_content = array(
@@ -50,9 +57,32 @@ class MandrillMailService
     $this->mandrill->messages->sendTemplate($template_name, $template_content, $message);
   }
 
+  public function inviteEmailToPardnaWebsite($email, $invitorFullName, $register_link){
+    $template_name = 'invite-to-join-pardna-website';
+    $message = array(
+      'to' => array(array('email' => $email)),
+      'merge_vars' => array(array(
+          'rcpt' => $email,
+          'vars' =>
+          array(
+            array(
+              'name' => 'REGISTER_LINK',
+              'content' => $register_link
+            )
+          )
+        )
+    ));
+    $template_content = array(
+        array(
+            'name' => 'invitorFullName',
+            'content' => $invitorFullName)
+    );
+    $this->mandrill->messages->sendTemplate($template_name, $template_content, $message);
+  }
+
   public function sendEmailConfirmation($fName, $lname, $toEmail, $link)
   {
-    $template_name = 'user-email-verification';
+    $template_name = 'verify-your-email-address';
     $fullname = $fName. " ". $lname;
     $message = array(
       'to' => array(array('email' => $toEmail, 'name' => $fullname)),
@@ -76,9 +106,6 @@ class MandrillMailService
         )
     ));
     $template_content = array(
-      array(
-          'name' => 'verify_link',
-          'content' => '<a href="*|VLINK|*">Verify my email address</a>'),
         array(
             'name' => 'fullname',
             'content' => '*|FIRSTNAME|* *|LASTNAME|*'),
@@ -86,6 +113,17 @@ class MandrillMailService
             'name' => 'footer',
             'content' => 'Copyright 2012.')
     );
+    // $template_content = array(
+    //   array(
+    //       'name' => 'verify_link',
+    //       'content' => '<a href="*|VLINK|*">Verify my email address</a>'),
+    //     array(
+    //         'name' => 'fullname',
+    //         'content' => '*|FIRSTNAME|* *|LASTNAME|*'),
+    //     array(
+    //         'name' => 'footer',
+    //         'content' => 'Copyright 2012.')
+    // );
     $this->mandrill->messages->sendTemplate($template_name, $template_content, $message);
   }
 }

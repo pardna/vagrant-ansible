@@ -1,0 +1,48 @@
+<div class="demo-tab tab" style="padding: 25px; text-align: center;">
+    <div>
+        <!---->
+        <div ng-repeat="bankaccount in bankaccounts">
+            <div class="well u-flex-none u-padding-Hn" >
+                <ul class="u-padding-Axs">
+                    <li class="definitions">
+                        <span class="definitions__key">Status</span>
+                        <span class="definitions__value">
+		                    	<status-definition status="enabled">
+													<span class="status-definition--success">
+													  Enabled
+													</span>
+	                        </status-definition>
+                        </span>
+                    </li>
+                    <li class="definitions">
+                        <span class="definitions__key">Created</span>
+                        <span class="definitions__value">{{ bankaccount.created_at }}</span>
+                    </li>
+                    <li class="definitions">
+                        <span class="definitions__key">Account holder</span>
+                        <span class="definitions__value">{{ bankaccount.account_holder_name }}</span>
+                    </li>
+                    <li class="definitions">
+                        <span class="definitions__key">Account no. ending</span>
+                        <span class="definitions__value">••••••{{ bankaccount.account_number_ending }}</span>
+                    </li>
+                    <li class="definitions">
+                        <span class="definitions__key">Country code</span>
+                        <span class="definitions__value">{{ bankaccount.country_code }}</span>
+                    </li>
+                    <li class="definitions">
+                        <span class="definitions__key">Currency</span>
+                        <span class="definitions__value">{{ bankaccount.currency }}</span>
+                    </li>
+                    <li class="definitions">
+                        <span class="definitions__key">Bank name</span>
+                        <span class="definitions__value">{{ bankaccount.bank_name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>Direct Debit Not Set Up</div>
+    <br/>
+    <md-button class="md-primary md-raised" ng-click="redirectToPaymentsProvider()"> Setup Direct Debit </md-button>
+</div>

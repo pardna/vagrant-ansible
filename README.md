@@ -6,3 +6,5 @@ Pardna susu
 
 fuser 80/tcp
 kill -9 id
+
+vagrant rsync-auto

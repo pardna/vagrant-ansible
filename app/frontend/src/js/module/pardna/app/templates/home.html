@@ -1,257 +1,67 @@
 <div id="content" class="app-content" role="">
+  <nav ng-show="user.verified != '1'" mfb-menu position="br" effect="zoomin" label="Close"
+       active-icon="ion-close-round" resting-icon="ion-plus-round"
+       toggling-method="click">
+    <button mfb-button icon="ion-android-person-add" label="Add group" ui-sref="group-add"></button>
+  </nav>
   <div class="box">
-  <div ui-view="nav"></div>
-  <!-- Content -->
-  <div class="box-row" id="firstLogin">
-    <div class="box-cell">
-      <!-- uiView:  -->
-    <div class="col-xs-12 user-details-container">
-          <div class="card card-user-details col-xs-8">
-
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-12 user-details-row">
-                  <div class="r-t">
-
-                    <div class="h2 fa-user-details">
-                      <i class="fa fa-user glyphicon glyphicon-user fa-2x"></i>
-                        <div class="fa-user-name-number">
-                            <span class="">
-                                <h2>{{ user.fullname }}
-                                    <span id="verified" class="fa fa-check" ng-show="user.verified == '1'"></span>
-                                    <span id="unverified" class="fa unverified" ng-show="user.verified != '1'">Unverified</span>
-                                    <span id="membership-no" class="small">Membership No. {{ user.membership_number }}</span>
-                                </h2>
-                            </span>
-
-                        </div>
-
-                    </div>
-                    <span class="verify" ng-show="user.verified != '1'">
-                       <span class="verify-text"><h3>Verify Your Account</h3>In order start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
-                    <a class="md-btn md-raised p-h-md pink md-ink-ripple" ng-click="sendCode($event)">Send Code</a>
-                    <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="verifyCode($event)">Verify Account</a>
-                    </span>
+    <div ui-view="nav"></div>
+    <!-- Content -->
+    <div class="box-row" id="firstLogin">
+      <div class="col-xs-12 user-details-container">
+        <div class="card card-user-details col-md-10 col-xs-12">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-12 user-details-row">
+                <div class="r-t">
+                  <div class="h2 fa-user-details">
+                    <i class="fa fa-user glyphicon glyphicon-user fa-2x"></i>
+                      <div class="fa-user-name-number">
+                          <span class="">
+                              <h2><span>
+                                      <span id="user-fullname">{{ user.fullname }}</span>
+                                      <span id="verified" class="fa fa-check" ng-show="user.verified == '1'"></span>
+                                      <span id="unverified" class="fa unverified" ng-show="user.verified != '1'">Unverified</span>
+                                  </span>
+                                  <span>
+                                      <span id="membership-no" class="small">Membership No. {{ user.membership_number }}</span>
+                                  </span>
+                              </h2>
+                          </span>
+                      </div>
                   </div>
-
+                  <span class="verify" ng-show="user.verified != '1'">
+                     <span class="verify-text"><h3>Verify Your Account</h3>In order to start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
+                  <a class="md-btn md-raised p-h-md pink md-ink-ripple" ng-click="sendCode($event)">Send Code</a>
+                  <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="verifyCode($event)">Verify Account</a>
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-    <div class="padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
-
-    <div class="row">
-    <div class="col-lg-9 col-md-8 col-sm-8">
-      <div class="row no-gutter">
-
-        <div class="col-xs-12">
-          <div class="card contacts">
-            <div class="card-heading">
-              <h2>Pardna Groups ({{ ui.list.length }})</h2>
-            <div class="card-tools">
-              <button ui-sref="group-add" md-ink-ripple="" class="md-btn md-raised pull-right p-h-md pink">Start New Pardna Group</button>
-            </div>
-            </div>
-            <div class="list-group list-group-lg no-bg" ng-show="ui.list.length" style="max-height: 200px">
-              <table class="table table-striped">
-              <tr class="list-group-header">
-                  <td>Group Name</td>
-                  <td>Start Date</td>
-                  <td>Frequency</td>
-                  <td>Amount</td>
-              </tr>
-                <tr ng-repeat="group in ui.list" ui-sref="group-details({id: group.id})">
-                  <td>{{ group.name }} </td>
-                  <td>{{ group.startdate }} </td>
-                  <td>{{ group.frequency }} </td>
-                  <td><span class="pull-right">£{{ group.amount}} </span></td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xs-12" ng-show="ui.groupInvitationList.length">
-          <div class="card contacts">
-            <div class="card-heading">
-              <h2>Pardna Group Invitations ({{ ui.groupInvitationList.length }})</h2>
-            </div>
-            <div class="list-group list-group-lg no-bg" style="max-height: 200px">
-              <table class="table table-striped">
-            <tr class="list-group-header">
-                  <td>Group Name</td>
-                  <td>Start Date</td>
-                  <td>Frequency</td>
-                  <td>Amount</td>
-              </tr>
-                <tr ng-repeat="group in ui.groupInvitationList" ui-sref="group-details({id: group.id})">
-                  <td>{{ group.name }} </td>
-                  <td>{{ group.startdate }} </td>
-                  <td>{{ group.frequency }} </td>
-                  <td><span class="pull-right">{{ group.amount}} </span></td>
-                  <td>
-                    <span class="pull-right">
-                      <a class="md-btn md-fab md-raised pink md-ink-ripple" ng-click="" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-close"></i></a>
-                      <a class="md-btn md-fab md-raised blue md-ink-ripple" ng-click="acceptGroupInvitation(group.id)" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-check"></i></a>
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12" ng-show="ui.userInvitationList.length">
-          <div class="card contacts">
-            <div class="card-heading">
-              <h2>Invitations ({{ ui.userInvitationList.length }})</h2>
-            </div>
-            <div class="list-group list-group-lg no-bg" style="max-height: 200px">
-              <table class="table table-striped">
-                <tr ng-repeat="d in ui.userInvitationList">
-                  <td>{{ d.fullname }} </td>
-                  <td>
-                    <span class="pull-right">
-                      <a class="md-btn md-fab md-raised pink md-ink-ripple" ng-click="" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-close"></i></a>
-                      <a class="md-btn md-fab md-raised blue md-ink-ripple" ng-click="acceptUserInvitation(d.invitation_id)" style="width: 26px; height: 26px; line-height: 4px; padding: 6px;"><i class="fa fa-check"></i></a>
-                  </span>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
       </div>
-
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-4">
-      <div class="card">
-        <div class="card-heading">
-          <h2>Friends ({{ ui.relationships.length }})</h2>
-        </div>
-          <div class="card contacts">
-            <div class="list-group list-group-lg no-bg" style="max-height: 200px">
-              <a href="" class="list-group-item text-ellipsis" ng-repeat="r in ui.relationships">
-                <span class="pull-right">
-                  <i class="mdi-action-trending-up i-20 text-muted-dk"></i>
-                </span>
-                {{ r.fullname }}
-                </a>
-            </div>
-          </div>
-      </div>
-
-  </div>
-</div>
     </div>
   </div>
-  <!-- / -->
-</div>
-</div>
+
+  <div ng-cloak>
+    <md-content class="md-padding" layout-xs="column" layout="row">
+      <div flex-gt-sm="25" ui-view="friends" flex >
+      </div>
+      <div flex-xs flex-gt-xs="75" layout="column">
+        <md-tabs class="md-accent md-dynamic-height" md-selected="1" md-border-bottom md-autoselect>
+          <md-tab label="Invites">
+            <div ui-view="pardna-invites"></div>
+          </md-tab>
+          <md-tab label="Pardnas">
+            <div ui-view="pardna-groups"></div>
+          </md-tab>
+
+        </md-tabs>
+      </div>
+      <!-- <div ui-view="floating-add">
+      </div> -->
+    </md-content>
+  </div>
   <!-- / content -->
-
-
-<div class="modal fade ng-scope" id="user" data-backdrop="false">
-  <!-- ngInclude: 'views/partials/aside.tpl.user.html' --><div class="right w-xl bg-white md-whiteframe-z2 ng-scope" ng-include="'views/partials/aside.tpl.user.html'" style="">  <div class="box ng-scope">
-    <div class="p p-h-md">
-      <a data-dismiss="modal" class="pull-right text-muted-lt text-2x m-t-n inline p-sm">×</a>
-      <strong>Members</strong>
-    </div>
-    <div class="box-row">
-      <div class="box-cell">
-        <div class="box-inner">
-          <div class="list-group no-radius no-borders">
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-              <img src="images/a1.jpg" class="pull-left w-40 m-r img-circle">
-              <div class="clear">
-                <span class="font-bold block">Jonathan Doe</span>
-                <span class="clear text-ellipsis text-xs">"Hey, What's up"</span>
-              </div>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-              <img src="images/a2.jpg" class="pull-left w-40 m-r img-circle">
-              <div class="clear">
-                <span class="font-bold block">James Pill</span>
-                <span class="clear text-ellipsis text-xs">"Lorem ipsum dolor sit amet onsectetur adipiscing elit"</span>
-              </div>
-            </a>
-            <div class="p-h-md m-t p-v-xs">Work</div>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-success text-xs m-r-xs"></i>
-                <span>Jonathan Morina</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-success text-xs m-r-xs"></i>
-                <span>Mason Yarnell</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-warning text-xs m-r-xs"></i>
-                <span>Mike Mcalidek</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Cris Labiso</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Daniel Sandvid</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Helder Oliveira</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Jeff Broderik</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Daniel Sandvid</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Helder Oliveira</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Jeff Broderik</span>
-            </a>
-            <div class="p-h-md m-t p-v-xs">Partner</div>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-success text-xs m-r-xs"></i>
-                <span>Mason Yarnell</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-warning text-xs m-r-xs"></i>
-                <span>Mike Mcalidek</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Cris Labiso</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Jonathan Morina</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Daniel Sandvid</span>
-            </a>
-            <a data-toggle="modal" data-target="#chat" data-dismiss="modal" class="list-group-item p-h-md">
-                <i class="fa fa-circle text-muted-lt text-xs m-r-xs"></i>
-                <span>Helder Oliveira</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="p-h-md p-v">
-      <p>Invite People</p>
-      <a href="" class="text-muted"><i class="fa fa-fw fa-twitter"></i> Twitter</a>
-      <a href="" class="text-muted m-h"><i class="fa fa-fw fa-facebook"></i> Facebook</a>
-    </div>
-  </div>
-</div>
-</div>
 <div ui-view="confirmation"></div>

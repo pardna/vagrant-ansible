@@ -1,0 +1,36 @@
+<div id="content" class="app-content" role="">
+  <div class="box">
+    <div ui-view="nav"></div>
+  </div>
+    <!-- Content -->
+    <div class=" box-row" id="firstLogin">
+      <div class="box-cell">
+        <!-- uiView:  -->
+        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <nav mfb-menu position="br" effect="zoomin" label="Close"
+                   active-icon="ion-close-round" resting-icon="ion-plus-round"
+                   toggling-method="click">
+                <button mfb-button icon="ion-card" label="Add New Card" ng-click="redirectToPaymentsProvider({id: group_id})"></button>
+              </nav>
+              <md-card md-theme="dark-blue">
+                <md-card-content>
+                <p> Choose the bank account to set up payment for or add a new card</p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button>GOT IT</md-button>
+                </md-card-actions>
+              </md-card>
+              <div class="bankaccounts__details">
+                <div ng-repeat="bankaccount in bankaccounts">
+                  <bankaccount-card accountnumberending="{{bankaccount.account_number_ending}}" bankname="{{bankaccount.bank_name}}" accountholdername="{{bankaccount.account_holder_name}}" theme="forest" ng-click="showBankAccountDetails(bankaccount, $event)"></bankaccount-card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / -->
+    </div>
+</div>
