@@ -3,7 +3,35 @@
     <div ui-view="nav"></div>
   </div>
     <!-- Content -->
+    <div layout="row">
+      <md-content flex="70" flex-sm="100" flex-xs="100" class="md-padding mdl-grid add-new-pardna" layout-padding laout-margin layout-xs="column">
+        <md-toolbar hide-xs>
+          <div class="md-toolbar-tools card-heading">
+          <span><md-icon md-svg-icon="img/icons/ic_pardna_white_24px.svg"></md-icon> Add New Pardna Group </span>
+          </div>
+        </md-toolbar>
 
+        <md-content class="md-padding">
+          <md-tabs class="md-dynamic-height" md-selected="data.selectedIndex" md-align-tabs="top">
+
+            <md-tab label="Pardna Details " id="tab1">
+              <md-tab-body>
+                <div ui-view="pardna-details"></div>
+              </md-tab-body>
+            </md-tab>
+
+            <md-tab label="Add Friends" id="tab2">
+              <md-tab-body>
+                <div ui-view="add-users"></div>
+              </md-tab-body>
+            </md-tab>
+          </md-tabs>
+        </md-content>
+
+      </md-content>
+</div>
+
+<!--
     <div class="box-row" id="">
       <div class="box-cell">
         <div class="col-md-10 col-md-offset-1 box-inner padding ng-scope">
@@ -20,7 +48,7 @@
                     <div class="col-sm-12">
                       <md-content class="md-padding">
                         <md-tabs class="md-accent md-dynamic-height" md-selected="data.selectedIndex" md-align-tabs="top">
-                          <!--
+                          <!- -
                           <md-tab id="tab0">
                           <md-tab-label>
                           <span class="round-tab">
@@ -32,7 +60,7 @@
                           <div ui-view="your-details"></div>
                           </md-tab-body>
                           </md-tab>
-                          -->
+                          - >
                           <md-tab id="tab1">
                             <md-tab-label>
                               <span class="round-tab">
@@ -44,7 +72,7 @@
                               <div ui-view="pardna-details"></div>
                             </md-tab-body>
                           </md-tab>
-                            <!--
+                            <!- -
                           <md-tab id="tab3">
                             <md-tab-label>
                               <span class="round-tab">
@@ -56,7 +84,7 @@
                               <div ui-view="direct-debit"></div>
                             </md-tab-body>
                           </md-tab>
-                            -->
+                            - ->
                           <md-tab id="tab2">
                             <md-tab-label>
                               <span class="round-tab">
@@ -82,4 +110,6 @@
         </div>
       </div>
     </div>
+-->
+
 </div>

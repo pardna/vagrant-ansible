@@ -49,7 +49,7 @@ gulp.task('usemin', function() {
 			.pipe(usemin({
 				 less: ['concat', less()],
 				 // js: [minifyJs(), 'concat'],
-                                 js: [minifyJs()],
+          js: [minifyJs()],
 				 css: [minifyCss({keepSpecialComments: 0}), 'concat'],
 				 html: [minifyHtml({empty: true})]
 			}))

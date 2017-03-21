@@ -1,4 +1,5 @@
-<form class="ng-pristine ng-valid">
+<form class="ng-pristine ng-valid add-users-form">
+    <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
   <div class="row-">
     <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
 
@@ -14,12 +15,12 @@
                 </div>
 
             <div class="col-sm-12 add-more-emails">
-          <button md-ink-ripple="" class="md-btn md-raised pull-left p-h-md blue col-xs-12" ng-click="addEmail()"> Add More Emails </button>
+          <button md-ink-ripple="" class="md-btn md-raised pull-left p-h-md md-primary md-button col-xs-12" ng-click="addEmail()"> Add More Emails </button>
                 </div>
             </div>
           <div class="col-sm-6 add-existing-members">
               <div>Select from your existing friends and family.</div>
-            
+
          <div class="card contacts">
             <div class="list-group list-group-lg no-bg" style="max-height: 200px">
               <a href="" class="list-group-item text-ellipsis" ng-repeat="r in ui.relationships">
@@ -29,8 +30,8 @@
                 {{ r.fullname }}
                 </a>
             </div>
-          </div>  
-              
+          </div>
+
           </div>
 
       </div>
@@ -40,10 +41,11 @@
     <div class="md-layout-row md-layout-sm-column" flex layout="row" layout-align="space-between center">
       <div class="col-xs-12">
         <div class="lt p">
-          <button md-ink-ripple="" class="md-btn md-raised pull-left p-h-md pink col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-2 previous-button" ng-click="previous()"> Previous </button>
-          <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md pink col-xs-12 col-sm-6 col-md-6 col-lg-4" ng-click="add()"> Setup Pardna Group </button>
+          <button md-ink-ripple="" layout="row" layout-align="center center" class="md-btn md-raised pull-left p-h-md md-primary md-button col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-2 previous-button" ng-click="previous()"><i class="material-icons">arrow_back</i> Previous </button>
+          <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md md-primary md-button col-xs-12 col-sm-6 col-md-6 col-lg-4" ng-click="add()"> Setup Pardna Group! </button>
         </div>
       </div>
     </div>
   </div>
+  </md-card>
 </form>

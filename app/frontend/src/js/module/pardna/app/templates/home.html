@@ -1,21 +1,18 @@
 <div id="content" class="app-content" role="">
-  <nav ng-show="user.verified != '1'" mfb-menu position="br" effect="zoomin" label="Close"
-       active-icon="ion-close-round" resting-icon="ion-plus-round"
-       toggling-method="click">
-    <button mfb-button icon="ion-android-person-add" label="Add group" ui-sref="group-add"></button>
-  </nav>
+
   <div class="box">
     <div ui-view="nav"></div>
     <!-- Content -->
     <div class="box-row" id="firstLogin">
       <div class="col-xs-12 user-details-container">
-        <div class="card card-user-details col-md-10 col-xs-12">
+        <div class="card card-user-details col-md-12 col-xs-12">
           <div class="card-body">
             <div class="row">
               <div class="col-sm-12 user-details-row">
                 <div class="r-t">
                   <div class="h2 fa-user-details">
-                    <i class="fa fa-user glyphicon glyphicon-user fa-2x"></i>
+
+                   <i class="material-icons member">person</i>
                       <div class="fa-user-name-number">
                           <span class="">
                               <h2><span>
@@ -45,19 +42,29 @@
   </div>
 
   <div ng-cloak>
-    <md-content class="md-padding" layout-xs="column" layout="row">
-      <div flex-gt-sm="25" ui-view="friends" flex >
-      </div>
-      <div flex-xs flex-gt-xs="75" layout="column">
-        <md-tabs class="md-accent md-dynamic-height" md-selected="1" md-border-bottom md-autoselect>
-          <md-tab label="Invites">
+    <md-content class="md-padding mdl-grid" layout-padding laout-margin layout-xs="column" layout="row">
+      <div flex-gt-sm="70" layout="column">
+        <md-toolbar layout="row" hide-xs>
+          <div class="md-toolbar-tools card-heading">
+            <span><md-icon md-svg-icon="img/icons/ic_pardna_white_24px.svg"></md-icon> My Pardna Groups</span>
+          </div>
+        </md-toolbar>
+        <md-tabs class="md-dynamic-height" md-selected="0" md-border-bottom md-autoselect>
+          <md-tab label="Pardna Invites">
             <div ui-view="pardna-invites"></div>
           </md-tab>
-          <md-tab label="Pardnas">
+          <md-tab label="Manage Pardnas">
             <div ui-view="pardna-groups"></div>
           </md-tab>
-
         </md-tabs>
+          <md-button class="btn-create-pardna hide-xs md-primary" ui-sref="group-add"><i class="material-icons">add</i> Create New Pardna </md-button>
+        <nav ng-show="user.verified != '1'" mfb-menu position="br" effect="zoomin" label="Close"
+             active-icon="ion-close-round" resting-icon="ion-plus-round"
+             toggling-method="click">
+          <button mfb-button icon="ion-android-person-add" label="Add group" ui-sref="group-add"></button>
+        </nav>
+      </div>
+      <div flex-gt-sm="30" ui-view="friends">
       </div>
       <!-- <div ui-view="floating-add">
       </div> -->

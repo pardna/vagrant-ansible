@@ -1,139 +1,158 @@
-<md-content class="md-padding">
+<md-content class="padding-dashboard panel-group wrap" id="accordion" >
   <md-card ng-repeat="group in ui.list">
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">{{group.name}} &nbsp;
-          <md-icon ng-if="group.pardna_confirmed" md-svg-src="img/icons/ic_lock_black_24px.svg"></md-icon>
-          <md-icon ng-if="! group.pardna_confirmed" md-svg-src="img/icons/ic_lock_open_black_24px.svg"></md-icon>
-        </span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-actions layout="row" layout-align="start center">
-      <md-card-icon-actions>
-        <md-button class="md-icon-button" aria-label="Favorite">
-          <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
-        </md-button>
-        <md-button ng-show="group.user_id == group.admin" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-icon-button" aria-label="Invite">
-          <md-icon md-svg-icon="img/icons/ic_person_add_black_64px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="Share">
-          <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
-        </md-button>
-      </md-card-icon-actions>
-      <md-button ng-show="group.user_id == group.admin && ! group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-fab md-primary md-hue-2" aria-label="Confirm Pardna">
-          <md-icon md-svg-src="img/icons/ic_check_white_24px.svg"></md-icon>
-      </md-button>
-      <!-- <md-button ng-show="group.user_id == group.admin" class="md-raised md-primary">Confirm Pardna</md-button> -->
-    </md-card-actions>
-    <md-list class="md-dense" flex>
-      <md-divider ></md-divider>
-      <md-subheader class="md-no-sticky">Details</md-subheader>
-      <md-list-item class="md-2-line" class="startdate">
-        <md-icon md-svg-icon="img/icons/ic_today_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> Start Date </p>
-          <h3> {{group.startdate | date:'d MMMM y'}} </h3>
-        </div>
-      </md-list-item>
-      <md-list-item class="md-2-line" class="endtime">
-        <md-icon md-svg-icon="img/icons/ic_date_range_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> End Date </p>
-          <h3> {{group.enddate | date:'d MMMM y'}} </h3>
-        </div>
-      </md-list-item>
-      <md-list-item class="md-2-line" class="frequency">
-        <md-icon md-svg-icon="img/icons/ic_schedule_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> Frequency </p>
-          <h3> {{group.frequency}} </h3>
-        </div>
-      </md-list-item>
-      <md-list-item class="md-2-line" class="amount">
-        <md-icon md-svg-icon="img/icons/ic_attach_money_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> Amount </p>
-          <h3> {{group.amount | currency: group.currency}} </h3>
-        </div>
-      </md-list-item>
-    </md-list>
-    <md-divider></md-divider>
-    <md-subheader class="md-no-sticky">Payment</md-subheader>
-    <md-list class="md-dense" flex>
-      <md-list-item class="md-2-line md-no-proxy">
-        <md-icon md-svg-icon="img/icons/ic_credit_card_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> Payment Status </p>
-          <div ng-if="group.members[group.member_key].allow_choose_payment">
-            <h3 md-colors="{color:'red'}"> {{group.members[group.member_key].payment_status}} </h3>
-          </div>
-          <div ng-if="group.members[group.member_key].allow_edit_payment">
-            <h3 md-colors="{color:'amber'}"> {{group.members[group.member_key].payment_status}} </h3>
-          </div>
-        </div>
-        <md-button ng-if="group.members[group.member_key].allow_choose_payment" class="md-secondary" ui-sref="payment-setup({id: group.id})">Choose Payment</md-button>
-        <md-button ng-if="group.members[group.member_key].allow_edit_payment" class="md-secondary md-icon-button" ui-sref="paymentstatus({id: group.id})" aria-label="call">
-          <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
-        </md-button>
-      </md-list-item>
-    </md-list>
-    <md-divider></md-divider>
-    <md-subheader class="md-no-sticky">Slot</md-subheader>
-    <md-list class="md-dense" flex>
-      <md-list-item class="md-2-line">
-        <md-icon md-svg-icon="img/icons/ic_today_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> Payout Date </p>
-          <div ng-if="!group.members[group.member_key].slot_id">
-            <h3 md-colors="{color:'green'}"> {{pardnaSlot(group.pardna_slots).pay_date | date:'d MMMM y'}}</h3>
-            <!-- <h3 md-colors="{color:'red'}"> CHOOSE SLOT </h3> -->
-          </div>
-        </div>
-        <md-button ng-if="!group.members[group.member_key].slot_id" class="md-secondary" ui-sref="group-details({id: group.id})">Change Slot</md-button>
-        <md-button ng-if="group.members[group.member_key].slot_id" class="md-secondary md-icon-button" ui-sref="group-details({id: group.id})" aria-label="call">
-          <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
-        </md-button>
-      </md-list-item>
-      <md-list-item class="md-2-line md-no-proxy">
-        <md-icon md-svg-icon="img/icons/ic_date_range_black_24px.svg"></md-icon>
-        <div class="md-list-item-text">
-          <p> Next Payin Date</p>
-          <h3> 10 June 2017 </h3>
-        </div>
-        <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View Mandate</md-button>
-      </md-list-item>
-    </md-list>
-    <md-list class="fixedRows">
-      <md-divider ></md-divider>
-      <md-subheader class="md-no-sticky">Members</md-subheader>
-      <md-list-item class="md-2-line contact-item" ng-repeat="(index, member) in group.members">
-        <img ng-src="http://lorempixel.com/50/50/people?{{index}}" class="md-avatar" alt="{{member.fullname}}" />
-        <div class="md-list-item-text compact">
-          <h3>{{member.fullname}}<md-badge class="md-warn" ng-if="member.user_id == group.admin">Group Admin</md-badge></h3>
-          <p>{{member.email}}</p>
-        </div>
-      </md-list-item>
-    </md-list>
-    <div>
-      <md-divider ></md-divider>
-      <md-subheader class="md-no-sticky">Invites</md-subheader>
-      <md-chips
-        ng-show="!!group.invitee_emails.length"
-        ng-model="group.invitee_emails"
-        readonly="true"
-        md-removable="true"
-        placeholder="Invite someone"
-        delete-button-label="Remove Invitee"
-        delete-hint="Press delete to cancel invite to group"></md-chips>
-      <div layout="row" layout-align="end center">
-        <md-button layout-align="center end" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-secondary md-icon-button" aria-label="call">
-          <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
-        </md-button>
-      </div>
-        <!-- <md-button layout-align="center end" ng-click="showInvitesModal($event)" class="md-secondary md-icon-button" aria-label="call">
-          <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
-        </md-button> -->
 
-    </div>
+    <div role="tablist" aria-multiselectable="true">
+        <div class="panel">
+
+        <md-card-title class="panel-heading" role="tab" id="heading{{$index + 1}}">
+          <md-card-title-text>
+            <a class="md-headline" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}" aria-expanded="false" aria-controls="collapse{{$index + 1}}">{{group.name}} &nbsp;
+              <md-icon ng-if="group.pardna_confirmed" md-svg-src="img/icons/ic_lock_black_24px.svg"></md-icon>
+              <md-icon ng-if="! group.pardna_confirmed" md-svg-src="img/icons/ic_lock_open_black_24px.svg"></md-icon>
+            </a>
+          </md-card-title-text>
+        </md-card-title> 
+
+          <div id="collapse{{$index + 1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index + 1}}">
+            <div class="panel-body">
+        <!-- start of accordion -->
+            <md-card-actions layout="row" layout-align="start center">
+              <md-card-icon-actions>
+                <md-button class="md-icon-button" aria-label="Favorite">
+                  <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
+                </md-button>
+                <md-button ng-show="group.user_id == group.admin" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-icon-button" aria-label="Invite">
+                  <md-icon md-svg-icon="img/icons/ic_person_add_black_64px.svg"></md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Share">
+                  <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
+                </md-button>
+              </md-card-icon-actions>
+              <md-button ng-show="group.user_id == group.admin && ! group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-fab md-primary md-hue-2" aria-label="Confirm Pardna">
+                  <md-icon md-svg-src="img/icons/ic_check_white_24px.svg"></md-icon>
+              </md-button>
+              <!-- <md-button ng-show="group.user_id == group.admin" class="md-raised md-primary">Confirm Pardna</md-button> -->
+            </md-card-actions>
+            <md-list class="md-dense" flex>
+              <md-divider ></md-divider>
+              <md-subheader class="md-no-sticky">Details</md-subheader>
+              <md-list-item class="md-2-line" class="startdate">
+                <md-icon md-svg-icon="img/icons/ic_today_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> Start Date </p>
+                  <h3> {{group.startdate | date:'d MMMM y'}} </h3>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line" class="endtime">
+                <md-icon md-svg-icon="img/icons/ic_date_range_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> End Date </p>
+                  <h3> {{group.enddate | date:'d MMMM y'}} </h3>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line" class="frequency">
+                <md-icon md-svg-icon="img/icons/ic_schedule_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> Frequency </p>
+                  <h3> {{group.frequency}} </h3>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line" class="amount">
+                <md-icon md-svg-icon="img/icons/ic_gbp_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> Amount </p>
+                  <h3> {{group.amount | currency: group.currency}} </h3>
+                </div>
+              </md-list-item>
+            </md-list>
+            <md-divider></md-divider>
+            <md-subheader class="md-no-sticky">Payment</md-subheader>
+            <md-list class="md-dense" flex>
+              <md-list-item class="md-2-line md-no-proxy">
+                <md-icon md-svg-icon="img/icons/ic_credit_card_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> Payment Status </p>
+                  <div ng-if="group.members[group.member_key].allow_choose_payment">
+                    <h3 md-colors="{color:'red'}"> {{group.members[group.member_key].payment_status}} </h3>
+                  </div>
+                  <div ng-if="group.members[group.member_key].allow_edit_payment">
+                    <h3 md-colors="{color:'amber'}"> {{group.members[group.member_key].payment_status}} </h3>
+                  </div>
+                </div>
+                <md-button ng-if="group.members[group.member_key].allow_choose_payment" class="md-secondary" ui-sref="payment-setup({id: group.id})">Choose Payment</md-button>
+                <md-button ng-if="group.members[group.member_key].allow_edit_payment" class="md-secondary md-icon-button" ui-sref="paymentstatus({id: group.id})" aria-label="call">
+                  <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
+                </md-button>
+              </md-list-item>
+            </md-list>
+            <md-divider></md-divider>
+            <md-subheader class="md-no-sticky">Slot</md-subheader>
+            <md-list class="md-dense" flex>
+              <md-list-item class="md-2-line">
+                <md-icon md-svg-icon="img/icons/ic_today_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> Payout Date </p>
+                  <div ng-if="!group.members[group.member_key].slot_id">
+                    <h3 md-colors="{color:'green'}"> {{pardnaSlot(group.pardna_slots).pay_date | date:'d MMMM y'}}</h3>
+                    <!-- <h3 md-colors="{color:'red'}"> CHOOSE SLOT </h3> -->
+                  </div>
+                </div>
+                <md-button ng-if="!group.members[group.member_key].slot_id" class="md-secondary" ui-sref="group-details({id: group.id})">Change Slot</md-button>
+                <md-button ng-if="group.members[group.member_key].slot_id" class="md-secondary md-icon-button" ui-sref="group-details({id: group.id})" aria-label="call">
+                  <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
+                </md-button>
+              </md-list-item>
+              <md-list-item class="md-2-line md-no-proxy">
+                <md-icon md-svg-icon="img/icons/ic_date_range_black_24px.svg"></md-icon>
+                <div class="md-list-item-text">
+                  <p> Next Payin Date</p>
+                  <h3> 10 June 2017 </h3>
+                </div>
+                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View Mandate</md-button>
+              </md-list-item>
+            </md-list>
+            <md-list class="fixedRows">
+              <md-divider ></md-divider>
+              <md-subheader class="md-no-sticky">Members</md-subheader>
+              <md-list-item class="md-2-line contact-item" ng-repeat="(index, member) in group.members">
+                <img ng-src="http://lorempixel.com/50/50/people?{{index}}" class="md-avatar" alt="{{member.fullname}}" />
+                <div class="md-list-item-text compact">
+                  <h3>{{member.fullname}}<md-badge class="md-warn" ng-if="member.user_id == group.admin">Group Admin</md-badge></h3>
+                  <p>{{member.email}}</p>
+                </div>
+              </md-list-item>
+            </md-list>
+            <div>
+              <md-divider ></md-divider>
+              <md-subheader class="md-no-sticky">Invites</md-subheader>
+              <md-chips
+                ng-show="!!group.invitee_emails.length"
+                ng-model="group.invitee_emails"
+                readonly="true"
+                md-removable="true"
+                placeholder="Invite someone"
+                delete-button-label="Remove Invitee"
+                delete-hint="Press delete to cancel invite to group"></md-chips>
+              <div layout="row" layout-align="end center">
+                <md-button layout-align="center end" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-secondary md-icon-button" aria-label="call">
+                  <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
+                </md-button>
+              </div>
+
+                <!-- <md-button layout-align="center end" ng-click="showInvitesModal($event)" class="md-secondary md-icon-button" aria-label="call">
+                  <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
+                </md-button> -->
+
+            </div>
+          <!-- end of accordion -->
+            </div>
+          </div>
+        </div>
+        <!-- end of panel -->
+      </div>
+      <!-- end of #accordion -->
+
   </md-card>
+
+
 </md-content>
