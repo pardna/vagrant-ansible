@@ -1,17 +1,41 @@
-<md-toolbar layout="row">
+<md-toolbar layout="row" hide-xs>
   <div class="md-toolbar-tools card-heading">
-    <span>Friends ({{ ui.relationships.length }})</span>
+  <span><i class="material-icons">people</i> My Friends &amp; Family</span>
   </div>
 </md-toolbar>
-<md-content>
-  <md-list flex>
 
-    <md-list-item class="md-2-line contact-item selected" ng-repeat="relation in ui.relationships">
-      <img ng-src="img/100-2.jpeg" class="md-avatar" alt="{{relation.fullname}}" />
-      <div class="md-list-item-text compact">
-        <h3>{{relation.fullname}}</h3>
-        <p>{{relation.email}}</p>
-      </div>
-    </md-list-item>
-  </md-list>
-</md-content>
+<md-tabs class="md-dynamic-height" md-selected="0" md-border-bottom md-autoselect>
+  <md-tab label="Incoming Invitations">
+    <md-card ng-show="!!ui.userInvitationList.length" md-theme="{{ showDarkTheme ? 'dark-orange' : 'default' }}" md-theme-watch>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Received Invitations</span>
+        <span class="md-subhead">These people want to connect with you on Pardna.com!</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-header ng-repeat="invitee in ui.userInvitationList">
+      <md-card-avatar style="margin-left: 0px; margin-right: 12px;">
+        <img class="md-user-avatar" src="img/100-2.jpeg"/>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-title">{{invitee.fullname}}</span>
+      </md-card-header-text>
+      <md-button class="md-raised md-primary" ng-click="acceptUserInvitation(invitee.invitation_id)">ACCEPT</md-button>
+      <md-button class="md-primary" ng-click="ignoreUserInvitation(invitee.invitation_id)">IGNORE</md-button>
+    </md-card-header>
+    </md-card>
+  </md-tab>
+  <md-tab label="Contact List ({{ ui.relationships.length }})">
+    <md-card>
+      <md-list flex>
+        <md-list-item class="md-2-line contact-item selected" ng-repeat="relation in ui.relationships">
+          <img ng-src="img/100-2.jpeg" class="md-avatar" alt="{{relation.fullname}}" />
+          <div class="md-list-item-text compact">
+            <h3>{{relation.fullname}}</h3>
+            <p>{{relation.email}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </md-card>
+  </md-tab>
+</md-tabs>

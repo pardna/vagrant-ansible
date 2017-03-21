@@ -75,6 +75,7 @@
   md-tab-label {
     text-align: center;;
   }
+
   .card-body {
     padding: 0px 24px 0px 24px;
   }
@@ -161,12 +162,13 @@
 }
 
 .user-details-row {
-    padding: 0
+    padding: 0 !important
 }
 
 .fa-user-details {
     flex-direction: row;
     display: flex;
+    align-items: center;
 }
 
 .glyphicon-user {
@@ -175,21 +177,28 @@
     font-size: 1.25em;
 }
 
+.member {
+    display: flex;
+    color: #fff;
+    font-size: 48px !important;
+}
+
+.fa-user-name-number {
+    align-items: center;
+    display: flex;
+}
+
+
 .fa-user-name-number h2 span {
-    float: left;
-    margin-bottom: 5px
+    display: flex;
 }
 
-
-.fa-user span {
-    display: block;
-}
-
-.fa-user + div span h2 {
-    margin: 0;
-    text-transform: capitalize;
-    align-items: baseline;
-    color: #fff
+.fa-user-name-number h2 {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .fa-user-details .fa-check {
@@ -204,7 +213,7 @@
 
 .box #nav-container {
     background: #6f2f6b;
-    padding: 0px 10%;
+    padding: 0px 10px;
 }
 
 
@@ -230,7 +239,7 @@
 }
 
 .card-user-details .card-body {
-    padding: 12px 24px;
+    padding: 12px 0;
 }
 
 .user-details-container {
@@ -261,8 +270,22 @@
     box-shadow: none;
 }
 
+.add-users-form button,
+.add-pardna-form button {
+  display: flex;
+}
+
+.add-users-form button i,
+.add-pardna-form button i {
+  font-size: 20px;
+}
+
 .card-heading h2 {
     color: #6f2f6b;
+}
+
+md-card md-card-header {
+  align-items: center;
 }
 
 .card-heading .card-tools {
@@ -341,7 +364,9 @@ md-dialog {
 
 #user-fullname {
     margin-right: 10px;
-    margin-top: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
 }
 
 .unverified {
@@ -472,10 +497,6 @@ md-dialog .md-actions .md-button {
     top: 40px;
 }
 
-md-content.md-padding {
-    padding-bottom: 70px
-}
-
 .table>tbody>tr>td {
     padding: 12px
 }
@@ -501,6 +522,95 @@ md-content.md-padding {
 md-content.md-padding,
 md-tabs.md-dynamic-height md-tab-content.md-active {
     overflow: hidden;
+}
+
+md-toolbar,
+.md-toolbar-tools {
+  height: 54px;
+  line-height: 54px;
+  min-height: 54px;
+}
+
+.card-heading {
+  padding: 10px 24px;
+}
+
+.card-heading span {
+  display: flex;
+  align-items: center;
+}
+
+.card-heading span md-icon,
+.card-heading span i {
+  margin-right: 10px;
+  font-size: 32px;
+}
+
+
+md-content {
+  background: #efefef;
+}
+
+.btn-create-pardna {
+  position: absolute;
+  right: 0;
+  top: 62px;
+  display: flex;
+}
+
+.md-button.md-default-theme.md-primary.md-raised,
+.md-button.md-primary.md-raised,
+.md-button.md-default-theme.md-primary.md-fab,
+.md-button.md-primary.md-fab,
+.md-button.md-primary.md-raised,
+.btn-create-pardna {
+  background: #009688;
+  color: #fff!important;
+}
+
+.btn-create-pardna {
+  padding: 0 15px 0 10px;
+}
+
+.btn-create-pardna:hover,
+.md-button.md-primary.md-raised:hover {
+  background-color: #40b3ad !important;
+}
+
+button i {
+  font-size: 20px;
+}
+
+.layout-column {
+  position: relative;
+}
+
+.add-new-pardna {
+  margin: 0 auto;
+}
+
+
+md-tooltip  .md-background {
+    border-radius: inherit;
+    background: #000;
+    opacity: 1;
+  }
+md-tooltip .md-content {
+    height: auto;
+    width: 400px;
+    max-width: 400px;
+    padding: 12px;
+    white-space: initial;
+    opacity: 1;
+  }
+
+.add-pardna-form .layout-row>.flex {
+  align-items: center;
+  display: flex;
+}
+
+.add-pardna-form .layout-row>.flex md-input-container {
+  margin: 18px 0 0 0;
 }
 
 /*****/
@@ -601,6 +711,17 @@ md-tabs.md-dynamic-height md-tab-content.md-active {
 
     .table>tbody>tr>td:first-child {
         padding-left: 12px
+    }
+
+    .fa-user-details .material-icons,
+    .member {
+      display: none;
+    }
+
+    .fa-user-name-number h2 {
+        display: block;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
 }
