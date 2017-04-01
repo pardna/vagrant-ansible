@@ -3,9 +3,39 @@
     <div ui-view="nav"></div>
   </div>
     <!-- Content -->
+    <div layout="row">
+      <md-content flex="70" flex-sm="100" flex-xs="100" class="md-padding mdl-grid add-new-pardna" layout-padding laout-margin layout-xs="column">
+        <md-toolbar>
+          <div class="md-toolbar-tools card-heading">
+          <span><i class="material-icons">contact_mail</i> Invite Your Friends By Email </span>
+          </div>
+        </md-toolbar>
+        <div class="box-row" id="firstLogin">
+          <div class="box-cell">
+            <!-- uiView:  -->
+            <div class="box-inner ng-scope" ui-view="" id="view">
+
+                      <invitebyemail-card invite="invite" theme="forest"></invitebyemail-card>
+
+            </div>
+          </div>
+          <!-- / -->
+        </div>
+
+    </div>
+</div>
+
+
+<!--
+
+<div id="content" class="app-content" role="">
+  <div class="box">
+    <div ui-view="nav"></div>
+  </div>
+    < ! - - Content - - >
     <div class="box-row" id="firstLogin">
       <div class="box-cell">
-        <!-- uiView:  -->
+        <!- - uiView:  - ->
         <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -18,6 +48,8 @@
           </div>
         </div>
       </div>
-      <!-- / -->
+      <!- - / - - >
     </div>
 </div>
+
+-->
