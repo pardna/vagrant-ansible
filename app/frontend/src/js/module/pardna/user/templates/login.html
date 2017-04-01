@@ -1,4 +1,5 @@
-<div class="center-block w-xxl w-auto-xs p-v-md ng-scope">
+<div class="center-block login w-xxl w-auto-xs p-v-md ng-scope">
+  <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
     <div class="navbar">
       <div class="navbar-brand m-t-lg text-center">
 
@@ -23,7 +24,7 @@
             <input type="checkbox"><i class="indigo"></i> Keep me signed in
           </label>
         </div>
-        <button md-ink-ripple="" type="submit" class="md-btn md-raised pink btn-block p-h-md">Sign in</button>
+        <button md-ink-ripple="" type="submit" class="md-btn md-raised btn1 btn-block p-h-md">Sign in</button>
       </form>
     </div>
 
@@ -32,4 +33,5 @@
       <div class="m-b"><button ui-sref="forgot-password" class="md-btn">Forgot password?</button></div>
       <div>Do not have an account? <button ui-sref="signup" class="md-btn">Create an account</button></div>
     </div>
+  </md-card>
   </div>

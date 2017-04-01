@@ -18,6 +18,11 @@
 
 }
 
+.forgot.w-xxl,
+.signup.w-xxl,
+.login.w-xxl {
+  width: 400px
+}
 
 #add-new-pardna {
   color: #000;
@@ -376,11 +381,12 @@ md-dialog {
     background: #FBFFDB;
     color: #000;
     letter-spacing: 1px;
-    margin: 14px 20px 0 0;
+    margin: 0 20px 0 0;
     font-weight: 700;
     border-radius: 2px;
     line-height: initial;
     align-self: flex-start;
+    font-family: Roboto, Helvetica, Arial;
 }
 
 .verify {
@@ -403,6 +409,13 @@ md-dialog {
 .verify .verify-text h3 {
     margin-top: 0;
     margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.verify .verify-text h3 .material-icons {
+    font-size: 34px;
+    margin-right: 5px;
 }
 
 #membership-no {
@@ -519,6 +532,11 @@ md-dialog .md-actions .md-button {
     justify-content: space-around;
 }
 
+.invitationlist div.flex-xs-100 {
+  width: 100%;
+  align-items: center;
+}
+
 md-content.md-padding,
 md-tabs.md-dynamic-height md-tab-content.md-active {
     overflow: hidden;
@@ -563,8 +581,15 @@ md-content {
 .md-button.md-default-theme.md-primary.md-fab,
 .md-button.md-primary.md-fab,
 .md-button.md-primary.md-raised,
-.btn-create-pardna {
+.btn-create-pardna,
+.btn1 {
   background: #009688;
+  color: #fff!important;
+}
+
+.mfb-component__button--child,
+.mfb-component__button--main {
+  background-color: #009688!important;
   color: #fff!important;
 }
 
@@ -589,6 +614,21 @@ button i {
   margin: 0 auto;
 }
 
+.add-new-pardna md-toolbar {
+  padding: 0;
+}
+
+.add-new-pardna md-content {
+  padding: 0;
+}
+
+.add-new-pardna md-tab-content {
+  padding: 16px 0
+}
+
+.add-pardna-form-input-container {
+  background: #efefef;
+}
 
 md-tooltip  .md-background {
     border-radius: inherit;
@@ -610,9 +650,65 @@ md-tooltip .md-content {
 }
 
 .add-pardna-form .layout-row>.flex md-input-container {
-  margin: 18px 0 0 0;
+  margin: 18px 18px 0;
 }
 
+md-datepicker {
+    margin: 10px 0;
+}
+
+md-slider {
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+md-slider .md-thumb {
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+
+.add-pardna-form-input-container .amount {
+  width: 100px;
+  margin: 0 10px 0 0 !important;
+}
+
+md-radio-group {
+  display: flex;
+}
+
+md-radio-group md-radio-button {
+  margin-left: 20px;
+  margin-right: 15px;
+}
+
+md-input-container>md-icon {
+  top: 6px;
+  left: 18px;
+}
+
+.md-datepicker-triangle-button {
+  top: 15px;
+}
+
+.help-text {
+  font-size: 11px;
+  padding: 10px;
+  color: #999;
+}
+
+.panel .md-headline {
+  display: flex;
+  align-items: center;
+}
+
+.md-user-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+md-list-item {
+  align-items: center;
+}
 /*****/
 
 @media (max-width:480px) {

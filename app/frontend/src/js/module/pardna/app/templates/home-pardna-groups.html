@@ -1,19 +1,19 @@
-<md-content class="padding-dashboard panel-group wrap" id="accordion" >
+<md-content class="md-padding padding-dashboard panel-group wrap" id="accordion">
   <md-card ng-repeat="group in ui.list">
 
     <div role="tablist" aria-multiselectable="true">
         <div class="panel">
 
         <md-card-title class="panel-heading" role="tab" id="heading{{$index + 1}}">
-          <md-card-title-text>
+          <md-card-title-text> 
             <a class="md-headline" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}" aria-expanded="false" aria-controls="collapse{{$index + 1}}">{{group.name}} &nbsp;
-              <md-icon ng-if="group.pardna_confirmed" md-svg-src="img/icons/ic_lock_black_24px.svg"></md-icon>
-              <md-icon ng-if="! group.pardna_confirmed" md-svg-src="img/icons/ic_lock_open_black_24px.svg"></md-icon>
+              <i class="material-icons" ng-if="group.pardna_confirmed">lock</i>
+              <i class="material-icons" ng-if="! group.pardna_confirmed">lock_open</i>
             </a>
           </md-card-title-text>
-        </md-card-title> 
+        </md-card-title>
 
-          <div id="collapse{{$index + 1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index + 1}}">
+          <div id="collapse{{$index + 1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index + 1}}" aria-expanded="false">
             <div class="panel-body">
         <!-- start of accordion -->
             <md-card-actions layout="row" layout-align="start center">
@@ -144,15 +144,14 @@
                 </md-button> -->
 
             </div>
-          <!-- end of accordion -->
             </div>
           </div>
         </div>
         <!-- end of panel -->
       </div>
-      <!-- end of #accordion -->
 
   </md-card>
 
 
 </md-content>
+<!-- end of #accordion -->

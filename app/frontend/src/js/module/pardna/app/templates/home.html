@@ -28,9 +28,9 @@
                       </div>
                   </div>
                   <span class="verify" ng-show="user.verified != '1'">
-                     <span class="verify-text"><h3>Verify Your Account</h3>In order to start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
-                  <a class="md-btn md-raised p-h-md pink md-ink-ripple" ng-click="sendCode($event)">Send Code</a>
-                  <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="verifyCode($event)">Verify Account</a>
+                     <span class="verify-text"><h3><i class="material-icons">error</i>Verify Your Account</h3>In order to start your first Pardna, you need to verify your account. Get your mobile phone to hand and click "Send Code" to begin.</span>
+                  <a class="md-btn md-raised p-h-md btn1 md-ink-ripple" ng-click="sendCode($event)">Send Code</a>
+                  <a class="md-btn md-raised p-h-md btn1 md-ink-ripple" ng-click="verifyCode($event)">Verify Account</a>
                   </span>
                 </div>
               </div>
@@ -44,7 +44,7 @@
   <div ng-cloak>
     <md-content class="md-padding mdl-grid" layout-padding laout-margin layout-xs="column" layout="row">
       <div flex-gt-sm="70" layout="column">
-        <md-toolbar layout="row" hide-xs>
+        <md-toolbar layout="row">
           <div class="md-toolbar-tools card-heading">
             <span><md-icon md-svg-icon="img/icons/ic_pardna_white_24px.svg"></md-icon> My Pardna Groups</span>
           </div>
@@ -58,11 +58,13 @@
           </md-tab>
         </md-tabs>
           <md-button class="btn-create-pardna hide-xs md-primary" ui-sref="group-add"><i class="material-icons">add</i> Create New Pardna </md-button>
-        <nav ng-show="user.verified != '1'" mfb-menu position="br" effect="zoomin" label="Close"
+
+        <nav class="show-xs hide-gt-xs" ng-show="user.verified != '1'" mfb-menu position="br" effect="zoomin" label="Close"
              active-icon="ion-close-round" resting-icon="ion-plus-round"
              toggling-method="click">
           <button mfb-button icon="ion-android-person-add" label="Add group" ui-sref="group-add"></button>
         </nav>
+
       </div>
       <div flex-gt-sm="30" ui-view="friends">
       </div>

@@ -1,7 +1,4 @@
-<div class="card">
-  <div class="card-heading">
-    <h3>Invite your friends by email</h3>
-  </div>
+<md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
   <div class="card-tools">
   </div>
   <div class="card-body">
@@ -17,7 +14,7 @@
               <label for="emailAddresses">Email addresses (Separate multiple emails with commas) </label>
               <input type="text" class="form-control" ng-model="invite.emails" id="emailAddresses" placeholder="">
             </div>
-            <button type="submit" md-ink-ripple="" class="md-btn md-raised pull-right p-h-md blue"> INVITE </button>
+            <button type="submit" md-ink-ripple="" class="md-btn md-primary md-button md-raised pull-right p-h-md md-default-theme"> Invite </button>
           </form>
         </div>
         <div ng-show="modal">
@@ -29,11 +26,11 @@
             <label for="emailAddresses">Email addresses (Separate multiple emails with commas) </label>
             <input type="text" class="form-control" ng-model="invite.emails" id="emailAddresses" placeholder="">
           </div>
-          <button type="submit" ng-click="sendInvitations()" md-ink-ripple="" class="md-btn md-raised pull-right p-h-md blue"> INVITE </button>
+          <button type="submit" ng-click="sendInvitations()" md-ink-ripple="" class="md-btn md-primary md-button md-raised pull-right p-h-md md-default-theme"> Invite </button>
         </div>
         <div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</md-card>
