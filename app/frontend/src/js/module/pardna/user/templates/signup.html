@@ -1,4 +1,5 @@
-<div class="center-block w-xxl w-auto-xs p-v-md ng-scope">
+<div class="center-block signup w-xxl w-auto-xs p-v-md ng-scope">
+  <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
     <div class="navbar">
       <div class="navbar-brand m-t-lg text-center">
 
@@ -31,11 +32,12 @@
             <input type="checkbox" ng-model="agree" required="" class="" tabindex="0" aria-checked="false" aria-required="true" aria-invalid="true"><i class="indigo"></i> Agree the <a href="">terms and policy</a>
           </label>
         </div>
-        <button md-ink-ripple="" type="submit" class="md-btn md-raised pink btn-block p-h-md">Sign up</button>
+        <button md-ink-ripple="" type="submit" class="md-btn md-raised btn1 btn-block p-h-md">Sign up</button>
       </form>
     </div>
 
     <div class="p-v-lg text-center">
       <div>Already have an account? <button ui-sref="login" class="md-btn">Sign in</button></div>
     </div>
+  </md-card>
   </div>

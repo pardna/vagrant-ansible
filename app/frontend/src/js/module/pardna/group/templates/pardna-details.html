@@ -1,4 +1,98 @@
-<form class="ng-pristine ng-valid">
+<form class="ng-pristine ng-valid add-pardna-form">
+
+<!-- Give this group a memorable name -->
+<md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+  <div layout="row" layout-xs="column">
+    <div flex>
+      <h4>Give this group a memorable name</h4>
+    </div>
+    <div class="add-pardna-form-input-container" layout-align="center center" flex>
+      <md-input-container style="" class="md-input-has-value flex">
+        <label for="input_71">Type your group name here</label>
+        <input ng-model="pardna.name" class="ng-pristine ng-untouched ng-valid md-input" id="input_71" aria-invalid="false">
+      </md-input-container>
+    </div>
+    <div class="help-text" flex>
+      Each Pardna needs a unique name. Give it a name that would be meanigful to the whole group, for example: "Family Group" or "Money Squad".
+    </div>
+</div>
+</md-card>
+
+  <!-- Add the amount of slots needed -->
+  <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+  <div layout="row" layout-xs="column">
+    <div flex>
+      <h4>Add the amount of slots needed</h4>
+    </div>
+    <div class="add-pardna-form-input-container" layout-align="center center" flex>
+      <md-input-container style="" class="md-default-theme md-input-has-value flex">
+        <label for="input_71">Slots</label>
+        <input ng-model="pardna.slots" class="ng-pristine ng-untouched ng-valid md-input" aria-invalid="false">
+      </md-input-container>
+    </div>
+    <div class="help-text" flex>
+      A slot is each member's position in the Pardna. For example if there are six people then add six slots. Minimum 4, maximum 12.
+    </div>
+  </div>
+</md-card>
+
+  <!-- Start date -->
+<md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+  <div layout="row" layout-xs="column">
+    <div flex>
+      <h4>Start date</h4>
+    </div>
+    <div class="add-pardna-form-input-container" flex>
+      <md-datepicker layout="row" layout-align="start center" ng-model="pardna.startdate" md-placeholder="Enter date" tabindex="-1" aria-invalid="false" style=""></md-datepicker>
+    </div>
+    <div class="help-text" flex>
+      Choose a proposed start date for this Pardna. Add a date in the future that will give everyone enough time to respond to the invite to join.
+    </div>
+  </div>
+</md-card>
+
+<!-- Specify the regular amount to be saved -->
+<md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+  <div layout="row" layout-xs="column">
+    <div flex>
+      <h4>Specify the regular amount to be saved</h4>
+    </div>
+    <div class="add-pardna-form-input-container" flex>
+      <md-slider flex md-discrete min="0" max="500" ng-model="pardna.amount" aria-label="red" id="red-slider">
+      </md-slider>
+      <md-input-container md-no-float="" layout="row" class="md-input-has-placeholder md-default-theme amount ">
+        <md-icon md-svg-icon="img/icons/ic_gbp_black_24px.svg"></md-icon>
+        <input ng-model="pardna.amount" type="text" placeholder="" class="ng-pristine ng-untouched ng-valid md-input" aria-label="Amount" id="input_189" aria-invalid="false">
+      </md-input-container>
+    </div>
+    <div class="help-text" flex>
+      Now we're talking! This figure determines how much you and your team will regularly deposit and also determines how much you will each be paid out.
+    </div>
+  </div>
+</md-card>
+
+<!-- Weekly or monthly -->
+<md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+  <div layout="row" layout-xs="column">
+    <div flex>
+        <h4>Weekly or monthly</h4>
+    </div>
+    <div class="add-pardna-form-input-container" flex>
+      <md-radio-group ng-model="pardna.frequency">
+        <md-radio-button value="Monthly"> Monthly </md-radio-button>
+        <md-radio-button value="Weekly"> Weekly </md-radio-button>
+      </md-radio-group>
+    </div>
+    <div class="help-text" flex>
+      How often will members deposit into this Pardna.
+    </div>
+  </div>
+</md-card>
+
+<div class="lt p" layout="row" layout-align="end center">
+  <button md-ink-ripple="" layout="row" layout-align="center center" class="md-btn md-primary md-button md-raised pull-right p-h-md md-default-theme col-xs-12 col-md-2" ng-click="next()"> Next <i class="material-icons">arrow_forward</i></button>
+</div>
+  <!--
   <div class="row col-sm-12">
     <div class="col-sm-6">
       <h4>Give this group a memorable name</h4>
@@ -66,4 +160,6 @@
 
         </div>
       </div>
+-->
+
     </form>

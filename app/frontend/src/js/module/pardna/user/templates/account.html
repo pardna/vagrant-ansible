@@ -1,4 +1,51 @@
 <div id="content" class="app-content" role="">
+  <div class="box">
+    <div ui-view="nav"></div>
+  </div>
+    <!-- Content -->
+    <div layout="row">
+      <md-content flex="70" flex-sm="100" flex-xs="100" class="md-padding mdl-grid add-new-pardna" layout-padding laout-margin layout-xs="column">
+        <md-toolbar>
+          <div class="md-toolbar-tools card-heading">
+          <span><i class="material-icons">person</i> Account </span>
+          </div>
+        </md-toolbar>
+
+        <md-content class="md-padding">
+					<md-tabs class="md-dynamic-height" md-selected="0" md-border-bottom md-autoselect>
+
+            <md-tab label="My Details" id="tab1">
+              <md-tab-body>
+                <div ui-view="account-user"></div>
+              </md-tab-body>
+            </md-tab>
+
+            <md-tab label="Bank Account - Direct Debit" id="tab2">
+              <md-tab-body>
+                <div ui-view="account-direct-debit"></div>
+              </md-tab-body>
+            </md-tab>
+
+            <md-tab label="Bank Account - Payouts" id="tab3">
+              <md-tab-body>
+                <div ui-view="account-payout"></div>
+              </md-tab-body>
+            </md-tab>
+
+          </md-tabs>
+        </md-content>
+
+      </md-content>
+</div>
+
+
+</div>
+
+<!--
+
+
+
+<div id="content" class="app-content" role="">
 	<div class="box">
 		<div ui-view="nav"></div>
 		<div class="box-row">
@@ -10,11 +57,11 @@
 								<div class="col-sm-12 pardna-row">
 									<md-content class="md-padding">
 										<md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect>
-											<!--
+											<!- -
 											<md-tab ng-repeat="tab in tabs" ng-disabled="tab.disabled" label="{{tab.title}}">
 												<div ui-view="{{ tab.id}}"></div>
 											</md-tab>
-											-->
+											- ->
 											<md-tab label="User Details">
 												<md-content class="md-padding">
 													<div ui-view="account-user"></div>
@@ -42,3 +89,4 @@
 		</div>
 	</div>
 </div>
+-->

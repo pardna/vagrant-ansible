@@ -5,7 +5,7 @@
         <h2>Invite Friends</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
-          <md-icon md-svg-src="img/icons/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+          <i class="material-icons">close</i>
         </md-button>
       </div>
     </md-toolbar>
@@ -16,7 +16,7 @@
           <md-icon md-svg-icon="img/icons/ic_email_black_48px.svg"></md-icon>
         </md-button>
         <md-button ng-click="showInviteFriends()" class="md-icon-button" aria-label="Invite">
-          <md-icon md-svg-icon="img/icons/ic_search_black_48px.svg"></md-icon>
+          <md-icon md-svg-icon="img/icons/ic_people_black_24px.svg"></md-icon>
         </md-button>
       </div>
       <md-card ng-show="inviteserviceresponse.success" md-theme="dark-blue">
@@ -36,7 +36,7 @@
         </md-card-actions>
       </md-card>
       <div id="invite-friends" ng-show="invitestate.byfriends">
-        <div class="row">
+        <div>
           <md-list-item ng-repeat="person in ui.relationships" ng-init="person.selected = false">
             <img alt="{{ person.fullname }}" ng-src="img/100-2.jpeg" class="md-avatar" />
             <p>{{ person.fullname }}</p>
