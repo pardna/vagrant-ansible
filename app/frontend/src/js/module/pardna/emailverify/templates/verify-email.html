@@ -1,11 +1,73 @@
 <div id="content" class="app-content">
+  <div class="box">
+    <div ui-view="nav"></div>
+  </div>
+    <!-- Content -->
+    <div layout="row">
+      <md-content flex="50" flex-sm="100" flex-xs="100" class="md-padding mdl-grid add-new-pardna" layout-xs="column">
+        <md-toolbar>
+          <div class="md-toolbar-tools card-heading">
+          <span><i class="material-icons">mail_outline</i> Confirm Your Email </span>
+          </div>
+        </md-toolbar>
+        <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+        <div class="box-row" id="firstLogin">
+          <div class="box-cell">
+            <!-- uiView:  -->
+            <div class="box-inner ng-scope" ui-view="" id="view">
+
+
+                                          <div class="page">
+                                              <div class="flash notice-box"><span class="email_validate_message" ng-bind="email_validate_message"></span></div>
+
+                                              <div role="main" class="main">
+
+                                                  <div id="resend_email_verify" ng-show="email_verified == '0'" class="box-center-form" layout-align="center">
+
+
+                                                      <p>After you created your account we sent you a confirmation email. You need to check that out before you can sign in.</p>
+
+                                                      <p>If you didn't receive the email we can send you another one.</p>
+
+                                                      <h2 class="box-heading">Re-send confirmation email</h2>
+
+                                                      <form accept-charset="UTF-8" action="/confirm" layout-gt-sm="row" layout-sm="column" class="new_confirmation" id="new_confirmation" method="post">
+                                                          <div>
+                                                            <input name="authenticity_token" type="hidden" value="0mB1a3+upY7tYHew2RkgJ8jzEKxyJNLD8Gt5691ws/Y=">
+                                                          </div>
+
+                                                          <div class="input-group ill-input initialised">
+                                                              <label for="confirmation_username">Username</label>
+                                                              <input id="confirmation_username" name="confirmation[username]" size="30" type="text">
+                                                              <input name="utf8" type="hidden" class="material-icons" value="check_circle">
+                                                          </div>
+
+                                                          <input name="commit" type="submit" layout="row" layout-align="center center" class="md-btn md-primary md-button md-raised" value="Send">
+
+                                                      </form>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+            </div>
+          </div>
+          <!-- / -->
+        </div>
+      </md-card>
+    </div>
+</div>
+
+<!--
+
+
+<div id="content" class="app-content">
     <div class="box">
         <div ui-view="nav"></div>
     </div>
-        <!-- Content -->
+        <!- - Content - >
         <div class="box-row">
             <div class="box-cell">
-                <!-- uiView:  -->
+                <!- - uiView:  - ->
                 <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -44,6 +106,6 @@
                     </div>
                 </div>
             </div>
-            <!-- / -->
+            <!- - / - ->
         </div>
 </div>
