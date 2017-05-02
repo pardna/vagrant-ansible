@@ -1,5 +1,6 @@
 <?php
 namespace App\Services\common;
+use App\utils\exceptions\ConfigNotFoundException;
 class ConfigurationsService
 {
     protected $db;
@@ -18,6 +19,9 @@ class ConfigurationsService
     public function getConfigValue($name)
     {
       $res = $this->db->fetchAll("SELECT * FROM {$this->configurationTable} WHERE name = ? LIMIT 1", array($name));
+      if (!$res){
+        throw new ConfigNotFoundException("Config $name not found in configuration table", 0, 500);
+      }
       return $res[0]["value"];
     }
 

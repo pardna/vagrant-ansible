@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use App\utils\exceptions\ValidationFailureException;
 use App\Entity\PardnaGroupEntity;
 use App\Entity\PardnaGroupMemberEntity;
 use App\Entity\UserEntity;
@@ -93,6 +94,9 @@ class UsersService extends BaseService implements UserProviderInterface
     ->setVerified($user["verified"])
     ->setId($user["id"]);
 
+    $userEntity->setFirstname($user["firstname"]);
+    $userEntity->setLastname($user["lastname"]);
+
     return $userEntity;
 
   }
@@ -168,6 +172,10 @@ public function supportsClass($class)
     return $this->db->fetchAssoc("SELECT * FROM users WHERE email = ? LIMIT 1", array($email));
   }
 
+  public function getResetLinkByCode($code)
+  {
+    return $this->db->fetchAssoc("SELECT * FROM reset_password_links WHERE reset_code = ? LIMIT 1", array($code));
+  }
 
 
   function save($user)
@@ -225,7 +233,65 @@ public function supportsClass($class)
     throw new HttpException(401,"Invalid verification code");
   }
 
+  function generateResetCodeForEmail($email)
+  {
+    $reset_link = array();
+    $reset_code = $this->getUniqueResetCode();;
+    $reset_link["reset_code"] = $reset_code;
+    $reset_link["email"] = $email;
+    $reset_link["reset_link"] = $this->emailValidatorService->generateResetPasswordLink($reset_code);
+    $expires = new \DateTime('NOW');
+    $expires->add(new \DateInterval('PT24H')); // 1 hour
+    $reset_link['expires'] = $expires->format('Y-m-d H:i:s');
+    $this->db->insert("reset_password_links", $reset_link);
+    return $reset_link;
+  }
 
+  function validateResetPasswordCode($code){
+    $reset = $this->getResetLinkByCode($code);
+    if ($reset){
+      if ($reset["reset_complete"] == 1){
+        throw new ValidationFailureException("Reset code has already been used, it can no longer be used", 0, 403);
+      }
+      $now = new \DateTime('NOW');
+      $expires = new \DateTime($reset["expires"]);
+      if ($expires < $now){
+        throw new ValidationFailureException("Reset code has expired, need to generate a new code", 0, 403);
+      }
+      return $reset;
+    }
+    return;
+  }
+
+  function getUniqueResetCode()
+  {
+    $attempt = 1;
+    while ($attempt < 100){
+      $code = $this->randomKey(30);
+      if (! $this->getResetLinkByCode($code)){
+        return $code;
+      }
+      $attempt++;
+    }
+  }
+
+  public function passwordResetEmailSent($reset_code) {
+    return $this->db->update('reset_password_links', array("email_sent" => 1), ['reset_code' => $reset_code]);
+  }
+
+  public function passwordResetComplete($code) {
+    return $this->db->update('reset_password_links', array("reset_complete" => 1), ['reset_code' => $code]);
+  }
+
+  function randomKey($length)
+  {
+    $pool = array_merge(range(0,9), range('a', 'z'),range('A', 'Z'));
+    $key = '';
+    for($i=0; $i < $length; $i++) {
+        $key .= $pool[mt_rand(0, count($pool) - 1)];
+    }
+    return $key;
+  }
 
   function delete($id)
   {

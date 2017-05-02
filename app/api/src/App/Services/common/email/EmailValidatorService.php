@@ -15,6 +15,18 @@ class EmailValidatorService extends BaseService
     return $this->configService;
   }
 
+  function generateResetPasswordLink($code)
+  {
+    $base_url = $this->configService->getConfigValue('base_url');
+    $reset_password_endpt = $this->configService->getConfigValue('reset_password_endpoint');
+    $reset_password_url = $base_url . $reset_password_endpt;
+    $reset_password_url .= http_build_query([
+        'code' => $code
+    ]);
+
+    return $reset_password_url;
+  }
+
   function generateConfirmEmailLink($user_id){
     $base_url = $this->configService->getConfigValue('base_url');
     $email_valid_endpt = $this->configService->getConfigValue('email_validate_endpoint');
@@ -29,7 +41,7 @@ class EmailValidatorService extends BaseService
     ]);
 
     $expires = new \DateTime('NOW');
-    $expires->add(new \DateInterval('PT48H')); // 1 hour
+    $expires->add(new \DateInterval('PT168H')); // 24 hours
 
     $data = array();
     $data['user_id'] = $user_id;
