@@ -12,8 +12,8 @@ class MandrillMailService
     return $this->$mandrill;
   }
 
-  public function sentResetPasswordEmailLink($email,  $resetLink){
-    $template_name = 'forgot-pardna-account-password';
+  public function sendResetPasswordEmailLink($email, $resetLink){
+    $template_name = 'reset-password';
     $message = array(
       'to' => array(array('email' => $email)),
       'merge_vars' => array(array(
@@ -21,12 +21,17 @@ class MandrillMailService
           'vars' =>
           array(
             array(
-              'name' => 'resetPasswordLink',
+              'name' => 'RESET_LINK',
               'content' => $resetLink
             )
           )
         )
     ));
+    $template_content = array(
+        array(
+            'name' => 'resetPasswordLink',
+            'content' => $resetLink)
+    );
     $this->mandrill->messages->sendTemplate($template_name, $template_content, $message);
   }
 

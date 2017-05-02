@@ -67,15 +67,28 @@ class RoutesLoader
      *    definition = "TokenDefault",
      * 		required={"success", "token"},
      * 		@SWG\Property(property="success", type="boolean"),
-     * 		@SWG\Property(property="token", type="string", description="Json Web Token"),
-     *    @SWG\Property(property="stacktrace", type="string", description="stack trace")
+     * 		@SWG\Property(property="token", type="string", description="Json Web Token")
+     * 	),
+     *  @SWG\Definition(
+     *    @SWG\Xml(name="MessageDefault"),
+     *    definition = "MessageDefault",
+     * 		required={"message"},
+     * 		@SWG\Property(property="message", type="string", description="The messsage from the backend")
+     * 	),
+     *  @SWG\Definition(
+     *    @SWG\Xml(name="MessageTokenDefault"),
+     *    definition = "MessageTokenDefault",
+     * 		required={"message", "token"},
+     * 		@SWG\Property(property="message", type="string", description="The messsage from the backend"),
+     *    @SWG\Property(property="token", type="string", description="The token")
      * 	),
      *  @SWG\Definition(
      *    @SWG\Xml(name="ErrorDefault"),
      *    definition = "ErrorDefault",
-     * 		required={"statusCode", "message"},
+     * 		required={"statusCode", "message", "stacktrace"},
      * 		@SWG\Property(property="statusCode", type="boolean"),
-     * 		@SWG\Property(property="message", type="string", description="Message detailing error")
+     * 		@SWG\Property(property="message", type="string", description="Message detailing error"),
+     *    @SWG\Property(property="stacktrace", type="string", description="stack trace")
      * 	),
      *  @SWG\Property(
      *    @SWG\Xml(name="group_details"),
@@ -102,9 +115,10 @@ class RoutesLoader
      * 		@SWG\Property(
      *      property="user",
      *      type="object",
-     * 		  required={"email", "fullname","password"},
+     * 		  required={"email", "firstname", "lastname", "password"},
      * 		  @SWG\Property(property="email", type="string"),
-     *      @SWG\Property(property="fullname", type="string"),
+     *      @SWG\Property(property="firstname", type="string"),
+     *      @SWG\Property(property="lastname", type="string"),
      * 		  @SWG\Property(property="password", type="string", description="Password")
      *    )
      * 	)
@@ -113,29 +127,10 @@ class RoutesLoader
     {
         $api = $this->app["controllers_factory"];
 
-        /**
-         *  @SWG\Get(
-         *    path="/user/{id}",
-         *    tags={"user"},
-         *    operationId="getuser",
-         *    summary="Gets all the details of a specified user",
-         *    description="This service is used to retrieve all the details about the user that we hold in the database.",
-         *    consumes={"application/json","application/xml"},
-         *    produces={"application/json","application/xml"},
-         *    @SWG\Parameter(
-         *      name="id",
-         *      in="path",
-         *      required=true,
-         *      type="string",
-         *      description="UUID"
-         *    ),
-         *    @SWG\Response(
-         *      status=200,
-         *      description="success"
-         *    )
-         *  )
-         */
+        /** These methods pose a security risk. They need to be removed but for now, I have provatised the controller methods so, will throw exceptions if called */
         $api->get('/user/{id}', "users.controller:get");
+        $api->put('/user/{id}', "users.controller:update");
+        $api->delete('/user/{id}', "users.controller:delete");
 
         /**
          *  @SWG\Post(
@@ -181,7 +176,7 @@ class RoutesLoader
          * 	),
          *  @SWG\Post(
          *    path="/login",
-         *    tags={"user"},
+         *    tags={"user", "token"},
          *    operationId="userLogIn",
          *    summary="Enables the user to login to the pardna site",
          *    description="This service is used to login to the pardna site",
@@ -195,49 +190,36 @@ class RoutesLoader
          *      @SWG\Schema(ref="#/definitions/LoginUser")
          *    ),
          *    @SWG\Response(
-         *      response="404",
-         *      description="Invalid Credentials",
-         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
-         *    ),
-         *    @SWG\Response(
          *      response="401",
          *      description="Invalid Credentials",
          *      @SWG\Schema(ref="#/definitions/ErrorDefault")
          *    ),
          *    @SWG\Response(
          *      response="200",
-         *      description="User is successfuly registered",
+         *      description="User is successfully logged in",
          *      @SWG\Schema(ref="#/definitions/TokenDefault")
-         *    ),
-         *    security={
-         *         {
-         *             "pardna_auth": {"write:pardna", "read:pardna"}
-         *         }
-         *     }
+         *    )
          *  )
          */
         $api->post('/login', "users.controller:login");
 
+        /* This service should be deprecated */
         $api->get('/login', "users.controller:login");
 
         /**
          *  @SWG\Post(
          *    path="/refresh-token",
-         *    tags={"user"},
+         *    tags={"user", "token"},
          *    operationId="refreshToken",
          *    summary="Refreshes the login token",
          *    description="Refreshes the login token. No request object required",
-         *    consumes={"application/json", "application/xml"},
-         *    produces={"application/json", "application/xml"},
-         *    security={
-       *         {
-       *             "pardna_auth": {"write:pardna", "read:pardna"}
-       *         }
-         *    }
+         *    consumes={"application/json"},
+         *    produces={"application/json"}
          *  )
          */
         $api->post('/refresh-token', "users.controller:refreshToken");
 
+        /* This service should be deprecated, I am unable to find a real use for it, because it is doing exactly the same thing as signup */
         $api->post('/signin', "users.controller:signin");
 
         /**
@@ -247,8 +229,7 @@ class RoutesLoader
          * 			  @SWG\Property(
          *          property="user",
          *          type="object",
-         * 			    required={"email", "currentPassword","newPassword"},
-         * 			    @SWG\Property(property="email", type="string"),
+         * 			    required={"currentPassword","newPassword"},
          * 			    @SWG\Property(property="currentPassword", type="string", description="currentPassword"),
          * 			    @SWG\Property(property="newPassword", type="string", description="newPassword")
          *        )
@@ -258,9 +239,9 @@ class RoutesLoader
          *    tags={"user"},
          *    operationId="changeUserPassword",
          *    summary="Change user password",
-         *    description="This service is used to change a specified user password",
-         *    consumes={"application/json", "application/xml"},
-         *    produces={"application/json", "application/xml"},
+         *    description="This service is used to change a logged in user password. The user must be logged in to use this service",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
          *    @SWG\Parameter(
          *      name="User",
          *      in="body",
@@ -274,15 +255,96 @@ class RoutesLoader
          *      @SWG\Schema(ref="#/definitions/ErrorDefault")
          *    ),
          *    @SWG\Response(
+         *      response="403",
+         *      description="Cannot change to use the same password",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
          *      response="200",
-         *      description="User is successfuly registered",
+         *      description="Password successfuly changed",
          *      @SWG\Schema(ref="#/definitions/TokenDefault")
          *    )
          *  )
          */
         $api->post('/user/change-password', "users.controller:changePassword");
-        $api->put('/user/{id}', "users.controller:update");
-        $api->delete('/user/{id}', "users.controller:delete");
+
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="Email"),
+         *      definition = "Email",
+         * 			required={"email"},
+         * 			@SWG\Property(property="email", type="string", description="email")
+         * 	),
+         *  @SWG\Post(
+         *    path="/user/forgot-password",
+         *    tags={"user"},
+         *    operationId="sendForgotPasswordEmail",
+         *    summary="Sends a forgot password email with a reset link",
+         *    description="Sends a forgot password email with a reset link which should allow the unauthenticated user to change their password ",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="email",
+         *      in="body",
+         *      required = true,
+         *      description="User object, whose password needs to be changed" ,
+         *      @SWG\Schema(ref="#/definitions/Email")
+         *    ),
+         *    @SWG\Response(
+         *      response="400",
+         *      description="Email not provided",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="403",
+         *      description="Email not recognized",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Email has been sent with reset link",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
+        $api->post('/user/forgot-password', "users.controller:forgotPassword");
+
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="ResetPassword"),
+         *      definition = "ResetPassword",
+         * 			required={"reset_code", "password"},
+         * 			@SWG\Property(property="reset_code", type="string", description="reset_code"),
+         *      @SWG\Property(property="password", type="string", description="password")
+         * 	),
+         *  @SWG\Post(
+         *    path="/user/reset-password",
+         *    tags={"user"},
+         *    operationId="resetPassword",
+         *    summary="Resets a password using a reset code",
+         *    description="Resets a password using a reset code",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="RestPassword",
+         *      in="body",
+         *      required = true,
+         *      description="ResetPassword object, using a reset code",
+         *      @SWG\Schema(ref="#/definitions/ResetPassword")
+         *    ),
+         *    @SWG\Response(
+         *      response="401",
+         *      description="Reset code expired or invalid",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Email has been sent with reset link",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
+        $api->post('/user/reset-password', "users.controller:resetPassword");
 
         /**
          *  @SWG\Definition(
@@ -295,7 +357,7 @@ class RoutesLoader
          *    path="/user/send-code",
          *    tags={"user"},
          *    operationId="sendCodeForMobilePhoneConfirmation",
-         *    summary="Sends code to a user mobile phone",
+         *    summary="Sends a verification code to a user mobile phone",
          *    description="This service is used to send the user a code which will be used to confirm mobile phone registration",
          *    consumes={"application/json", "application/xml"},
          *    produces={"application/json", "application/xml"},
@@ -307,73 +369,352 @@ class RoutesLoader
          *      @SWG\Schema(ref="#/definitions/MobilePhoneRequest")
          *    ),
          *    @SWG\Response(
-         *      response="401",
-         *      description="Invalid username or password",
+         *      response="409",
+         *      description="Cannot send token",
          *      @SWG\Schema(ref="#/definitions/ErrorDefault")
          *    ),
          *    @SWG\Response(
          *      response="200",
-         *      description="User is successfuly registered",
-         *      @SWG\Schema(ref="#/definitions/TokenDefault")
-         *    ),
-         *    security={
-         *         {
-         *             "pardna_auth": {"write:pardna", "read:pardna"}
-         *         }
-         *    }
+         *      description="Code has been sent",
+         *      @SWG\Schema(ref="#/definitions/MessageTokenDefault")
+         *    )
          *  )
          */
         $api->post('/user/send-code', "users.controller:sendCode");
 
-        $api->post('/user/verify', "users.controller:verify");
-        $api->post('/user/verify-email', "users.controller:verifyEmail");
-        $api->post('/user/resend-confirmation-email', "users.controller:resendConfirmationEmail");
-        $api->get('/relationships', "users.controller:relationships");
-
-        $api->post('/pardna/group', "pardna.group.controller:save");
-        $api->get('/pardna/group', "pardna.group.controller:read");
         /**
          *  @SWG\Definition(
-         *      @SWG\Xml(name="PardnaGroupDetailsRequest"),
-         *      definition = "PardnaGroupDetailsRequest",
-         * 			required={"id"},
-         * 			@SWG\Property(property="id", type="integer", description="id")
+         *      @SWG\Xml(name="MobilePhoneVerifyRequest"),
+         *      definition = "MobilePhoneVerifyRequest",
+         * 			required={"mobile", "code"},
+         * 			@SWG\Property(property="mobile", type="string", description="mobile"),
+         *      @SWG\Property(property="code", type="string", description="code")
          * 	),
          *  @SWG\Post(
-         *    path="/pardna/group/details",
+         *    path="/user/verify",
          *    tags={"user"},
-         *    operationId="sendCodeForMobilePhoneConfirmation",
-         *    summary="Sends code to a user mobile phone",
-         *    description="This service returns a parda groups details, members and oayment history",
-         *    consumes={"application/json", "application/xml"},
-         *    produces={"application/json", "application/xml"},
+         *    operationId="verifyCodeForMobilePhoneConfirmation",
+         *    summary="Verifies code sent to a user mobile phone",
+         *    description="This service is used to verify the code sent to a user mobile phone",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
          *    @SWG\Parameter(
-         *      name="VerifyUserPhoneNumberRequest",
+         *      name="MobilePhoneVerifyRequest",
          *      in="body",
          *      required = true,
          *      description="Verify User PhoneNumber",
-         *      @SWG\Schema(ref="#/definitions/MobilePhoneRequest")
+         *      @SWG\Schema(ref="#/definitions/MobilePhoneVerifyRequest")
          *    ),
          *    @SWG\Response(
-         *      response="401",
-         *      description="Invalid username or password",
+         *      response="409",
+         *      description="Cannot verify account",
          *      @SWG\Schema(ref="#/definitions/ErrorDefault")
          *    ),
          *    @SWG\Response(
          *      response="200",
-         *      description="User is successfuly registered",
-         *      @SWG\Schema(ref="#/definitions/TokenDefault")
-         *    ),
-         *    security={
-         *         {
-         *             "pardna_auth": {"write:pardna", "read:pardna"}
-         *         }
-         *    }
+         *      description="Code has been verified",
+         *      @SWG\Schema(ref="#/definitions/MessageTokenDefault")
+         *    )
          *  )
          */
+        $api->post('/user/verify', "users.controller:verify");
 
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="EmailVerifyRequest"),
+         *      definition = "EmailVerifyRequest",
+         * 			required={"selector", "validator"},
+         * 			@SWG\Property(property="selector", type="string", description="selector"),
+         *      @SWG\Property(property="validator", type="string", description="validator")
+         * 	),
+         *  @SWG\Post(
+         *    path="/user/verify-email",
+         *    tags={"user"},
+         *    operationId="verifyEmail",
+         *    summary="Verifies user email address",
+         *    description="This service is used to verify the user email address",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="EmailVerifyRequest",
+         *      in="body",
+         *      required = true,
+         *      description="Verifies User Email",
+         *      @SWG\Schema(ref="#/definitions/EmailVerifyRequest")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Could not verify email",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Code has been verified",
+         *      @SWG\Schema(ref="#/definitions/MessageTokenDefault")
+         *    )
+         *  )
+         */
+        $api->post('/user/verify-email', "users.controller:verifyEmail");
+
+        /**
+         *  @SWG\Get(
+         *    path="/user/resend-confirmation-email",
+         *    tags={"user"},
+         *    operationId="sendConfirmationEmail",
+         *    summary="Sends a confirmation email to verify the user",
+         *    description="Sends a confirmation email to verify the users' identity. Does nor require anything to be passed in",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="401",
+         *      description="User not found",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="403",
+         *      description="Email not recognized",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Email has been sent with reset link",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
+        $api->get('/user/resend-confirmation-email', "users.controller:resendConfirmationEmail");
+
+
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="Relationship"),
+         *      definition = "Relationship",
+         * 			required={"id", "fullname"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="fullname", type="string", description="fullname")
+         * 	),
+         *  @SWG\Get(
+         *    path="/relationships",
+         *    tags={"user"},
+         *    operationId="relationships",
+         *    summary="Retrieves the logged user relationships",
+         *    description="Retrieves all the relationships for the logged user",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting relationships",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="relationships array",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/Relationship"), type="array")
+         *    )
+         *  )
+         */
+        $api->get('/relationships', "users.controller:relationships");
+
+        //Pardna Groups
+
+        $api->post('/pardna/group', "pardna.group.controller:save");
+
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroupMember"),
+         *      definition = "PardnaGroupMember",
+         * 			required={"id", "fullname"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="email", type="string", description="email"),
+         * 			@SWG\Property(property="user_id", type="string", description="user_id"),
+         *      @SWG\Property(property="fullname", type="string", description="fullname"),
+         * 			@SWG\Property(property="mobile", type="string", description="mobile"),
+         *      @SWG\Property(property="group_id", type="string", description="group_id"),
+         * 			@SWG\Property(property="slot_id", type="string", description="slot_id"),
+         *      @SWG\Property(property="created", type="string", description="created"),
+         * 			@SWG\Property(property="modified", type="string", description="modified"),
+         *      @SWG\Property(property="dd_mandate_id", type="string", description="dd_mandate_id"),
+         * 			@SWG\Property(property="dd_mandate_status", type="string", description="dd_mandate_status"),
+         *      @SWG\Property(property="allow_choose_payment", type="string", description="allow_choose_payment"),
+         * 			@SWG\Property(property="payment_status", type="string", description="payment_status")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="CodeDecodeObject"),
+         *      definition = "CodeDecodeObject",
+         * 			required={"code", "decode"},
+         * 			@SWG\Property(property="code", type="string", description="code"),
+         *      @SWG\Property(property="decode", type="string", description="decode")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaSlot"),
+         *      definition = "PardnaSlot",
+         * 			required={"id", "pardnagroup_id", "position", "claimant", "claimed_date", "pay_date", "total_contribution", "charge_percent", "charge_amount", "pay_amount", "created", "modified", "membership_number", "fullname", "claimed"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="pardnagroup_id", type="string", description="fullname"),
+         * 			@SWG\Property(property="position", type="string", description="id"),
+         *      @SWG\Property(property="claimant", type="string", description="fullname"),
+         * 			@SWG\Property(property="claimed_date", type="string", description="id"),
+         *      @SWG\Property(property="pay_date", type="string", description="fullname"),
+         * 			@SWG\Property(property="total_contribution", type="string", description="id"),
+         *      @SWG\Property(property="charge_percent", type="string", description="fullname"),
+         * 			@SWG\Property(property="charge_amount", type="string", description="id"),
+         *      @SWG\Property(property="pay_amount", type="string", description="fullname"),
+         * 			@SWG\Property(property="modified", type="string", description="id"),
+         *      @SWG\Property(property="membership_number", type="string", description="fullname"),
+         * 			@SWG\Property(property="fullname", type="string", description="id"),
+         *      @SWG\Property(property="claimed", type="boolean", description="fullname")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroupInvite"),
+         *      definition = "PardnaGroupInvite",
+         * 			required={"id", "email"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="email", type="string", description="email"),
+         *      @SWG\Property(property="type", type="string", description="type of invite | group or individual"),
+         *      @SWG\Property(property="type_id", type="string", description="type_id of invite")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaConfirmed"),
+         *      definition = "PardnaConfirmed",
+         * 			required={"id", "pardnagroup_id", "confirmed_on"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="pardnagroup_id", type="string", description="pardnagroup_id"),
+         *      @SWG\Property(property="confirmed_on", type="string", description="confirmed_on"),
+         *      @SWG\Property(property="startdate", type="string", description="startdate"),
+         *      @SWG\Property(property="enddate", type="string", description="enddate")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroup"),
+         *      definition = "PardnaGroup",
+         * 			required={"id", "name"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="name", type="string", description="the name of the pardna"),
+         *      @SWG\Property(property="admin", type="string", description="the group admin id"),
+         *      @SWG\Property(property="slots", type="string", description="the number of slots"),
+         *      @SWG\Property(property="amount", type="string", description="the pardna amount"),
+         *      @SWG\Property(property="frequency", type="string", description="the pardna group frequency"),
+         *      @SWG\Property(property="created", type="string", description="the pardna creation date"),
+         *      @SWG\Property(property="enddate", type="string", description="the pardna end date"),
+         *      @SWG\Property(property="modified", type="string", description="the date when the pardna was last modified"),
+         *      @SWG\Property(property="currency", type="string", description="the pardna group currency"),
+         *      @SWG\Property(property="user_id", type="string", description="the user id"),
+         *      @SWG\Property(property="editable", type="string", description="Denotes startdate, enddate can be edited"),
+         *      @SWG\Property(property="members", type="array", @SWG\Items(ref="#/definitions/PardnaGroupMember")),
+         *      @SWG\Property(property="member_key", type="string", description="the key denoting the position of the member in the members array"),
+         *      @SWG\Property(property="status", ref="#/definitions/CodeDecodeObject", description="the parnda group status"),
+         *      @SWG\Property(property="reason", type="array", @SWG\Items(type="string"), description="the reason for the pardna group status"),
+         *      @SWG\Property(property="pardna_confirmed", ref="#/definitions/PardnaConfirmed"),
+         *      @SWG\Property(property="pardna_slots", type="array", @SWG\Items(ref="#/definitions/PardnaSlot")),
+         *      @SWG\Property(property="invites", type="array", @SWG\Items(ref="#/definitions/PardnaGroupInvite")),
+         *      @SWG\Property(property="invitee_emails", type="array", @SWG\Items(type="string"))
+         * 	),
+         *  @SWG\Get(
+         *    path="/pardna/group",
+         *    tags={"groups"},
+         *    operationId="readPardnaGroup",
+         *    summary="Retrieves all the user pardna groups",
+         *    description="Retrieves all the user pardna groups",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting relationships",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="relationships array",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/PardnaGroup"), type="array")
+         *    )
+         *  )
+         */
+        $api->get('/pardna/group', "pardna.group.controller:read");
+
+        /**
+         *  @SWG\Get(
+         *    path="/pardna/group/details/{id}",
+         *    tags={"groups"},
+         *    operationId="pardnaGroupDetails",
+         *    summary="Retrieves specified pardna group details",
+         *    description="Retrieves the details of a specified pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="id",
+         *      in="path",
+         *      required = true,
+         *      description="The pardna group id",
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting list",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Pardna group",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/PardnaGroup"), type="array")
+         *    )
+         *  )
+         */
         $api->get('/pardna/group/details/{id}', "pardna.group.controller:details");
+
+        /**
+         *  @SWG\Get(
+         *    path="/pardna/group/slots/{id}",
+         *    tags={"groups"},
+         *    operationId="pardnaGroupSlots",
+         *    summary="Retrieves a specified pardna group slots",
+         *    description="Retrieves the slots for a specified pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="id",
+         *      in="path",
+         *      required = true,
+         *      description="The pardna group id",
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting relationships",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Error getting slots",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/PardnaSlot"), type="array")
+         *    )
+         *  )
+         */
         $api->get('/pardna/group/slots/{id}', "pardna.group.controller:slots");
+
+        /**
+         *  @SWG\Get(
+         *    path="/pardna/group/confirm/{id}",
+         *    tags={"groups"},
+         *    operationId="pardnaGroupConfirm",
+         *    summary="Confirm that a specified pardna group",
+         *    description="Confirm that a specified pardna group is about to start",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="id",
+         *      in="path",
+         *      required = true,
+         *      description="The pardna group id",
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting relationships",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Error getting slots",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/PardnaSlot"), type="array")
+         *    )
+         *  )
+         */
         $api->get('/pardna/group/confirm/{id}', "pardna.group.controller:confirmPardna");
 
         $api->post('/invite', "invitation.controller:save");
@@ -390,6 +731,53 @@ class RoutesLoader
 
         //Payments set up
 
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="AngularReturnState"),
+         *      definition = "AngularReturnState",
+         * 			required={"state_id", "state_name"},
+         * 			@SWG\Property(property="state_id", type="string", description="The angular state id"),
+         *      @SWG\Property(property="state_name", type="string", description="The angular sate name")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PaymentSubscriptionUrlRequest"),
+         *      definition = "PaymentSubscriptionUrlRequest",
+         * 			required={"return_to"},
+         * 			@SWG\Property(property="return_to", description="return_to", ref="#/definitions/AngularReturnState")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PaymentSubscriptionUrlResponse"),
+         *      definition = "PaymentSubscriptionUrlResponse",
+         * 			required={"payment_url"},
+         * 			@SWG\Property(property="payment_url", type="string", description="payment_url")
+         * 	),
+         *  @SWG\Post(
+         *    path="/group/payments/getPaymentUrl",
+         *    tags={"payments"},
+         *    operationId="getPaymentUrl",
+         *    summary="Retrieves the link for gocardless mandate setup",
+         *    description="Retrieves the link to set up mandate with gocardless",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="PaymentSubscriptionUrlRequest",
+         *      in="body",
+         *      required = true,
+         *      description="The payment subscription url request",
+         *      @SWG\Schema(ref="#/definitions/PaymentSubscriptionUrlRequest")
+         *    ),
+         *    @SWG\Response(
+         *      response="503",
+         *      description="Error getting subscription url",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Bank accounts array",
+         *      @SWG\Schema(ref="#/definitions/PaymentSubscriptionUrlResponse")
+         *    )
+         *  )
+         */
         $api->post('/group/payments/getPaymentUrl', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
 
         $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
@@ -410,8 +798,77 @@ class RoutesLoader
 
         // User Account
 
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="BankAcount"),
+         *      definition = "BankAcount",
+         * 			required={"id", "fullname"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         * 			@SWG\Property(property="account_number_ending", type="string", description="account_number_ending"),
+         * 			@SWG\Property(property="account_holder_name", type="string", description="account_holder_name"),
+         * 			@SWG\Property(property="bank_name", type="string", description="bank_name"),
+         * 			@SWG\Property(property="currency", type="string", description="currency"),
+         * 			@SWG\Property(property="country_code", type="string", description="country_code"),
+         * 			@SWG\Property(property="created_at", type="string", description="created_at"),
+         * 			@SWG\Property(property="metadata", type="string", description="metadata"),
+         * 			@SWG\Property(property="enabled", type="string", description="enabled"),
+         * 			@SWG\Property(property="links", type="string", description="links")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="GetUserBankAcountResponse"),
+         *      definition = "GetUserBankAcountResponse",
+         * 			required={"bankaccounts"},
+         * 			@SWG\Property(property="bankaccounts", type="array", description="bankaccounts", @SWG\Items(ref="#/definitions/BankAcount"))
+         * 	),
+         *  @SWG\Get(
+         *    path="/user/bankaccounts/{id}",
+         *    tags={"payments"},
+         *    operationId="usersBankAccounts",
+         *    summary="Retrieves the logged user bank account",
+         *    description="Retrieves a specified bank account for the logged user",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="id",
+         *      in="path",
+         *      required = true,
+         *      description="The bank account id",
+         *    ),
+         *    @SWG\Response(
+         *      response="503",
+         *      description="Error retrieving bank account",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Bank accounts array",
+         *      @SWG\Schema(ref="#/definitions/GetUserBankAcountResponse")
+         *    )
+         *  )
+         */
         $api->get('/user/bankaccounts/{id}', "pardna.payments.controller:getUserBankAccount");
 
+        /**
+         *  @SWG\Post(
+         *    path="/user/bankaccounts",
+         *    tags={"payments"},
+         *    operationId="usersBankAccounts",
+         *    summary="Retrieves the logged user relationships",
+         *    description="Retrieves all the relationships for the logged user",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="503",
+         *      description="Error retrieving bank accounts",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Bank accounts array",
+         *      @SWG\Schema(ref="#/definitions/GetUserBankAcountResponse")
+         *    )
+         *  )
+         */
         $api->post('/user/bankaccounts', "pardna.payments.controller:retrieveAllUserBankAccounts");
 
         //Payments events

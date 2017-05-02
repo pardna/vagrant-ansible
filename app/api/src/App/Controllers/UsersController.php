@@ -67,7 +67,7 @@ class UsersController
     return $this->app;
   }
 
-  public function get($id)
+  private function get($id)
   {
     return new JsonResponse($this->usersService->get($id));
   }
@@ -146,6 +146,8 @@ class UsersController
         'success' => true,
         'token' => $app['security.jwt.encoder']->encode([
           'fullname' => $user->getFullName(),
+          'firstname' => $user->getFirstname(),
+          'lastname' => $user->getLastName(),
           "name" => $user->getEmail(),
           "email" => $user->getEmail(),
           "membership_number" => $user->getMembershipNumber(),
@@ -188,28 +190,72 @@ class UsersController
 
   public function changePassword(Request $request)
   {
-    $user = $this->getDataFromRequest($request);
-    if ($this->usersService->authenticate($user["email"], $user["currentPassword"])){
-      return new JsonResponse(array("id" => $this->usersService->changePassword($user["email"], $user["newPassword"])));
+    $auth_user = $this->getUser();
+    $passwords = $this->getDataFromRequest($request);
+    if ($this->usersService->authenticate($auth_user->getEmail(), $passwords["currentPassword"])){
+      if (strcmp($passwords["currentPassword"], $passwords["newPassword"]) === 0){
+        throw new HttpException(403, "Cannot change to use the same password");
+      }
+      $success = $this->usersService->changePassword($auth_user->getEmail(), $passwords["newPassword"]);
+      if ($success){
+        return new JsonResponse(array("message" => "Password successfuly changed"));
+      }
     }
   }
 
-  public function resetPassword($t, Request $request)
+  public function forgotPassword(Request $request)
   {
-    $user = $this->getDataFromRequest($request);
-    if ($this->usersService->validateResetPasswordToken($t)){
-      return new JsonResponse(array("id" => $this->usersService->changePassword($user["email"], $user["newPassword"])));
+    $email = $request->request->get("email");
+    if ($email){
+      $user = $this->usersService->getByEmail($email);
+      if ($user){
+        $reset = $this->usersService->generateResetCodeForEmail($email);
+        if (! $reset){
+          //Throw some kind of exception here if something happened
+          throw new HttpException(500, "Failed to generate reset link");
+        }
+        $this->mandrillMailService->sendResetPasswordEmailLink($email, $reset["reset_link"]);
+        $this->usersService->passwordResetEmailSent($reset["reset_code"]);
+        return new JsonResponse(array("message" => "Reset password email has been sent to the email address"));
+      } else{
+          throw new HttpException(403, "Email not recognized");
+      }
+    }
+    throw new HttpException(400, "Email not provided");
+  }
+
+  public function resetPassword(Request $request)
+  {
+    $this->validateResetPasswordRequest($request);
+    $reset_code = $request->request->get("reset_code");
+    $password = $request->request->get("password");
+    $valid = $this->usersService->validateResetPasswordCode($reset_code);
+    if ($valid){
+      $success = $this->usersService->changePassword($valid["email"], $password);
+      if ($success){
+        $this->usersService->passwordResetComplete($reset_code);
+        return new JsonResponse(array("message" => "Password successfuly reset"));
+      }
+    }
+    throw new HttpException(401, "Reset code expired or invalid");
+  }
+
+  public function validateResetPasswordRequest($request){
+    if (! $request->request->get("reset_code")){
+      throw new HttpException(400, "Reset code not provided");
+    }
+    if (! $request->request->get("password")){
+      throw new HttpException(400, "Password not provided");
     }
   }
 
-
-  public function update($id, Request $request)
+  private function update($id, Request $request)
   {
     $user = $this->getDataFromRequest($request);
     $this->usersService->update($id, $user);
     return new JsonResponse($user);
   }
-  public function delete($id)
+  private function delete($id)
   {
     return new JsonResponse($this->usersService->delete($id));
   }
@@ -283,15 +329,13 @@ class UsersController
     }
   }
 
-  public function resendConfirmationEmail(Request $request){
-    $data = $request->request->all();
-    $user = $this->usersService->getByEmail($data["email"]);
-    //subscribe user to mail list
+  public function resendConfirmationEmail(){
+    $user = $this->getUser();
     if (! empty($user)){
-      if ($user['email_verified'] == '0'){
-        $link = $this->usersService->getConfirmEmailLink($user['id']);
-        $this->mandrillMailService->sendEmailConfirmation($user['firstname'], $user['lastname'], $user['email'], $link);
-        return new JsonResponse(array("message" => "Confirmation email sent" ));
+      if (! $user->getVerified()){
+        $link = $this->usersService->getConfirmEmailLink($user->getId());
+        $this->mandrillMailService->sendEmailConfirmation($user->getFirstname(), $user->getLastname(), $user->getEmail(), $link);
+        return new JsonResponse(array("message" => "Confirmation email sent"));
       } else{
         throw new HttpException(409, "User is already confirmed");
       }
@@ -299,6 +343,7 @@ class UsersController
       throw new HttpException(401, "User not found");
     }
   }
+
 
   public function verifyEmail(Request $request){
     try {
@@ -309,7 +354,7 @@ class UsersController
       } else{
         if (array_key_exists("reason",$response)){
           if ($response['reason'] === 'expired'){
-            throw new HttpException(409, "Sorry, that confirmation link has expired. Please try again.");
+            throw new HttpException(403, "Sorry, that confirmation link has expired. Please try again.");
           } else if ($response['reason'] === 'verified'){
             throw new HttpException(410, "Email has already been verified");
           }

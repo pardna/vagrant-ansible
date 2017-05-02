@@ -7,10 +7,10 @@
  *     @SWG\Info(
  *         version="1.0.0",
  *         title="Pardna Site API",
- *         description="This is a server to test the Pardna site API. This UI is built using Swagger. You can find out more about Swagger at <a href=""http://swagger.io"">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key ""special-key"" to test the authorization filters. Need more time to understand the authorization filters ",
+ *         description="This is a server to test the Pardna site API. This UI is built using Swagger. You can find out more about Swagger at <a href=""http://swagger.io"">http://swagger.io</a> or on irc.freenode.net, #swagger. Please note that for the endpoints which require access token, you can get the access token from the relevant service and then use Authorize in the header of the site.",
  *         termsOfService="http://helloreverb.com/terms/",
  *         @SWG\Contact(
- *             email="apiteam@wordnik.com"
+ *             email="hyane.moussassa1@gmail.com"
  *         ),
  *         @SWG\License(
  *             name="Apache 2.0",

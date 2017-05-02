@@ -109,7 +109,7 @@ $app['users'] = function () use ($app) {
 
 $app['security.firewalls'] = array(
     'login' => [
-        'pattern' => 'signin|signup|change-password|login|events|verify-email|resend-confirmation-email',
+        'pattern' => 'signin|signup|forgot-password|reset-password|login|events|verify-email',
         'anonymous' => true,
     ],
     'secured' => array(
