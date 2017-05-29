@@ -13,7 +13,7 @@ class NotificationService extends BaseService
 
   public function getNotifications($id)
   {
-    return $this->db->fetchAssoc("SELECT * FROM notifications WHERE id = ? LIMIT 30 ORDER BY modified DESC", array($id));
+    return $this->db->fetchAll("SELECT * FROM notifications WHERE target_id = ? ORDER BY modified DESC", array($id));
   }
 
 

@@ -125,6 +125,14 @@ class InvitationService extends BaseService
     return null;
   }
 
+  public function retrieveUserInvitation($invitationId, $email){
+    $invitation = $this->findById($invitationId, $email);
+    if($invitation && $invitation["email"] == $email && $invitation["type"] == "USER") {
+      return $invitation;
+    }
+    return null;
+  }
+
   public function acceptUserInvitation($invitationId, $user) {
     $invitation = $this->findById($invitationId);
     if($invitation && $invitation["email"] == $user->getEmail() && $invitation["type"] == "USER") {
@@ -133,10 +141,8 @@ class InvitationService extends BaseService
         "user_2" => $invitation["type_id"],
         "status" => "ACCEPTED"
       );
-
       $this->getRelationshipService()->save($relationship);
       $this->acceptInvitation($invitationId);
-
     }
   }
 

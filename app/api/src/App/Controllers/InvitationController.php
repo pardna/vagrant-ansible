@@ -25,6 +25,9 @@ class InvitationController extends AppController
           $service = $this->app['invitation.service'];
           $user = $this->getUser();
           $data = $request->request->all();
+          if (! isset($data["message"])){
+            $data["message"] = "I would like to invite you to join pardna";
+          }
           $emails = $service->explodeEmailString($data["emails"]);
           $service->saveInvitations($emails, "USER", $user->getId(), $data["message"], $user->getId());
           if (isset($data["group"])){
@@ -35,7 +38,7 @@ class InvitationController extends AppController
           }
           return new JsonResponse(array("message" => "Invitations sent"));
         } catch(\Exception $e) {
-          throw new HttpException(409,"Cannot seng invitations : " . $e->getMessage());
+          throw new HttpException(409,"Cannot send invitations : " . $e->getMessage());
         }
 
     }
@@ -73,18 +76,19 @@ class InvitationController extends AppController
 
     public function acceptUserInvitation(Request $request)
     {
-
-        try {
-          $data = $request->request->all();
-          $user = $this->getUser();
-          $service = $this->app['invitation.service'];
-          $service->setRelationshipService($this->app['relationship.service']);
-          $service->acceptUserInvitation($data["id"], $user);
-          return new JsonResponse(array("message" => "Success"));
-        } catch(\Exception $e) {
-          throw new HttpException(409,"Error getting list : " . $e->getMessage());
-        }
-
+      $data = $request->request->all();
+      $user = $this->getUser();
+      $service = $this->app['invitation.service'];
+      $service->setRelationshipService($this->app['relationship.service']);
+      $invitation = $service->retrieveUserInvitation($data["id"], $user->getEmail());
+      if ($invitation == null){
+        throw new HttpException(403, "Invitation not found");
+      }
+      if ($invitation["accepted"]){
+        throw new HttpException(409, "Invitation has already been accepted");
+      }
+      $service->acceptUserInvitation($invitation["id"], $user);
+      return new JsonResponse(array("message" => "Successfully accepted user invitation"));
     }
 
     public function acceptGroupInvitation(Request $request)
@@ -99,27 +103,49 @@ class InvitationController extends AppController
             $this->pardnaGroupService->claimSlot($invitation["type_id"], $position, $user);
             $service->acceptInvitation($invitation["id"]);
             return new JsonResponse(array("message" => "Success"));
-          } else{
+          } else {
             throw new HttpException(409,"All slots have been claimed, cannot join the pardna");
           }
         } else{
-          throw new HttpException(401,"Operation not allowed, Invitation Not found");
+          throw new HttpException(403, "Invitation not found");
         }
 
     }
 
     public function ignoreUserInvitation(Request $request){
       $data = $request->request->all();
+      $user = $this->getUser();
       $service = $this->app['invitation.service'];
+      $invitation = $service->retrieveUserInvitation($data["id"], $user->getEmail());
+      if ($invitation == null){
+        throw new HttpException(403, "Invitation not found");
+      }
+      if ($invitation["accepted"]){
+        throw new HttpException(409, "Invitation has already been accepted");
+      }
+      if ($invitation["ignored"]){
+        throw new HttpException(409, "Invitation has already been ignored");
+      }
       $service->ignoreInvitation($data["id"]);
-      return new JsonResponse(array("message" => "Successfully ignored user"));
+      return new JsonResponse(array("message" => "Successfully ignored user invitation"));
     }
 
     public function ignoreGroupInvitation (Request $request){
       $data = $request->request->all();
+      $user = $this->getUser();
       $service = $this->app['invitation.service'];
+      $invitation = $service->retrieveGroupInvitation($data["id"], $user->getEmail());
+      if ($invitation == null){
+        throw new HttpException(403, "Invitation not found");
+      }
+      if ($invitation["accepted"]){
+        throw new HttpException(409, "Invitation has already been accepted");
+      }
+      if ($invitation["ignored"]){
+        throw new HttpException(409, "Invitation has already been ignored");
+      }
       $service->ignoreInvitation($data["id"]);
-      return new JsonResponse(array("message" => "Successfully ignored group"));
+      return new JsonResponse(array("message" => "Successfully ignored group invitation"));
     }
 
 }

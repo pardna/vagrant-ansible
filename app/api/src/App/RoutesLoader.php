@@ -484,6 +484,36 @@ class RoutesLoader
          */
         $api->get('/user/resend-confirmation-email', "users.controller:resendConfirmationEmail");
 
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="Notification"),
+         *      definition = "Notification",
+         * 			required={"id"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="message", type="string", description="message"),
+         * 			@SWG\Property(property="target_type", type="string", description="target_type"),
+         *      @SWG\Property(property="target_id", type="string", description="target_id"),
+         * 			@SWG\Property(property="deleted", type="string", description="deleted"),
+         *      @SWG\Property(property="created", type="string", description="created"),
+         * 			@SWG\Property(property="modified", type="string", description="modified")
+         * 	),
+         *  @SWG\Post(
+         *    path="/user/notifications",
+         *    tags={"user"},
+         *    operationId="sendConfirmationEmail",
+         *    summary="Sends a confirmation email to verify the user",
+         *    description="Sends a confirmation email to verify the users' identity. Does nor require anything to be passed in",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="200",
+         *      description="The notifications array",
+         *      @SWG\Schema(property="message", type="array", @SWG\Items(ref="#/definitions/Notification"))
+         *    )
+         *  )
+         */
+        $api->post('/user/notifications', "users.controller:notifications");
+
 
         /**
          *  @SWG\Definition(
@@ -517,6 +547,41 @@ class RoutesLoader
 
         //Pardna Groups
 
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroupCreateRequest"),
+         *      definition = "PardnaGroupCreateRequest",
+         * 			required={"selector", "validator"},
+         * 			@SWG\Property(property="selector", type="string", description="selector"),
+         *      @SWG\Property(property="validator", type="string", description="validator")
+         * 	),
+         *  @SWG\Post(
+         *    path="/pardna/group",
+         *    tags={"groups"},
+         *    operationId="createGroup",
+         *    summary="Creates a pardna group",
+         *    description="This service is used to create a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="EmailVerifyRequest",
+         *      in="body",
+         *      required = true,
+         *      description="creates a pardna group",
+         *      @SWG\Schema(ref="#/definitions/PardnaGroupCreateRequest")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Could not verify email",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Code has been verified",
+         *      @SWG\Schema(ref="#/definitions/MessageTokenDefault")
+         *    )
+         *  )
+         */
         $api->post('/pardna/group', "pardna.group.controller:save");
 
         /**
@@ -717,17 +782,284 @@ class RoutesLoader
          */
         $api->get('/pardna/group/confirm/{id}', "pardna.group.controller:confirmPardna");
 
+        /**
+         *   @SWG\Definition(
+         *      @SWG\Xml(name="GroupInvite"),
+         *      definition = "GroupInvite",
+         * 			required={"id", "name"},
+         *      @SWG\Property(property="id", type="string", description="the pardna group id"),
+         *      @SWG\Property(property="name", type="string", description="the pardna group name")
+         * 	),
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="InviteUserRequest"),
+         *      definition = "InviteUserRequest",
+         * 			required={"emails"},
+         *      @SWG\Property(property="emails", type="string", description="comma separated emails"),
+         *      @SWG\Property(property="message", type="string", description="the messsage to send in the email"),
+         *      @SWG\Property(property="group", ref="#/definitions/GroupInvite")
+         * 	),
+         *  @SWG\Post(
+         *    path="/invite",
+         *    tags={"user","groups"},
+         *    operationId="inviteUser",
+         *    summary="Invite user/emails to join pardna or a pardna group",
+         *    description="Invite user/emails to join pardna or a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="InviteUserRequest",
+         *      in="body",
+         *      required = true,
+         *      description="The request object for invitations",
+         *      @SWG\Schema(ref="#/definitions/InviteUserRequest")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Cannot send invitations",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Invitations sent",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
         $api->post('/invite', "invitation.controller:save");
+
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroupInvitation"),
+         *      definition = "PardnaGroupInvitation",
+         * 			required={"id", "name"},
+         * 			@SWG\Property(property="id", type="string", description="id"),
+         *      @SWG\Property(property="name", type="string", description="the name of the pardna"),
+         *      @SWG\Property(property="admin", type="string", description="the group admin id"),
+         *      @SWG\Property(property="slots", type="string", description="the number of slots"),
+         *      @SWG\Property(property="amount", type="string", description="the pardna amount"),
+         *      @SWG\Property(property="frequency", type="string", description="the pardna group frequency"),
+         *      @SWG\Property(property="created", type="string", description="the pardna creation date"),
+         *      @SWG\Property(property="enddate", type="string", description="the pardna end date"),
+         *      @SWG\Property(property="modified", type="string", description="the date when the pardna was last modified"),
+         *      @SWG\Property(property="currency", type="string", description="the pardna group currency"),
+         *      @SWG\Property(property="members", type="array", @SWG\Items(ref="#/definitions/PardnaGroupMember"))
+         * 	),
+         *  @SWG\Get(
+         *    path="/invite/group",
+         *    tags={"groups"},
+         *    operationId="pardnaGroupConfirm",
+         *    summary="Retrieve a logged in user pardna groups",
+         *    description="Retrieve all pardna group invites for a logged in user",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting list",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Error getting group invites",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/PardnaGroupInvitation"), type="array")
+         *    )
+         *  )
+         */
         $api->get('/invite/group', "invitation.controller:readGroupInvitations");
+
+        /**
+         *   @SWG\Definition(
+         *      @SWG\Xml(name="UserInvite"),
+         *      definition = "UserInvite",
+         * 			required={"fullname"},
+         *      @SWG\Property(property="fullname", type="string", description="the invitor full name"),
+         *      @SWG\Property(property="type_id", type="string", description="the type of invitation id"),
+         *      @SWG\Property(property="invitation_id", type="string", description="the invitation id")
+         * 	),
+         *  @SWG\Get(
+         *    path="/invite/user",
+         *    tags={"user"},
+         *    operationId="getUserInvitations",
+         *    summary="Retrieves all user invitations",
+         *    description="Retrieves all invitations to be friends",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Error getting relationships",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Error getting user invitations",
+         *      @SWG\Schema(@SWG\Items(ref="#/definitions/UserInvite"), type="array")
+         *    )
+         *  )
+         */
         $api->get('/invite/user', "invitation.controller:readUserInvitations");
 
+        /**
+         *  @SWG\Definition(
+         *    @SWG\Xml(name="InvitationObject"),
+         *    definition = "InvitationObject",
+         * 	  required={"id"},
+         *    @SWG\Property(property="id", type="string", description="the invitation id")
+         * 	),
+         *  @SWG\Post(
+         *    path="/invite/accept/user",
+         *    tags={"user"},
+         *    operationId="acceptUserInvite",
+         *    summary="Accept user/emails invitations to join pardna or a pardna group",
+         *    description="Accept user/emails invitations to join pardna or a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="InvitationObject",
+         *      in="body",
+         *      required = true,
+         *      description="The invitation object",
+         *      @SWG\Schema(ref="#/definitions/InvitationObject")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Invitation has already been accepted",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="403",
+         *      description="Invitation not found",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Successfully accepted user invitation",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
         $api->post('/invite/accept/user', "invitation.controller:acceptUserInvitation");
+
+        /**
+         *  @SWG\Definition(
+         *    @SWG\Xml(name="InvitationObject"),
+         *    definition = "InvitationObject",
+         * 	  required={"id"},
+         *    @SWG\Property(property="id", type="string", description="the invitation id")
+         * 	),
+         *  @SWG\Post(
+         *    path="/invite/accept/group",
+         *    tags={"groups"},
+         *    operationId="acceptUserInvite",
+         *    summary="Accept user/emails invitations to join pardna or a pardna group",
+         *    description="Accept user/emails invitations to join pardna or a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="InvitationObject",
+         *      in="body",
+         *      required = true,
+         *      description="The invitation object",
+         *      @SWG\Schema(ref="#/definitions/InvitationObject")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="All slots have been claimed, cannot join the pardna",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="403",
+         *      description="Invitation not found",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Successfully accepted user invitation",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
         $api->post('/invite/accept/group', "invitation.controller:acceptGroupInvitation");
 
+        /**
+         *  @SWG\Definition(
+         *    @SWG\Xml(name="InvitationObject"),
+         *    definition = "InvitationObject",
+         * 	  required={"id"},
+         *    @SWG\Property(property="id", type="string", description="the invitation id")
+         * 	),
+         *  @SWG\Post(
+         *    path="/invite/ignore/user",
+         *    tags={"user"},
+         *    operationId="ignoreUserInvite",
+         *    summary="Ignore user/emails invitations to join pardna or a pardna group",
+         *    description="Ignore user/emails invitations to join pardna or a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="InvitationObject",
+         *      in="body",
+         *      required = true,
+         *      description="The invitation object",
+         *      @SWG\Schema(ref="#/definitions/InvitationObject")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="All slots have been claimed, cannot join the pardna",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="403",
+         *      description="Invitation not found",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Successfully ignored user invitation",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
         $api->post('/invite/ignore/user', "invitation.controller:ignoreUserInvitation");
-        $api->post('/invite/ignore/group', "invitation.controller:ignoreGroupInvitation");
 
-        $api->post('/user/notifications', "users.controller:notifications");
+        /**
+         *  @SWG\Definition(
+         *    @SWG\Xml(name="InvitationObject"),
+         *    definition = "InvitationObject",
+         * 	  required={"id"},
+         *    @SWG\Property(property="id", type="string", description="the invitation id")
+         * 	),
+         *  @SWG\Post(
+         *    path="/invite/ignore/group",
+         *    tags={"groups"},
+         *    operationId="ignoreGroupInvite",
+         *    summary="Ignore group invitations to join pardna or a pardna group",
+         *    description="Ignore group invitations to join pardna or a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="InvitationObject",
+         *      in="body",
+         *      required = true,
+         *      description="The invitation object",
+         *      @SWG\Schema(ref="#/definitions/InvitationObject")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Invitation has already been dealt with",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="403",
+         *      description="Invitation not found",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Successfully ignored group invitation",
+         *      @SWG\Schema(ref="#/definitions/MessageDefault")
+         *    )
+         *  )
+         */
+        $api->post('/invite/ignore/group', "invitation.controller:ignoreGroupInvitation");
 
         //Payments set up
 
@@ -780,21 +1112,55 @@ class RoutesLoader
          */
         $api->post('/group/payments/getPaymentUrl', "pardna.payments.controller:getGroupPaymentsSubscriptionUrl");
 
+        $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
+
+        /**
+         *  @SWG\Definition(
+         *    @SWG\Xml(name="GroupStatus"),
+         *    definition = "GroupStatus",
+         * 	  required={"id"},
+         *    @SWG\Property(property="status", ref="#/definitions/CodeDecodeObject"),
+         *    @SWG\Property(property="reason", type="array", @SWG\Items(ref="#/definitions/CodeDecodeObject"))
+         * 	),
+         *  @SWG\Post(
+         *    path="/group/payments/getGroupStatus/{id}",
+         *    tags={"groups"},
+         *    operationId="ignoreGroupInvite",
+         *    summary="Get a specified group payment status",
+         *    description="Get the payment status for a specified group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="id",
+         *      in="path",
+         *      required = true,
+         *      description="The pardna group id",
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Invitation has already been dealt with",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Group status object",
+         *      @SWG\Schema(ref="#/definitions/GroupStatus")
+         *    )
+         *  )
+         */
         $api->post('/group/payments/getGroupStatus/{id}', "pardna.payments.controller:getGroupStatus");
 
         $api->get('/group/user/payments/status/{id}', "pardna.payments.controller:userGroupPaymentStatus");
 
-        $api->post('/payments/confirm', "pardna.payments.controller:completeRedirectFlow");
+        $api->get('/group/subscription/get/{id}', "pardna.payments.controller:getSubscription");
+
+        $api->post('/group/payment/setup', "pardna.payments.controller:setUpPayment");
 
         $api->get('/group/subscriptions/create/{id}', "pardna.payments.controller:triggerMassSubscriptionCreation");
 
         $api->get('/group/subscription/create/{id}', "pardna.payments.controller:createSubscription");
 
         $api->get('/group/subscription/cancel/{id}', "pardna.payments.controller:cancelSubscription");
-
-        $api->get('/group/subscription/get/{id}', "pardna.payments.controller:getSubscription");
-
-        $api->post('/group/payment/setup', "pardna.payments.controller:setUpPayment");
 
         // User Account
 

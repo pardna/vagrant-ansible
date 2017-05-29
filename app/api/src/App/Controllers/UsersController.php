@@ -290,7 +290,8 @@ class UsersController
       try {
         $user = $this->getUser();
       $id = $user->getId();
-      return new JsonResponse($this->notificationService->getNotifications($id));
+      $notifications = $this->notificationService->getNotifications($id);
+      return new JsonResponse($notifications);
     } catch (Services_Twilio_RestException $e) {
       throw new HttpException(409,"Cannot send token" . $e->getMessage());
     }
