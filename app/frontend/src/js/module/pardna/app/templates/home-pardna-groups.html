@@ -5,7 +5,7 @@
         <div class="panel">
 
         <md-card-title class="panel-heading" role="tab" id="heading{{$index + 1}}">
-          <md-card-title-text> 
+          <md-card-title-text>
             <a class="md-headline" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index + 1}}" aria-expanded="false" aria-controls="collapse{{$index + 1}}">{{group.name}} &nbsp;
               <i class="material-icons" ng-if="group.pardna_confirmed">lock</i>
               <i class="material-icons" ng-if="! group.pardna_confirmed">lock_open</i>
@@ -115,7 +115,7 @@
               <md-divider ></md-divider>
               <md-subheader class="md-no-sticky">Members</md-subheader>
               <md-list-item class="md-2-line contact-item" ng-repeat="(index, member) in group.members">
-                <img ng-src="http://lorempixel.com/50/50/people?{{index}}" class="md-avatar" alt="{{member.fullname}}" />
+                <i class="material-icons member-avatar" width="50" height="50">person</i>
                 <div class="md-list-item-text compact">
                   <h3>{{member.fullname}}<md-badge class="md-warn" ng-if="member.user_id == group.admin">Group Admin</md-badge></h3>
                   <p>{{member.email}}</p>

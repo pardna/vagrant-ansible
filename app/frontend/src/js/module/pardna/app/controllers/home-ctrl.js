@@ -96,7 +96,7 @@ function HomeCtrl($scope, $window, $mdToast, $mdDialog, jwtHelper, localStorageS
         $scope.selectedcontacts = $scope.selectedcontacts + 1;
       } else{
         $scope.selectedcontacts = $scope.selectedcontacts - 1;
-      }
+      }F
     }
 
     $scope.allContacts = loadContacts();
