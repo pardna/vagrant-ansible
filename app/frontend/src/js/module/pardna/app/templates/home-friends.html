@@ -16,7 +16,7 @@
     <md-card-header class="invitationlist" layout="row" layout-xs="column" layout-md="column" ng-repeat="invitee in ui.userInvitationList">
       <div layout="row" layout-align="start stretch" flex flex-xs="100">
       <md-card-avatar style="margin-left: 0px; margin-right: 12px;">
-        <img class="md-user-avatar" src="img/100-2.jpeg"/>
+        <i class="material-icons member-avatar" width="50" height="50">person</i>
       </md-card-avatar>
       <md-card-header-text>
         <span class="md-title">{{invitee.fullname}}</span>
@@ -35,7 +35,7 @@
     <md-card>
       <md-list flex>
         <md-list-item class="md-2-line contact-item selected" ng-repeat="relation in ui.relationships">
-          <img ng-src="img/100-2.jpeg" class="md-avatar" alt="{{relation.fullname}}" />
+          <i class="material-icons member-avatar" width="50" height="50">person</i>
           <div class="md-list-item-text compact">
             <h3>{{relation.fullname}}</h3>
             <p>{{relation.email}}</p>
