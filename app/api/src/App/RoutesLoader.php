@@ -551,9 +551,13 @@ class RoutesLoader
          *  @SWG\Definition(
          *      @SWG\Xml(name="PardnaGroupCreateRequest"),
          *      definition = "PardnaGroupCreateRequest",
-         * 			required={"selector", "validator"},
-         * 			@SWG\Property(property="selector", type="string", description="selector"),
-         *      @SWG\Property(property="validator", type="string", description="validator")
+         * 			required={"slots", "amount", "name", "startdate", "frequency"},
+         *      @SWG\Property(property="name", type="string", description="The name for the pardna"),
+         * 			@SWG\Property(property="slots", type="string", description="The number of slots for this pardna"),
+         * 			@SWG\Property(property="amount", type="integer", description="The amount for the pardna"),
+         * 			@SWG\Property(property="frequency", type="string", description="The frequency for the pardna"),
+         * 			@SWG\Property(property="startdate", type="string", format="date-time", description="The start date for the pardna"),
+         *      @SWG\Property(property="emails", type="array", @SWG\Items(type="string"))
          * 	),
          *  @SWG\Post(
          *    path="/pardna/group",
@@ -564,7 +568,7 @@ class RoutesLoader
          *    consumes={"application/json"},
          *    produces={"application/json"},
          *    @SWG\Parameter(
-         *      name="EmailVerifyRequest",
+         *      name="PardnaGroupCreateRequest",
          *      in="body",
          *      required = true,
          *      description="creates a pardna group",
@@ -583,6 +587,52 @@ class RoutesLoader
          *  )
          */
         $api->post('/pardna/group', "pardna.group.controller:save");
+
+
+        /**
+         *  @SWG\Definition(
+         *      @SWG\Xml(name="PardnaGroupEditRequest"),
+         *      definition = "PardnaGroupEditRequest",
+         *      @SWG\Property(property="name", type="string", description="The name for the pardna"),
+         * 			@SWG\Property(property="slots", type="string", description="The number of slots for this pardna"),
+         * 			@SWG\Property(property="amount", type="integer", description="The amount for the pardna"),
+         * 			@SWG\Property(property="frequency", type="string", description="The frequency for the pardna"),
+         * 			@SWG\Property(property="startdate", type="string", format="date-time", description="The start date for the pardna")
+         * 	),
+         *  @SWG\Post(
+         *    path="/pardna/group/edit/{id}",
+         *    tags={"groups"},
+         *    operationId="createGroup",
+         *    summary="Creates a pardna group",
+         *    description="This service is used to create a pardna group",
+         *    consumes={"application/json"},
+         *    produces={"application/json"},
+         *    @SWG\Parameter(
+         *      name="id",
+         *      in="path",
+         *      required = true,
+         *      description="The pardna group id",
+         *    ),
+         *    @SWG\Parameter(
+         *      name="PardnaGroupEditRequest",
+         *      in="body",
+         *      required = true,
+         *      description="creates a pardna group",
+         *      @SWG\Schema(ref="#/definitions/PardnaGroupEditRequest")
+         *    ),
+         *    @SWG\Response(
+         *      response="409",
+         *      description="Could not verify email",
+         *      @SWG\Schema(ref="#/definitions/ErrorDefault")
+         *    ),
+         *    @SWG\Response(
+         *      response="200",
+         *      description="Code has been verified",
+         *      @SWG\Schema(ref="#/definitions/MessageTokenDefault")
+         *    )
+         *  )
+         */
+        $api->post('/pardna/group/edit/{id}', "pardna.group.controller:edit");
 
         /**
          *  @SWG\Definition(

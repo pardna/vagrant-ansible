@@ -21,16 +21,38 @@ class PardnaGroupController extends AppController
 
     public function save(Request $request)
     {
-
-        try {
-          $data = $request->request->all();
-          $user = $this->getUser();
-          $this->service->saveGroupAndEmails($data, $user);
-          return new JsonResponse(array("message" => "Group saved"));
-        } catch(\Exception $e) {
-          throw new HttpException(409,"Cannot save group account : " . $e->getMessage());
+        $data = $request->request->all();
+        $user = $this->getUser();
+        if ($user->getVerified()){
+          try {
+            $this->service->saveGroupAndEmails($data, $user);
+            return new JsonResponse(array("message" => "Group saved"));
+          } catch(\Exception $e) {
+            throw new HttpException(409,"Cannot save group account : " . $e->getMessage());
+          }
+        } else{
+          throw new HttpException(403,"User is not verified. User needs to be verified in order to create first pardna");
         }
+    }
 
+    public function edit($id, Request $request)
+    {
+        $data = $request->request->all();
+        $user = $this->getUser();
+        if ($this->service->isUserAdmin($id, $user)){
+          if ($user->getVerified()){
+            try {
+              $this->service->modifyPardna($id, $data);
+              return new JsonResponse(array("message" => "Changes to the pardna have been saved"));
+            } catch(\Exception $e) {
+              throw new HttpException(409,"Cannot save changes to pardna group : " . $e->getMessage());
+            }
+          } else{
+            throw new HttpException(403,"User is not verified. User needs to be verified in order to modify this pardna");
+          }
+        } else{
+          throw new HttpException(403,"User is not admin for this group. User needs to be admin to modify this pardna");
+        }
     }
 
     public function read(Request $request)

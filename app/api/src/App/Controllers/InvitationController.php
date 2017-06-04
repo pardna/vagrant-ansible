@@ -20,10 +20,11 @@ class InvitationController extends AppController
 
     public function save(Request $request)
     {
-
+      $user = $this->getUser();
+      $data = $request->request->all();
+      if ($this->userAuthoriedToInvite($user, $data)){
         try {
           $service = $this->app['invitation.service'];
-          $user = $this->getUser();
           $data = $request->request->all();
           if (! isset($data["message"])){
             $data["message"] = "I would like to invite you to join pardna";
@@ -40,7 +41,18 @@ class InvitationController extends AppController
         } catch(\Exception $e) {
           throw new HttpException(409,"Cannot send invitations : " . $e->getMessage());
         }
+      } else{
+        throw new HttpException(401,"Cannot send invitations : User is not authorized ");
+      }
+    }
 
+    public function userAuthoriedToInvite($user, $data){
+      if (! isset($data["group"])){
+        //User is authorized to invite another user to pardna
+        return true;
+      } else{
+        return $this->pardnaGroupService->isUserAdmin($data["group"]["id"], $user);
+      }
     }
 
     public function readGroupInvitations(Request $request)
