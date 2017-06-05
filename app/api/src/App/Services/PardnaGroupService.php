@@ -196,8 +196,6 @@ class PardnaGroupService extends BaseService
     }
     $startDate = new \DateTime($group['startdate']);
     if($numberOfSlots > 0) {
-
-
       for($i = 1; $i <= $numberOfSlots; $i++) {
         if($group["frequency"]  === "weekly") {
           $startDate->modify('+1 week');
@@ -217,7 +215,23 @@ class PardnaGroupService extends BaseService
 
         $slot = $this->appendCreatedModified($slot);
         $this->db->insert($this->slotTable, $slot);
+      }
+    }
+  }
 
+  public function modifySlots($id, $group){
+    //Need to get the pardnagroup_slots for pardnagroup_id $id
+    $slots = $this->getSlots($id);
+    if ($slots && ! empty($slots)){
+      //Need to only modify the pay_date
+      foreach ($slots as $slot){
+        $startDate = new \DateTime($group['startdate']);
+        if($group["frequency"]  === "weekly") {
+          $startDate->modify('+' . $slot["position"] . ' week');
+        } else {
+          $startDate->modify('+' . $slot["position"] . ' month');
+        }
+        $this->db->update($this->slotTable, array("pay_date" => $startDate->format('Y-m-d')), ['pardnagroup_id' => $id, 'position' => $slot["position"], 'claimant' => $slot["claimant"]]);
       }
     }
   }
@@ -274,6 +288,7 @@ class PardnaGroupService extends BaseService
 
     $group = $this->findById($id);
     $modified = false;
+    $startdatemodified = false;
 
     if (isset($data["name"]) && ! empty($data["name"])){
       $group["name"] = $data["name"];
@@ -298,10 +313,14 @@ class PardnaGroupService extends BaseService
     if (isset($data["startdate"]) && ! empty($data["startdate"])){
       $group["startdate"] = date("Y-m-d", strtotime($data["startdate"]));
       $modified = true;
+      $startdatemodified = true;
     }
 
     if ($modified){
       $group = $this->appendModified($group);
+      if ($startdatemodified){
+        $this->modifySlots($id, $group);
+      }
       return $this->db->update($this->table, $group, ['id' => $id]);
     }
   }
