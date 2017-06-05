@@ -47,25 +47,31 @@ class PardnaGroupService extends BaseService
   }
 
   function validateDetails ($data){
-    if($data["slots"] > count($this->charges)) {
-      throw new \Exception("Number of slots is greater than charge slots " . count($this->charges));
+    if (isset($data["slots"])){
+      if($data["slots"] > count($this->charges)) {
+        throw new \Exception("Number of slots is greater than charge slots " . count($this->charges));
+      }
+      if($data["slots"] > $this->maximumSlots) {
+        throw new \Exception("Maximum number of slots is " . $this->maximumSlots);
+      }
+      if($data["slots"] < $this->minimumSlots) {
+        throw new \Exception("Minimum number of slots is " . $this->minimumSlots);
+      }
     }
-    if($data["slots"] > $this->maximumSlots) {
-      throw new \Exception("Maximum number of slots is " . $this->maximumSlots);
+    if (isset($data["amount"])){
+      if($data["amount"] > $this->maximumAmount) {
+        throw new \Exception("Maximum amount is " . $this->maximumAmount);
+      }
+      if($data["amount"] < $this->minimumAmount) {
+        throw new \Exception("Minimum amount is " . $this->minimumAmount);
+      }
     }
-    if($data["slots"] < $this->minimumSlots) {
-      throw new \Exception("Minimum number of slots is " . $this->minimumSlots);
-    }
-    if($data["amount"] > $this->maximumAmount) {
-      throw new \Exception("Maximum amount is " . $this->maximumAmount);
-    }
-    if($data["amount"] < $this->minimumAmount) {
-      throw new \Exception("Minimum amount is " . $this->minimumAmount);
-    }
-    $startDate = new \DateTime($data['startdate']);
-    if ($startDate < new \DateTime())
-    {
-      throw new \Exception("Date is in the past");
+    if (isset($data["startdate"]) ){
+      $startDate = new \DateTime($data['startdate']);
+      if ($startDate < new \DateTime())
+      {
+        throw new \Exception("Date is in the past");
+      }
     }
   }
 

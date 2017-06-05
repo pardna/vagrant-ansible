@@ -602,7 +602,7 @@ class RoutesLoader
          *  @SWG\Post(
          *    path="/pardna/group/edit/{id}",
          *    tags={"groups"},
-         *    operationId="createGroup",
+         *    operationId="editGroup",
          *    summary="Creates a pardna group",
          *    description="This service is used to create a pardna group",
          *    consumes={"application/json"},
