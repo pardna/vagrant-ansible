@@ -45,6 +45,7 @@ class ServicesLoader
       $this->app['pardna.group.service'] = $this->app->share(function () {
         $service = new Services\PardnaGroupService($this->app["db"]);
         $service->setInvitationService($this->app['invitation.service']);
+        $service->setPaymentsManageService($this->app['payments.manage.service']);
         return $service;
       });
 

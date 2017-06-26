@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use App\Entity\UserEntity;
+use App\Services\payments\manage\PaymentsManageService;
 
 class PardnaGroupService extends BaseService
 {
@@ -18,6 +19,7 @@ class PardnaGroupService extends BaseService
   protected $slotTable = "pardnagroup_slots";
   protected $confirmedTable = "pardnagroup_confirmed";
   protected $invitationService;
+  protected $paymentsManageService;
   protected $maximumSlots = 12;
   protected $minimumSlots = 4;
   protected $minimumAmount = 10;
@@ -37,8 +39,13 @@ class PardnaGroupService extends BaseService
     12 => 0
   );
 
-  public function setInvitationService(InvitationService $invitationService) {
+  public function setInvitationService(InvitationService  $invitationService) {
     $this->invitationService = $invitationService;
+    return $this;
+  }
+
+  public function setPaymentsManageService(PaymentsManageService $paymentsManageService){
+    $this->paymentsManageService = $paymentsManageService;
     return $this;
   }
 
@@ -141,8 +148,10 @@ class PardnaGroupService extends BaseService
       $response["setup_completed"] = true;
       $response["mandate_id"] = $member["dd_mandate_id"];
       $response["allow_edit_payment"] = true;
-      if (! empty($member["dd_mandate_status"])){
-        $response["status"] = strtoupper(str_replace("_", " ", $member["dd_mandate_status"]));
+      //Need to make a call here to get the mandate status
+      $status = $this->paymentsManageService->getMandateStatus($member["dd_mandate_id"]);
+      if (! empty($status)){
+        $response["status"] = strtoupper(str_replace("_", " ", $status));
       } else {
         $response["status"] = "AWAITING CONFIRM FROM PAYMENT PROVIDER";
       }
@@ -159,8 +168,9 @@ class PardnaGroupService extends BaseService
         $members[$key]["payment_status"] = "SETUP REQUIRED";
       } else{
         $members[$key]["allow_edit_payment"] = true;
-        if (! empty($member["dd_mandate_status"])){
-          $members[$key]["payment_status"] = strtoupper(str_replace("_", " ", $member["dd_mandate_status"]));
+        $status = $this->paymentsManageService->getMandateStatus($member["dd_mandate_id"]);
+        if (! empty($status)){
+          $members[$key]["payment_status"] = strtoupper(str_replace("_", " ", $status));
         } else {
           $members[$key]["payment_status"] = "AWAITING CONFIRM FROM PAYMENT PROVIDER";
         }

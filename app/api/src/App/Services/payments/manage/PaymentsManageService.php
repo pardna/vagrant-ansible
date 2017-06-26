@@ -92,6 +92,11 @@ class PaymentsManageService extends BaseService
     return $bankaccounts[0];
   }
 
+  public function getMandateStatus($mandate_id){
+    $mandate = $this->mandatesService->get($mandate_id);
+    return $mandate->status;
+  }
+
   public function getUserBankAccounts($user, $id){
     $customer_bank_accounts = array();
     if (isset($id)){
