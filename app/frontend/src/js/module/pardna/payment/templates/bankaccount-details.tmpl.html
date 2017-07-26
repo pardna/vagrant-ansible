@@ -15,32 +15,32 @@
       <div class="md-dialog-content">
         <h4 ng-show="{{allowSetupPayment}}">Details</h4>
         <md-list flex>
-          <md-list-item class="md-3-line" ng-click="null">
+          <md-list-item class="md-2-line">
             <div class="md-list-item-text" layout="column">
               <h4>Status</h4>
               <p ng-show="{{chosenBankAccount.enabled}}">Enabled</p>
               <p ng-show="{{! chosenBankAccount.enabled}}">Disabled</p>
             </div>
           </md-list-item>
-          <md-list-item class="md-3-line" ng-click="null">
+          <md-list-item class="md-2-line">
             <div class="md-list-item-text" layout="column">
               <h4>Created</h4>
               <p>{{chosenBankAccount.created_at | date:'d MMMM y'}}</p>
             </div>
           </md-list-item>
-          <md-list-item class="md-3-line" ng-click="null">
+          <md-list-item class="md-2-line">
             <div class="md-list-item-text" layout="column">
               <h4>Account holder</h4>
               <p>{{chosenBankAccount.account_holder_name}}</p>
             </div>
           </md-list-item>
-          <md-list-item class="md-3-line" ng-click="null">
+          <md-list-item class="md-2-line">
             <div class="md-list-item-text" layout="column">
               <h4>Account no. ending</h4>
               <p>••••••{{chosenBankAccount.account_number_ending}}</p>
             </div>
           </md-list-item>
-          <md-list-item class="md-3-line" ng-click="null">
+          <md-list-item class="md-2-line">
             <div class="md-list-item-text" layout="column">
               <h4>Bank Name</h4>
               <p>{{chosenBankAccount.bank_name}}</p>
@@ -60,7 +60,7 @@
 
     <md-dialog-actions ng-show="{{allowSetupPayment}}" layout="row">
       <div layout="row" layout-align="center center">
-        <md-button class="md-warn md-raised md-hue-2" ng-click="bankacc(chosenBankAccount)">SETUP PAYMENT</md-button>
+        <md-button class="md-warn md-raised md-hue-2" ng-click="bankacc(chosenBankAccount)">SET UP PAYMENT</md-button>
       </div>
     </md-dialog-actions>
   </form>

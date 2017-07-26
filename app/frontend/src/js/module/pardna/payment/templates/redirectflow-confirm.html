@@ -3,26 +3,35 @@
     <div ui-view="nav"></div>
   </div>
     <!-- Content -->
-  <div class="box-row">
-    <div class="box-cell">
-      <!-- uiView:  -->
-      <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12">
 
-			          Payment Page
+<!----->
 
-                <div id="redirects">
-                  <br />
-                  <br />
-                  <span ng-show="returnStateId != null">
-                  <a class="md-btn md-raised p-h-md blue md-ink-ripple" ng-click="redirectToState(returnStateId)">Return To {{returnStateName}}</a>
-                  </span>
-                </div>
-          </div>
+<md-content flex="50" flex-sm="100" flex-xs="100" class="md-padding mdl-grid add-new-pardna" layout-padding laout-margin layout-xs="column">
+<!-- uiView:  -->
+<md-toolbar>
+  <div class="md-toolbar-tools card-heading">
+  <span><i class="material-icons">done</i> Success </span>
+  </div>
+</md-toolbar>
+
+<md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12" layout="column" layout-align="center center">
+                        <span ng-show="returnStateId != null">
+                          <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md btn1" ng-click="redirectToState(returnStateId)">Return To {{returnStateName}}</button>
+                        </span>
+
+        <div>
         </div>
       </div>
     </div>
-    <!-- / -->
   </div>
+</md-card>
+</md-content>
+
+
+<!------>
+
+
 </div>

@@ -3,34 +3,51 @@
     <div ui-view="nav"></div>
   </div>
     <!-- Content -->
-    <div class=" box-row" id="firstLogin">
-      <div class="box-cell">
-        <!-- uiView:  -->
-        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-              <nav mfb-menu position="br" effect="zoomin" label="Close"
-                   active-icon="ion-close-round" resting-icon="ion-plus-round"
-                   toggling-method="click">
-                <button mfb-button icon="ion-card" label="Add New Card" ng-click="redirectToPaymentsProvider({id: group_id})"></button>
-              </nav>
-              <md-card md-theme="dark-blue">
-                <md-card-content>
-                <p> Choose the bank account to set up payment for or add a new card</p>
-                </md-card-content>
-                <md-card-actions layout="row" layout-align="end center">
-                  <md-button>GOT IT</md-button>
-                </md-card-actions>
-              </md-card>
-              <div class="bankaccounts__details">
-                <div ng-repeat="bankaccount in bankaccounts">
-                  <bankaccount-card accountnumberending="{{bankaccount.account_number_ending}}" bankname="{{bankaccount.bank_name}}" accountholdername="{{bankaccount.account_holder_name}}" theme="forest" ng-click="showBankAccountDetails(bankaccount, $event)"></bankaccount-card>
-                </div>
-              </div>
+
+    <md-content flex="50" flex-sm="100" flex-xs="100" class="md-padding mdl-grid add-new-pardna" layout-padding laout-margin layout-xs="column">
+
+    <md-toolbar>
+      <div class="md-toolbar-tools card-heading">
+      <span><i class="material-icons">account_balance</i> Payments </span>
+      </div>
+    </md-toolbar>
+
+
+    <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12" layout="column" layout-align="center center">
+            <div layout-margin>
+              Choose the bank account to set up payments for, or add a new account
+            </div>
+                            <div class="bankaccounts__details" layout-margin>
+                              <div ng-repeat="bankaccount in bankaccounts">
+                                <bankaccount-card accountnumberending="{{bankaccount.account_number_ending}}" bankname="{{bankaccount.bank_name}}" accountholdername="{{bankaccount.account_holder_name}}" theme="forest" ng-click="showBankAccountDetails(bankaccount, $event)"></bankaccount-card>
+                              </div>
+
+                            </div>
+
+                              <button hide-xs show-gt-xs md-ink-ripple="" class="md-btn md-raised pull-right p-h-md btn1" ng-click="redirectToPaymentsProvider({id: group_id})">Add New Bank Account</button>
+
+
+                              <nav class="show-xs hide-gt-xs" mfb-menu position="br" effect="zoomin" label="Close"
+                                   active-icon="ion-close-round" resting-icon="ion-plus-round"
+                                   toggling-method="click">
+                                <button mfb-button icon="ion-card" label="Add New Bank Account" ng-click="redirectToPaymentsProvider({id: group_id})"></button>
+                              </nav>
+
+            <div>
             </div>
           </div>
         </div>
       </div>
-      <!-- / -->
-    </div>
+    </md-card>
+  </md-content>
+
+
+
+
+
+
+
 </div>
