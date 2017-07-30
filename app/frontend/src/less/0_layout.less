@@ -376,6 +376,12 @@ md-dialog {
     margin: 0 auto;
 }
 
+#invite-friends,
+#invite-by-email {
+    height: 340px;
+    width: 450px;
+}
+
 #user-fullname {
     margin-right: 10px;
     font-size: 20px;
@@ -582,7 +588,26 @@ md-content {
   position: absolute;
   right: 0;
   top: 62px;
+  padding: 0 15px 0 10px;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-create-pardna-disabled {
+  position: absolute;
+  right: 0;
+  top: 62px;
+  padding: 0 15px 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.38)!important;
+}
+
+.md-button.md-hue-2[disabled],
+.btn-create-pardna-disabled.md-button[disabled] {
+  background-color: #e0e0e0 !important;
 }
 
 .md-button.md-default-theme.md-primary.md-raised,
@@ -596,19 +621,31 @@ md-content {
   color: #fff!important;
 }
 
+.md-btn {
+  justify-content: center;
+}
+
+.md-button i {
+  margin-right: 7px
+}
+
+#accordion .md-button {
+  display: flex;
+  padding: 0 15px;
+  min-width: 160px;
+  justify-content: center;
+}
+
 .mfb-component__button--child,
 .mfb-component__button--main {
   background-color: #009688!important;
   color: #fff!important;
 }
 
-.btn-create-pardna {
-  padding: 0 15px 0 10px;
-}
-
+.btn1:hover,
 .btn-create-pardna:hover,
 .md-button.md-primary.md-raised:hover {
-  background-color: #40b3ad !important;
+  background-color: #40b3ad!important;
 }
 
 button i {
@@ -719,6 +756,9 @@ md-list-item {
   align-items: center;
 }
 
+md-list-item.md-2-line {
+  align-items: center;
+}
 
 .new_confirmation .input-group {
   display: flex;
@@ -757,6 +797,24 @@ md-list-item {
 .email_validate_message i.material-icons {
   margin-right: 10px;
   color: #009688;
+}
+
+.material-icons {
+  display: flex!important;
+  align-items: center;
+}
+
+
+.no-content {
+ margin: 0 auto;
+}
+
+.no-content .md-headline {
+  display: flex;
+}
+
+.no-content .md-headline i {
+  margin-right: 10px;
 }
 /*****/
 

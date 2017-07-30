@@ -1,14 +1,22 @@
 <md-content class="md-padding">
+  <md-card class="no-content" flex-gt-sm="40" ng-show="!ui.groupInvitationList.length">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline"><i class="material-icons">sentiment_very_dissatisfied</i> No Pardna Invites</span>
+        <span class="md-subhead">Incoming Pardna group invites will appear here. You do not have any new invitations listed.
+      </md-card-title-text>
+    </md-card-title>
+  </md-card>
   <md-card ng-repeat="group in ui.groupInvitationList">
     <md-card-header>
       <md-card-avatar>
         <i class="material-icons member-avatar" width="50" height="50">person</i>
       </md-card-avatar>
-      <md-card-header-text>
-        <span class="md-title">Hyane Moussassa</span>
-        <span class="md-subhead">Invited You!!!</span>
+      <md-card-header-text ng-repeat="(index, member) in group.members|limitTo:1">
+        <h4 ng-if="member.user_id == group.admin">{{member.fullname}} Invites You To Join This Pardna Group!</h4>
       </md-card-header-text>
-      <md-button class="md-raised md-primary" ng-click="acceptGroupInvitation(group.invitation_id)">Join</md-button>
+      <md-button ng-show="user.verified == '1'" class="md-raised md-primary" ng-click="acceptGroupInvitation(group.invitation_id)">Join</md-button>
+      <md-button ng-show="user.verified != '1'" class="md-raised" ng-disabled="true">Join</md-button>
     </md-card-header>
     <md-card-content>
       <p>{{group.message}}</p>
@@ -16,18 +24,9 @@
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline">{{group.name}}</span>
+        <span class="md-subhead">This group has {{group.slots}} slots. Join this group and claim your slot now!
       </md-card-title-text>
     </md-card-title>
-    <md-card-actions layout="row" layout-align="start center">
-      <md-card-icon-actions>
-        <md-button class="md-icon-button" aria-label="Favorite">
-          <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="Share">
-          <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
-        </md-button>
-      </md-card-icon-actions>
-    </md-card-actions>
     <md-list class="md-dense" flex>
       <md-divider ></md-divider>
       <md-subheader class="md-no-sticky">Details</md-subheader>
