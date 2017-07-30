@@ -6,18 +6,17 @@
     <div class=" box-row" id="firstLogin">
       <div class="box-cell">
         <!-- uiView:  -->
-        <div class="box-inner padding ng-scope col-md-8 col-md-offset-2" ui-view="" id="view">
+
+        <div class="box-inner padding ng-scope col-md-10 col-md-offset-1" ui-view="" id="view">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
               <div class="group-details__header row no-gutter">
                 <div class="col-xs-12">
-                    <h1>Group Details<span ui-sref="home" class="group-details__sub-nav">Back</span></h1>
+                    <h1>Payout Slots For {{ ui.data.name }}<span ui-sref="home" class="group-details__sub-nav">Back</span></h1>
                     The payout dates for group <span class="group-details__group-name">{{ ui.data.name }}</span> are listed below. To choose or change your payout date, select an available slot.
-                    <h2>{{ ui.data.name }}</h2>
                 </div>
               </div>
-              <div class="row group-details__slots">
-                  <span class="my-icon"><span></span><i></i></span>
+              <div class="slots{{ ui.slots.length }} row group-details__slots">
                 <div class="slot" ng-repeat="slot in ui.slots">
                       <a class="thumbnail" ng-click="showConfirm(slot)" ng-if="!slot.claimed">
                         Available Slot {{ slot.position }}

@@ -6,6 +6,15 @@
 <md-tabs class="md-dynamic-height" md-selected="0" md-border-bottom md-autoselect>
   <md-tab label="Incoming Invitations">
     <md-content class="md-padding">
+      <md-card class="no-content" ng-show="!ui.userInvitationList.length">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline"><i class="material-icons">sentiment_very_dissatisfied</i> No Contact Invites</span>
+            <span class="md-subhead">Contact invites from friends and family will appear here. You have no new invites at present.
+          </md-card-title-text>
+        </md-card-title>
+      </md-card>
+
     <md-card ng-show="!!ui.userInvitationList.length" md-theme="{{ showDarkTheme ? 'dark-orange' : 'default' }}" md-theme-watch>
     <md-card-title>
       <md-card-title-text>
@@ -31,9 +40,19 @@
   </md-content>
   </md-tab>
   <md-tab label="Contact List ({{ ui.relationships.length }})">
+
+
     <md-content class="md-padding">
-    <md-card>
       <md-list flex>
+        <md-card class="no-content" ng-show="!ui.relationships.length">
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline"><i class="material-icons">sentiment_very_dissatisfied</i> No Contacts</span>
+              <span class="md-subhead">Your friends and family contact list will appear here. Accept any contact invites you have or send out your own!
+            </md-card-title-text>
+          </md-card-title>
+        </md-card>
+        <md-card>
         <md-list-item class="md-2-line contact-item selected" ng-repeat="relation in ui.relationships">
           <i class="material-icons member-avatar" width="50" height="50">person</i>
           <div class="md-list-item-text compact">
@@ -41,8 +60,8 @@
             <p>{{relation.email}}</p>
           </div>
         </md-list-item>
+      </md-card>
       </md-list>
-    </md-card>
     </md-content>
   </md-tab>
 </md-tabs>

@@ -12,104 +12,10 @@
         </md-toolbar>
 
         <md-content class="md-padding">
-          <md-tabs class="md-dynamic-height" md-selected="data.selectedIndex" md-align-tabs="top">
-
-            <md-tab label="Pardna Details " id="tab1">
-              <md-tab-body>
-                <div ui-view="pardna-details"></div>
-              </md-tab-body>
-            </md-tab>
-
-            <md-tab label="Add Friends" id="tab2">
-              <md-tab-body>
-                <div ui-view="add-users"></div>
-              </md-tab-body>
-            </md-tab>
-          </md-tabs>
+            <div ui-view="pardna-details"></div>
         </md-content>
 
       </md-content>
 </div>
-
-<!--
-    <div class="box-row" id="">
-      <div class="box-cell">
-        <div class="col-md-10 col-md-offset-1 box-inner padding ng-scope">
-
-
-          <div class="row">
-            <div>
-              <div class="card" id="add-new-pardna">
-                <div class="card-heading">
-                  <h2>Add New Pardna Group</h2>
-                </div>
-                <div class="card-body" flex>
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <md-content class="md-padding">
-                        <md-tabs class="md-accent md-dynamic-height" md-selected="data.selectedIndex" md-align-tabs="top">
-                          <!- -
-                          <md-tab id="tab0">
-                          <md-tab-label>
-                          <span class="round-tab">
-                          <i class="fa fa-user"></i>
-                          </span>
-                          <span class="label tab-label">Your Details</span>
-                          </md-tab-label>
-                          <md-tab-body>
-                          <div ui-view="your-details"></div>
-                          </md-tab-body>
-                          </md-tab>
-                          - >
-                          <md-tab id="tab1">
-                            <md-tab-label>
-                              <span class="round-tab">
-                                <i class="fa fa-gbp"></i>
-                              </span>
-                              <span class="label tab-label">Pardna Details</span>
-                            </md-tab-label>
-                            <md-tab-body>
-                              <div ui-view="pardna-details"></div>
-                            </md-tab-body>
-                          </md-tab>
-                            <!- -
-                          <md-tab id="tab3">
-                            <md-tab-label>
-                              <span class="round-tab">
-                                <i class="fa fa-lock"></i>
-                              </span>
-                              <span class="label tab-label">Direct Debit</span>
-                            </md-tab-label>
-                            <md-tab-body>
-                              <div ui-view="direct-debit"></div>
-                            </md-tab-body>
-                          </md-tab>
-                            - ->
-                          <md-tab id="tab2">
-                            <md-tab-label>
-                              <span class="round-tab">
-                                <i class="fa fa-users"></i>
-                              </span>
-                              <span class="label tab-label">Add Friends</span>
-                            </md-tab-label>
-                            <md-tab-body>
-                              <div ui-view="add-users"></div>
-                            </md-tab-body>
-                          </md-tab>
-                        </md-tabs>
-                      </md-content>
-                    </div>
-                    <div class="col-sm-12">
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
--->
 
 </div>

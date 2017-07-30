@@ -1,4 +1,14 @@
 <md-content class="md-padding padding-dashboard panel-group wrap" id="accordion">
+
+  <md-card class="no-content" flex-gt-sm="40" ng-show="!ui.list.length">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline"><i class="material-icons">sentiment_very_dissatisfied</i> No Pardna Groups</span>
+        <span class="md-subhead">If you have accepted a Pardna invite or created your own Pardna, they will appear here.
+      </md-card-title-text>
+    </md-card-title>
+  </md-card>
+
   <md-card ng-repeat="group in ui.list">
 
     <div role="tablist" aria-multiselectable="true">
@@ -16,20 +26,17 @@
           <div id="collapse{{$index + 1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index + 1}}" aria-expanded="false">
             <div class="panel-body">
         <!-- start of accordion -->
-            <md-card-actions layout="row" layout-align="start center">
+            <md-card-actions ng-show="group.user_id == group.admin" layout="row" layout-align="start center">
               <md-card-icon-actions>
-                <md-button class="md-icon-button" aria-label="Favorite">
-                  <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
-                </md-button>
-                <md-button ng-show="group.user_id == group.admin" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-icon-button" aria-label="Invite">
-                  <md-icon md-svg-icon="img/icons/ic_person_add_black_64px.svg"></md-icon>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Share">
-                  <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
-                </md-button>
+
+                <md-button class="btn1 md-primary" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" aria-label="Invite"><i class="material-icons">person_add</i> Invite People To Join This Pardna</md-button>
+
+
+
+
               </md-card-icon-actions>
-              <md-button ng-show="group.user_id == group.admin && ! group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-fab md-primary md-hue-2" aria-label="Confirm Pardna">
-                  <md-icon md-svg-src="img/icons/ic_check_white_24px.svg"></md-icon>
+              <md-button ng-show="group.user_id == group.admin && ! group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-primary md-hue-2" aria-label="Confirm Pardna">
+                  <i class="material-icons">check</i> Confirm Pardna
               </md-button>
               <!-- <md-button ng-show="group.user_id == group.admin" class="md-raised md-primary">Confirm Pardna</md-button> -->
             </md-card-actions>
@@ -79,7 +86,7 @@
                     <h3 md-colors="{color:'amber'}"> {{group.members[group.member_key].payment_status}} </h3>
                   </div>
                 </div>
-                <md-button ng-if="group.members[group.member_key].allow_choose_payment" class="md-secondary" ui-sref="payment-setup({id: group.id})">Choose Payment</md-button>
+                <md-button ng-if="group.members[group.member_key].allow_choose_payment" class="btn1 md-primary md-button" ui-sref="payment-setup({id: group.id})">Choose Payment</md-button>
                 <md-button ng-if="group.members[group.member_key].allow_edit_payment" class="md-secondary md-icon-button" ui-sref="paymentstatus({id: group.id})" aria-label="call">
                   <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
                 </md-button>
@@ -104,7 +111,7 @@
                     <!-- <h3 md-colors="{color:'red'}"> CHOOSE SLOT </h3> -->
                   </div>
                 </div>
-                <md-button ng-if="!group.members[group.member_key].slot_id" class="md-secondary" ui-sref="group-details({id: group.id})">Change Slot</md-button>
+                <md-button ng-if="!group.members[group.member_key].slot_id" class="btn1 md-primary md-button" ui-sref="group-details({id: group.id})">Change Slot</md-button>
                 <md-button ng-if="group.members[group.member_key].slot_id" class="md-secondary md-icon-button" ui-sref="group-details({id: group.id})" aria-label="call">
                   <md-icon md-svg-icon="img/icons/ic_mode_edit_black_48px.svg"></md-icon>
                 </md-button>
@@ -112,10 +119,10 @@
               <md-list-item class="md-2-line md-no-proxy">
                 <md-icon md-svg-icon="img/icons/ic_date_range_black_24px.svg"></md-icon>
                 <div class="md-list-item-text">
-                  <p> Next Payin Date</p>
+                  <p> Next Pay In Date</p>
                   <h3> 10 June 2017 </h3>
                 </div>
-                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View Mandate</md-button>
+                <md-button class="btn1 md-primary md-button" ng-click="doSecondaryAction($event)">View Mandate</md-button>
               </md-list-item>
             </md-list>
             <md-list class="fixedRows">
@@ -140,10 +147,10 @@
                 placeholder="Invite someone"
                 delete-button-label="Remove Invitee"
                 delete-hint="Press delete to cancel invite to group"></md-chips>
-              <div layout="row" layout-align="end center">
-                <md-button layout-align="center end" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" class="md-secondary md-icon-button" aria-label="call">
-                  <md-icon md-svg-icon="img/icons/ic_add_black_48px.svg"></md-icon>
-                </md-button>
+              <div layout="row" layout-align="start center"  ng-show="group.user_id == group.admin">
+
+                <md-button class="btn1 hide-xs md-primary" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" aria-label="Invite"><i class="material-icons">person_add</i> Invite More People </md-button>
+
               </div>
 
                 <!-- <md-button layout-align="center end" ng-click="showInvitesModal($event)" class="md-secondary md-icon-button" aria-label="call">
