@@ -42,6 +42,7 @@ var paths = {
 };
 
 var outputDir = argv.env || 'dist';
+var port = argv.port || 8085;
 paths.outputDir = outputDir + '/';
 
 gulp.task('usemin', function() {
@@ -187,7 +188,7 @@ gulp.task('watch', function() {
 gulp.task('webserver', function() {
 	connect.server({
 		root: outputDir,
-		port: 8085,
+		port: port,
 		livereload: true
 	});
 });

@@ -17,7 +17,7 @@ class ServicesLoader
       });
 
       $this->app['email.validator.service'] = $this->app->share(function (){
-        $emailValidatorService = new Services\common\email\emailValidatorService($this->app["db"]);
+        $emailValidatorService = new Services\common\email\EmailValidatorService($this->app["db"]);
         $emailValidatorService->setConfigurationsService($this->app['configurations.service']);
         return $emailValidatorService;
       });

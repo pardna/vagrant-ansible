@@ -11,7 +11,7 @@ angular.module('Pardna').config(['$mdIconProvider', '$mdThemingProvider', functi
   $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
   $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
 }])
-.directive('bankaccountCard', function () {
+.directive('bankaccountCard', function () { 
   return {
     restrict: 'E',
     templateUrl: 'module/pardna/payment/templates/bankaccountCard.tmpl.html',
