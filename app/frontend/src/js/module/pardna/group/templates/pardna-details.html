@@ -75,12 +75,12 @@
 <md-card class="md-padding" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}">
   <div layout="row" layout-xs="column">
     <div flex>
-        <h4>Weekly or monthly</h4>
+        <h4>Weekly or Monthly</h4>
     </div>
     <div class="add-pardna-form-input-container" flex>
       <md-radio-group ng-model="pardna.frequency">
-        <md-radio-button value="Monthly"> Monthly </md-radio-button>
-        <md-radio-button value="Weekly"> Weekly </md-radio-button>
+        <md-radio-button value="monthly"> Monthly </md-radio-button>
+        <md-radio-button value="weekly"> Weekly </md-radio-button>
       </md-radio-group>
     </div>
     <div class="help-text" flex>
@@ -90,7 +90,6 @@
 </md-card>
 
 <div class="lt p" layout="row" layout-align="end center">
-  <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md md-primary md-button" ng-click="add()"><i class="material-icons">check</i> Add New Pardna Group! </button>
+  <button md-ink-ripple="" class="md-btn md-raised pull-right p-h-md md-primary md-button" ng-click="add()"><i class="material-icons">check</i> Save Pardna Group! </button>
 </div>
-
-    </form>
+</form>

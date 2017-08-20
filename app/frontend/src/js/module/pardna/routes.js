@@ -100,6 +100,37 @@ angular.module('Pardna').config(['$stateProvider', '$urlRouterProvider',
                 },
                 requiresLogin: true
             })
+            .state('group-edit', {
+                data: {
+                  'selectedTab': 0
+                },
+                url: '/group/edit/:id',
+                views: {
+                  '': {
+                    data: {
+                      'selectedTab': 0
+                    },
+                    controller: 'GroupAddCtrl',
+                    'templateUrl' : 'module/pardna/group/templates/edit-group.html',
+                  },
+                  'nav@group-edit': {
+                    'templateUrl' : 'module/pardna/app/templates/home-nav.html'
+                  },
+                  'your-details@group-edit': {
+                    'templateUrl' : 'module/pardna/group/templates/your-details.html'
+                  },
+                  'pardna-details@group-edit': {
+                    'templateUrl' : 'module/pardna/group/templates/pardna-details.html'
+                  },
+                  'direct-debit@ggroup-edit': {
+                    'templateUrl' : 'module/pardna/group/templates/direct-debit.html'
+                  },
+                  'add-users@ggroup-edit': {
+                    'templateUrl' : 'module/pardna/group/templates/add-users.html'
+                  }
+                },
+                requiresLogin: true
+            })
             .state('payment-confirm', {
 				        url: '/payment/confirm',
                 views: {

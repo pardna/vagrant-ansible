@@ -1,11 +1,12 @@
 angular.module('Pardna')
-.controller('GroupAddCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$state', 'jwtHelper', 'localStorageService', 'userService', 'groupService', GroupAddCtrl]);
+.controller('GroupAddCtrl', ['$scope', '$window', '$mdToast', '$mdDialog', '$state', '$stateParams', 'jwtHelper', 'localStorageService', 'userService', 'groupService', GroupAddCtrl]);
 
-function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, localStorageService, userService, groupService) {
+function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, $stateParams, jwtHelper, localStorageService, userService, groupService) {
 
   $scope.user = userService.user;
   $scope.ui = {};
   $scope.ui.relationships = [];
+  // $scope.group_id = $stateParams.id;
   $scope.data = {
     selectedIndex: 0,
     secondLocked:  true,
@@ -13,6 +14,11 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
     bottom:        false
   };
 
+  console.log("group edit " + $stateParams.id);
+
+if(angular.isDefined($stateParams.id)) {
+  loadDetails($stateParams.id);
+} else {
   $scope.pardna = {
     name : "",
     amount: 10,
@@ -21,6 +27,9 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
     frequency: "monthly",
     emails: [{email: ""}, {email: ""}, {email: ""}]
   };
+
+}
+
 
   $scope.friends = [];
   $scope.addEmail = addEmail;
@@ -34,13 +43,16 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
 
   function getPardna() {
     var pardna = angular.copy($scope.pardna);
-    var emails = pardna.emails;
+
     pardna.emails = [];
+    if(angular.isDefined(pardna.emails)) {
+      var emails = pardna.emails;
     for(var i = 0; i < emails.length; i++) {
       if(emails[i].email !== "") {
         pardna.emails.push(emails[i].email);
       }
     }
+  }
     return pardna;
   }
 
@@ -74,7 +86,27 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
 
  // alert("changed 1");
 
+ function loadDetails(id) {
+
+   groupService.details({id: id}).then(
+     function successCallback(response) {
+       $scope.pardna = response.data;
+       // $scope.group_name = $scope.ui.data.name;
+     },
+     function errorCallback(response) {
+       $mdToast.show(
+         $mdToast.simple()
+         .content('Cannot load group')
+         .position("top right")
+         .hideDelay(3000)
+       );
+   });
+ }
+
   function add() {
+    if(angular.isDefined($stateParams.id)) {
+      return update();
+    }
     var pardna = getPardna();
 
     groupService.add(pardna).then(
@@ -102,29 +134,35 @@ function GroupAddCtrl($scope, $window, $mdToast, $mdDialog, $state, jwtHelper, l
         );
     });
 
-    // groupService.add(pardna).success(function(data) {
-    //   $mdToast.simple()
-    //     .content('Pardna group created')
-    //     .position("top right")
-    //     .hideDelay(3000);
-    //
-    //   $state.go("home", {});
-    //
-    //
-    // }).error(function(error) {
-    //
-    //   console.log(error);
-    //   var message = "Save failed";
-    //   if(angular.isDefined(error.message)) {
-    //     message = error.message;
-    //   }
-    //   $mdToast.show(
-    //         $mdToast.simple()
-    //           .content(message)
-    //           .position("top right")
-    //           .hideDelay(3000)
-    //       );
-    // });
+  }
+
+  function update() {
+    var pardna = getPardna();
+
+    groupService.update(pardna).then(
+      function successCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content('Pardna group updated')
+          .position("top right")
+          .hideDelay(3000)
+        );
+
+        $state.go("home", {});
+      },
+      function errorCallback(response) {
+        // console.log(response.data);
+        var message = "Update failed";
+        if(angular.isDefined(response.data.message)) {
+          message = response.data.message;
+        }
+        $mdToast.show(
+          $mdToast.simple()
+          .content(message)
+          .position("top right")
+          .hideDelay(3000)
+        );
+    });
 
   }
 

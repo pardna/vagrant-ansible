@@ -29,20 +29,24 @@
             <md-card-actions ng-show="group.user_id == group.admin" layout="row" layout-align="start center">
               <md-card-icon-actions>
 
-                <md-button class="btn1 md-primary" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" aria-label="Invite"><i class="material-icons">person_add</i> Invite People To Join This Pardna</md-button>
+                <md-button class="btn1 md-primary" ng-click="showInvitesModal({id: group.id, name: group.name}, $event)" aria-label="Invite"><i class="material-icons">person_add</i> Invite Friends To This Pardna</md-button>
 
 
 
 
               </md-card-icon-actions>
-              <md-button ng-show="group.user_id == group.admin && ! group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-primary md-hue-2" aria-label="Confirm Pardna">
+
+              <md-button ng-show="group.user_id == group.admin && !group.pardna_confirmed" ng-disabled="group.slots != claimedSlotsCount(group.pardna_slots)" ng-click="confirmPardna(group.id)" class="md-primary md-hue-2" aria-label="Confirm Pardna">
                   <i class="material-icons">check</i> Confirm Pardna
               </md-button>
               <!-- <md-button ng-show="group.user_id == group.admin" class="md-raised md-primary">Confirm Pardna</md-button> -->
             </md-card-actions>
             <md-list class="md-dense" flex>
               <md-divider ></md-divider>
-              <md-subheader class="md-no-sticky">Details</md-subheader>
+              <md-subheader class="md-no-sticky">
+                Details
+
+              </md-subheader>
               <md-list-item class="md-2-line" class="startdate">
                 <md-icon md-svg-icon="img/icons/ic_today_black_24px.svg"></md-icon>
                 <div class="md-list-item-text">
@@ -70,6 +74,15 @@
                   <p> Amount </p>
                   <h3> {{group.amount | currency: group.currency}} </h3>
                 </div>
+
+              </md-list-item>
+              <md-list-item class="md-2-line" class="amount">
+                <div class="md-list-item-text">
+
+                </div>
+                <md-button class="btn1 md-primary" ng-show="group.user_id == group.admin && !group.pardna_confirmed" ui-sref="group-edit({id: group.id})" aria-label="Edit">
+                    Edit
+                </md-button>
               </md-list-item>
             </md-list>
             <md-divider></md-divider>

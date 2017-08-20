@@ -9,6 +9,10 @@ function GroupService($http, env) {
     return $http.post(urlBase + '/pardna/group', params);
   };
 
+  dataFactory.update = function(params) {
+    return $http.post(urlBase + '/pardna/group/edit/' + params.id, params);
+  };
+
   dataFactory.confirmPardna = function(params) {
     return $http.get(urlBase + '/pardna/group/confirm/' + params.id);
   };
