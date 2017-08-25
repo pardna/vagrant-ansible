@@ -118,6 +118,11 @@ if(angular.isDefined($stateParams.id)) {
           .hideDelay(3000)
         );
 
+        console.log("added ");
+        console.log(response);
+
+        $scope.pages.home.selectedTab = 1;
+
         $state.go("home", {});
       },
       function errorCallback(response) {

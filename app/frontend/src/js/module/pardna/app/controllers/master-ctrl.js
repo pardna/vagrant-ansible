@@ -1,6 +1,9 @@
 angular
   .module('Pardna')
   .controller('MasterCtrl', function($scope) {
+    $scope.pages = {};
+    $scope.pages.home = {};
+    $scope.pages.home.selectedTab = 0;
 
   })
   .config( function($mdThemingProvider){
@@ -12,6 +15,7 @@ angular
       'A400': '#009688',
       'contrastDefaultColor': 'light'
     });
+
 
     // Register the new color palette map with the name <code>neonRed</code>
     $mdThemingProvider.definePalette('neonRed', neonRedMap);

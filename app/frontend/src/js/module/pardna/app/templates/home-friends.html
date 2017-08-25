@@ -12,7 +12,11 @@
             <span class="md-headline"><i class="material-icons">sentiment_very_dissatisfied</i> No Contact Invites</span>
             <span class="md-subhead">Contact invites from friends and family will appear here. You have no new invites at present.
           </md-card-title-text>
+
         </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ui-sref="invite" class="btn1 md-primary"> Invite Friends </md-button>
+        </md-card-actions>
       </md-card>
 
     <md-card ng-show="!!ui.userInvitationList.length" md-theme="{{ showDarkTheme ? 'dark-orange' : 'default' }}" md-theme-watch>

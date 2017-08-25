@@ -44,7 +44,7 @@ class InvitationService extends BaseService
     return $this->relationshipService;
   }
 
-  public function saveInvitations($emails,  $type, $typeId, $message = '', $invitorUserId)
+  public function saveInvitations($emails, $type, $typeId, $message = '', $invitorUserId)
   {
     foreach($emails AS $email) {
       $this->saveInvitation($email, $type, $typeId, $message, $invitorUserId);

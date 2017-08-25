@@ -283,7 +283,7 @@ class PardnaGroupService extends BaseService
     $group = $this->save($data, $user);
     $groupId = $group["id"];
     $emails = $this->getEmailsFromRequest($data);
-    $this->getInvitationService()->saveInvitations($emails, "PARDNAGROUP", $groupId);
+    $this->getInvitationService()->saveInvitations($emails, "PARDNAGROUP", $groupId, "", $user->getId());
     $this->getInvitationService()->sendInviteEmails($user, $emails, $group["name"]);
     $this->createSlots($data["slots"], $group);
     $this->claimSlot($groupId, 1, $user);
