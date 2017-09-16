@@ -121,6 +121,8 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
       }
   }
 
+
+
   // console.log($scope.user);
   loadDetails($stateParams.id);
   loadSlots($stateParams.id);
