@@ -41,15 +41,15 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
           .title('Would you like to claim this slot ?')
-          .content('If you have a previously claimed slot, it will be <span class="debt-be-gone">released</span>.')
+          .content('If you have a previously claimed slot, it will be released.')
           .ariaLabel('Claim Slot')
           .targetEvent(ev)
           .ok('Ok')
           .cancel('Cancel');
     $mdDialog.show(confirm).then(function(d) {
-      //alert("confirmed");
+      // alert("confirmed");
       // console.log(d);
-      setupPayment({id: $scope.ui.data.id});
+      // setupPayment({id: $scope.ui.data.id});
       //$scope.status = 'You decided to get rid of your debt.';
     }, function() {
       // $scope.status = 'You decided to keep your debt.';
