@@ -1,9 +1,9 @@
 <md-dialog aria-label="Mango (Fruit)">
   <form ng-cloak>
     <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>Send Invites To Your Pardna Group</h2>
-        <md-button class="md-icon-button" ng-click="cancel()">
+      <div class="md-toolbar-tools" layout"row">
+        <h2 flex>Send Invites To Your Pardna Group</h2>
+        <md-button class="md-icon-button" ng-click="cancel()" flex="10">
           <i class="material-icons">close</i>
         </md-button>
       </div>
@@ -12,7 +12,8 @@
 
       <md-card ng-show="inviteserviceresponse.success" md-theme="dark-blue">
         <md-card-content>
-        <p id="message"><i class="material-icons">check</i> Invites sent! </p>
+        <div id="message" layout="row"  layout-align="start center">  <i class="material-icons" flex="10">check</i>  <div flex="90">Invites sent!</div>
+        </div>
         </md-card-content>
       </md-card>
       <md-card ng-show="inviteserviceresponse.failure" md-theme="dark-orange">
@@ -21,8 +22,14 @@
         </md-card-content>
       </md-card>
 
+  <div label="Enter Email Addresses" id="invite-by-email">
+    <invitebyemail-card inviteserviceresponse="inviteserviceresponse" invite="invite" modal="true" group="group" ></invitebyemail-card>
+  </div>
 
+
+<!--
       <md-tabs class="md-dynamic-height" md-selected="0" md-border-bottom md-autoselect>
+
         <md-tab label="Select From Contacts" ng-click="showInviteFriends()">
           <div id="invite-friends" ng-show="invitestate.byfriends">
             <div>
@@ -34,15 +41,17 @@
             </div>
           </div>
         </md-tab>
+
         <md-tab label="Enter Email Addresses" ng-click="showInviteByEmail()">
           <div id="invite-by-email" ng-show="invitestate.byemail">
             <invitebyemail-card inviteserviceresponse="inviteserviceresponse" invite="invite" modal="true" group="group" ></invitebyemail-card>
           </div>
         </md-tab>
+
       </md-tabs>
 
 
-
+-->
 
 
 
