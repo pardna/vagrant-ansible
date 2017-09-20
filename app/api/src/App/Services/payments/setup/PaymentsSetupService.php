@@ -3,6 +3,8 @@ namespace App\Services\payments\setup;
 use App\Services\common\BaseService;
 use App\Entity\SubscriptionRequestEntity;
 use App\Entity\SubscriptionResponseEntity;
+use App\Entity\PaymentRequestEntity;
+use App\Entity\PaymentResponseEntity;
 use App\utils\GoCardlessProAPIUtils;
 use App\Entity\RedirectFlowEntity;
 use App\utils\exceptions\PaymentSetupException;
@@ -30,11 +32,12 @@ class PaymentsSetupService
 
     protected $configService;
 
-    public function __construct($configService, $redirectFlowService, $subscriptionsService, $mandatesService){
+    public function __construct($configService, $redirectFlowService, $subscriptionsService, $paymentsService, $mandatesService){
         $this->redirectFlowService = $redirectFlowService;
         $this->configService = $configService;
         $this->subscriptionsService = $subscriptionsService;
         $this->mandatesService = $mandatesService;
+        $this->paymentsService = $paymentsService;
         $this->goCardlessProAPIUtils = new GoCardlessProAPIUtils();
     }
 
@@ -88,6 +91,16 @@ class PaymentsSetupService
           $subscriptionResponseEntity->$key = $this->getReflectedValue('\Subscription', $key, $response);
       }
       return $subscriptionResponseEntity;
+    }
+    
+    public function getPaymentResponse($response){
+    		$paymentResponseEntity = new PaymentResponseEntity();
+    		$obj_vars = get_class_vars(get_class($paymentResponseEntity));
+	    	foreach ($obj_vars as $key => $value)
+	    	{
+	    		$paymentResponseEntity->$key = $this->getReflectedValue('\Payment', $key, $response);
+	    	}
+	    	return $paymentResponseEntity;
     }
 
     public function getRedirectUrl($token, $user, $returnTo){
@@ -196,7 +209,6 @@ class PaymentsSetupService
     }
 
     //This is going to create a payment plan/subscription to take payment for many customers at once
-    //Returns the link which the customer will use to navigate to payment set up
     public function createSubscription($group, $member){
       $mandate_id = $member["dd_mandate_id"];
       //Need to investigate what to do with status
@@ -234,6 +246,27 @@ class PaymentsSetupService
         throw $paymentSetupException;
       }
     }
+    
+    //This is going to create a single payment from a customer once we have already got a mandate
+    public function createPayment($group, $member, $charge_date){
+	    	$mandate_id = $member["dd_mandate_id"];
+	    	//Need to investigate what to do with status
+	    	$mandate_status = $member["dd_mandate_status"];
+	    	
+	    	if (isset($mandate_id)){    		
+	    		$createPaymentReq = $this->createPaymentRequest($group, $mandate_id, $charge_date);
+	    		print_r($createPaymentReq);
+	    		$createPaymentResponse = $this->paymentsService->create(["params" => $this->objectToArray($createPaymentReq)]);
+	    		$paymentResponse = $this->getPaymentResponse($createPaymentResponse);
+	    		
+	    		$getPaymentResponse = $this->paymentsService->get($paymentResponse->getId());
+	    		$payment = $this->getPaymentResponse($getPaymentResponse);
+	    		return $payment;
+	    	} else{
+	    		$paymentSetupException = new PaymentSetupException("Mandate does not exist", 0, 401);
+	    		throw $paymentSetupException;
+	    	}
+    }
 
     public function createSubscriptionRequest($group, $mandate_id){
       $subscription = new SubscriptionRequestEntity();
@@ -254,6 +287,25 @@ class PaymentsSetupService
       $links['mandate'] = $mandate_id;
       $subscription->setLinks($links);
       return $subscription;
+    }
+    
+    public function createPaymentRequest($group, $mandate_id, $charge_date){
+	    	$payment = new PaymentRequestEntity();
+	    	$amount = $this->convertAmountIntoCentsOrPences($group["amount"]);
+	    	$payment->setAmount($amount);
+	    	$payment->setCurrency(strval($group["currency"]));
+		#Need to set charge_date
+	    	$payment->setCharge_date($charge_date);
+		#Need to set the metadata
+	    	$metadata = array();
+	    	$metadata['pardna_group_name'] = $group["name"];
+	    	$payment->setMetadata($metadata);
+	    	$payment->setDescription("Payment for the Pardna.com group " . $group["name"]);
+// 	    	$payment->setReference("PARDNA" . $group["id"]);
+	    	$links = array();
+	    	$links['mandate'] = $mandate_id;
+	    	$payment->setLinks($links);
+	    	return $payment;
     }
 
     public function getDayOfMonth($startDate){

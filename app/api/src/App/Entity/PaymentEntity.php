@@ -4,7 +4,7 @@ namespace App\Entity;
 class PaymentEntity
 {
   private $amount;
-  private $charge_datge;
+  private $charge_date;
   private $currency;
   private $description;
   private $metadata;
@@ -20,12 +20,12 @@ class PaymentEntity
     return $this->amount;
   }
 
-  function setCharge_datge($charge_datge)
+  function setCharge_date($charge_datge)
   {
     $this->charge_datge = $charge_datge;
   }
 
-  function getCharge_datge()
+  function getCharge_date()
   {
     return $this->charge_datge;
   }
