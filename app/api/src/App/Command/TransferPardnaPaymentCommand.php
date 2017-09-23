@@ -8,6 +8,13 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TransferPardnaPaymentCommand extends Command
 {
+  private $app;
+
+  public function __construct(\Silex\Application $app) {
+    $this->app = $app;
+    parent::__construct();
+  }
+  
     protected function configure()
     {
       $this

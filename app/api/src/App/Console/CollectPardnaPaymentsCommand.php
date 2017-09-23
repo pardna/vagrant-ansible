@@ -4,9 +4,16 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use App\ServicesLoader;
 
 class CollectPardnaPaymentsCommand extends Command
 {
+    private $servicesLoader;
+
+    public function setServicesLoader(App\ServicesLoader $servicesLoader) {
+      $this->servicesLoader = $servicesLoader;
+    }
+
     protected function configure()
     {
       $this

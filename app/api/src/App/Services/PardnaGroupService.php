@@ -443,6 +443,11 @@ class PardnaGroupService extends BaseService
     return $this->db->fetchAssoc("SELECT * FROM {$this->confirmedTable} WHERE pardnagroup_id = ? AND enddate < ? LIMIT 1", array($id, $enddate));
   }
 
+  public function fetchAllRunningPardnas($limit)
+  {
+    return $this->db->fetchAll("SELECT * FROM {$this->table} LIMIT " . $limit);
+  }
+
   public function exists($group)
   {
     return $this->db->fetchAssoc("SELECT * FROM {$this->table} WHERE admin = ? AND name = ?  LIMIT 1", array($group["admin"], $group["name"]));
