@@ -3,7 +3,7 @@
     <div>
         <!---->
         <div ng-repeat="bankaccount in bankaccounts">
-            <div class="well u-flex-none u-padding-Hn" >
+            <div class="well u-flex-none u-padding-Hn bankaccount-details" >
                 <ul class="u-padding-Axs">
                     <li class="definitions">
                         <span class="definitions__key">Status</span>
@@ -17,7 +17,7 @@
                     </li>
                     <li class="definitions">
                         <span class="definitions__key">Created</span>
-                        <span class="definitions__value">{{ bankaccount.created_at }}</span>
+                        <span class="definitions__value" >{{ bankaccount.created_at | date:'d MMMM y, h:mm a' }}</span>
                     </li>
                     <li class="definitions">
                         <span class="definitions__key">Account holder</span>

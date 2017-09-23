@@ -123,7 +123,7 @@ class ServicesLoader
       });
 
       $this->app['payments.setup.service'] = $this->app->share(function (){
-        $setUpService = new Services\payments\setup\PaymentsSetupService($this->app['configurations.service'], $this->app['redirectflow.service'], $this->app['subscriptions.service'], $this->app['mandates.service']);
+      	$setUpService = new Services\payments\setup\PaymentsSetupService($this->app['configurations.service'], $this->app['redirectflow.service'], $this->app['subscriptions.service'], $this->app['payments.service'], $this->app['mandates.service']);
         return $setUpService;
       });
 

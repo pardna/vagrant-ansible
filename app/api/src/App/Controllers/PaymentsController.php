@@ -143,6 +143,22 @@ class PaymentsController extends AppController
       throw new HttpException(401, "Could not set up payments for all users in group " . $e->getMessage());
     }
   }
+  
+  private function createPayment($id){
+  	try{
+  		$user = $this->getUser();
+  		$group = $this->groupService->groupDetailsForUser($user, $id);
+  		$member = $this->groupService->getMember($id, $user->getId())[0];
+  		if ($group && $member){
+  			$response =  $this->service->createPayment($group, $member, null);
+  			return new JsonResponse(array("message" => "Successfully created payment"));
+  		} else{
+  			throw new HttpException(401, "User does not have access to payments for this group");
+  		}
+  	} catch(PaymentSetupException $e) {
+  		throw new HttpException($e->getHttpResponseStatusEquivalentCode(), "Could not create payment : " . $e->getMessage());
+  	}
+  }
 
   public function createSubscription($id){
     try{

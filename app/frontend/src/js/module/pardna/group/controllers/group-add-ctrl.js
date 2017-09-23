@@ -23,7 +23,6 @@ if(angular.isDefined($stateParams.id)) {
     name : "",
     amount: 10,
     slots: 6,
-    startdate: "",
     frequency: "monthly",
     emails: [{email: ""}, {email: ""}, {email: ""}]
   };

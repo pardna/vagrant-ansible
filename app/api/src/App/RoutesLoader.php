@@ -1209,6 +1209,8 @@ class RoutesLoader
         $api->get('/group/subscriptions/create/{id}', "pardna.payments.controller:triggerMassSubscriptionCreation");
 
         $api->get('/group/subscription/create/{id}', "pardna.payments.controller:createSubscription");
+        
+        $api->get('/group/payment/create/{id}', "pardna.payments.controller:createPayment");
 
         $api->get('/group/subscription/cancel/{id}', "pardna.payments.controller:cancelSubscription");
 

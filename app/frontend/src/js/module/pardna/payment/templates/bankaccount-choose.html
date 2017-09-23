@@ -9,6 +9,7 @@
     <md-toolbar>
       <div class="md-toolbar-tools card-heading">
       <span><i class="material-icons">account_balance</i> Payments </span>
+      <span ui-sref="home" class="md-toolbar-nav">Back</span>
       </div>
     </md-toolbar>
 
@@ -27,7 +28,7 @@
 
                             </div>
 
-                              <button hide-xs show-gt-xs md-ink-ripple="" class="md-btn md-raised pull-right p-h-md btn1" ng-click="redirectToPaymentsProvider({id: group_id})">Add New Bank Account</button>
+                              <button hide-xs show-gt-xs class="md-primary md-raised md-button md-ink-ripple md-default-theme" ng-click="redirectToPaymentsProvider({id: group_id})">Add New Bank Account</button>
 
 
                               <nav class="show-xs hide-gt-xs" mfb-menu position="br" effect="zoomin" label="Close"

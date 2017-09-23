@@ -564,6 +564,21 @@ md-toolbar,
   min-height: 54px;
 }
 
+.md-toolbar-nav {
+  font-size: 14px;
+  position: absolute;
+  right: 25px;
+  cursor: pointer;
+}
+
+.md-toolbar-nav:hover {
+  font-size: 14px;
+  position: absolute;
+  right: 25px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .card-heading {
   padding: 10px 24px;
 }
@@ -619,6 +634,7 @@ md-content {
 .btn1 {
   background: #009688;
   color: #fff!important;
+  padding: 0 15px;
 }
 
 .md-btn {
@@ -811,10 +827,44 @@ md-list-item.md-2-line {
 
 .no-content .md-headline {
   display: flex;
+  justify-content: center;
 }
 
 .no-content .md-headline i {
   margin-right: 10px;
+}
+
+.no-content .md-subhead {
+  display: flex;
+  justify-content: center;
+}
+
+.bankaccount-details ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    display: inline-block;
+}
+
+.bankaccount-details ul li.definitions {
+    display: flex;
+}
+
+
+.bankaccount-details ul li.definitions span.definitions__key {
+    font-weight: bold;
+    width: 140px;
+    margin-bottom: 1px;
+    background: #dedede;
+    padding: 1px 0 1px 7px;
+    flex-grow: 0;
+}
+
+.bankaccount-details ul li.definitions span.definitions__value {
+    background: #dedede;
+    padding: 1px 7px 1px 0;
+    flex-grow: 2;
+    margin-bottom: 1px;
 }
 /*****/
 
