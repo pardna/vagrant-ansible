@@ -92,7 +92,7 @@ class PaymentsSetupService
       }
       return $subscriptionResponseEntity;
     }
-    
+
     public function getPaymentResponse($response){
     		$paymentResponseEntity = new PaymentResponseEntity();
     		$obj_vars = get_class_vars(get_class($paymentResponseEntity));
@@ -246,19 +246,19 @@ class PaymentsSetupService
         throw $paymentSetupException;
       }
     }
-    
+
     //This is going to create a single payment from a customer once we have already got a mandate
     public function createPayment($group, $member, $charge_date){
 	    	$mandate_id = $member["dd_mandate_id"];
 	    	//Need to investigate what to do with status
 	    	$mandate_status = $member["dd_mandate_status"];
-	    	
-	    	if (isset($mandate_id)){    		
+
+	    	if (isset($mandate_id)){
 	    		$createPaymentReq = $this->createPaymentRequest($group, $mandate_id, $charge_date);
-	    		print_r($createPaymentReq);
+	    		// print_r($createPaymentReq);
 	    		$createPaymentResponse = $this->paymentsService->create(["params" => $this->objectToArray($createPaymentReq)]);
 	    		$paymentResponse = $this->getPaymentResponse($createPaymentResponse);
-	    		
+
 	    		$getPaymentResponse = $this->paymentsService->get($paymentResponse->getId());
 	    		$payment = $this->getPaymentResponse($getPaymentResponse);
 	    		return $payment;
@@ -288,7 +288,7 @@ class PaymentsSetupService
       $subscription->setLinks($links);
       return $subscription;
     }
-    
+
     public function createPaymentRequest($group, $mandate_id, $charge_date){
 	    	$payment = new PaymentRequestEntity();
 	    	$amount = $this->convertAmountIntoCentsOrPences($group["amount"]);

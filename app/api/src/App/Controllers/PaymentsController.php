@@ -143,7 +143,7 @@ class PaymentsController extends AppController
       throw new HttpException(401, "Could not set up payments for all users in group " . $e->getMessage());
     }
   }
-  
+
   private function createPayment($id){
   	try{
   		$user = $this->getUser();
@@ -183,7 +183,7 @@ class PaymentsController extends AppController
       $gc_customer = $gc_customers[0];
       $pardnamember_id = $gc_customer['pardnagroup_member_id'];
       $group_member = $this->groupService->getMemberByMemberId($pardnamember_id);
-      if ($group_member[0]['user_id'] == $user->getId()){
+      if ($group_member['user_id'] == $user->getId()){
         $response = $this->manageService->cancelSubscription($id);
         return new JsonResponse(array("message" => "Successfully cancelled subscription"));
       } else{

@@ -9,6 +9,10 @@ function GroupService($http, env) {
     return $http.post(urlBase + '/pardna/group', params);
   };
 
+  dataFactory.changeSlot = function(params) {
+    return $http.post(urlBase + '/pardna/group/slot/change', params);
+  };
+
   dataFactory.update = function(params) {
     return $http.post(urlBase + '/pardna/group/edit/' + params.id, params);
   };
@@ -22,12 +26,12 @@ function GroupService($http, env) {
   };
 
   dataFactory.details = function(params) {
-    console.log(params);
+    // console.log(params);
     return $http.get(urlBase + '/pardna/group/details/' + params.id);
   };
 
   dataFactory.slots = function(params) {
-    console.log(params);
+    // console.log(params);
     return $http.get(urlBase + '/pardna/group/slots/' + params.id);
   };
 

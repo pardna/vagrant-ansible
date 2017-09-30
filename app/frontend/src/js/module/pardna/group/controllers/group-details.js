@@ -37,16 +37,18 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
 
   }
 
-  function showConfirm(ev) {
+  function showConfirm(slot) {
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
-          .title('Would you like to claim this slot ?')
+          .title('Would you like to claim this slot ll ?')
           .content('If you have a previously claimed slot, it will be released.')
           .ariaLabel('Claim Slot')
-          .targetEvent(ev)
+          .targetEvent(slot)
           .ok('Ok')
           .cancel('Cancel');
     $mdDialog.show(confirm).then(function(d) {
+      changeSlot(slot);
+  //    console.log(slot);
       // alert("confirmed");
       // console.log(d);
       // setupPayment({id: $scope.ui.data.id});
@@ -55,6 +57,30 @@ function GroupDetailsCtrl($scope, $window, $mdToast, $mdDialog, $filter, $stateP
       // $scope.status = 'You decided to keep your debt.';
     });
   };
+
+  function changeSlot(slot) {
+
+    groupService.changeSlot(slot).then(
+      function successCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content("You have claimed slot " + slot.position)
+          .position("top right")
+          .hideDelay(3000)
+        );
+        loadSlots(slot.pardnagroup_id);
+
+      },
+      function errorCallback(response) {
+        $mdToast.show(
+          $mdToast.simple()
+          .content(response)
+          .position("top right")
+          .hideDelay(3000)
+        );
+    });
+
+  }
 
 
   function loadSlots(id) {

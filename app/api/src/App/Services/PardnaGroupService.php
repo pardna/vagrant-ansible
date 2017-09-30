@@ -16,6 +16,8 @@ class PardnaGroupService extends BaseService
   protected $table = "pardnagroups";
   protected $memberTable = "pardnagroup_members";
   protected $paymentTable = "pardnagroup_payments";
+  protected $schedulePaymentTable = "pardnaaccount_scheduled_payments";
+
   protected $slotTable = "pardnagroup_slots";
   protected $confirmedTable = "pardnagroup_confirmed";
   protected $invitationService;
@@ -97,6 +99,24 @@ class PardnaGroupService extends BaseService
 
   }
 
+  public function releaseUserSLots($slot, $user) {
+    return $this->db->update($this->slotTable, array("claimed_date" => null, "claimant" => null), ["claimant" => $user->getMembershipNumber()]);
+  }
+
+
+  public function changeSlot($slot, $user) {
+      $slot = $this->getSlot($slot["id"]);
+      if($slot['claimant'] != null) {
+        throw new \Exception("Slot is already claimed");
+      }
+
+      $this->addMember($user, $slot['pardnagroup_id']);
+      $this->releaseUserSLots($slot, $user);
+      return $this->db->update($this->slotTable, array("claimant" => $user->getMembershipNumber(), "claimed_date" => date("Y-m-d H:i:s")), ['id' => $slot["id"]]);
+  }
+
+
+
   public function claimSlot($groupId, $position, $user) {
       $slots = $this->getSlots($groupId);
       if($this->userHasClaimed($slots, $user)) {
@@ -108,6 +128,8 @@ class PardnaGroupService extends BaseService
       $this->addMember($user, $groupId);
       return $this->db->update($this->slotTable, array("claimant" => $user->getMembershipNumber(), "claimed_date" => date("Y-m-d H:i:s")), ['id' => $slot["id"]]);
   }
+
+
 
   public function userHasClaimed($slots, $user) {
     foreach ($slots as $key => $slot) {
@@ -443,6 +465,23 @@ class PardnaGroupService extends BaseService
     return $this->db->fetchAssoc("SELECT * FROM {$this->confirmedTable} WHERE pardnagroup_id = ? AND enddate < ? LIMIT 1", array($id, $enddate));
   }
 
+  public function getDueScheduledPayments($date, $limit) {
+      return $this->db->fetchAll("SELECT * FROM {$this->schedulePaymentTable} WHERE status = ? AND scheduled_date <= ? LIMIT " . $limit, array('SCHEDULED', $date));
+  }
+
+  public function getFailedDueScheduledPayments($date, $limit) {
+      return $this->db->fetchAll("SELECT * FROM {$this->schedulePaymentTable} WHERE status = ? AND scheduled_date <= ? LIMIT " . $limit, array('FAILED', $date));
+  }
+
+  public function updateSuccessScheduledPayment($id, $reference, $response, $attempts) {
+    return $this->db->update($this->schedulePaymentTable, array('attempts' => $attempts, "status" => "SUCCESS", 'reference' => $reference, 'response' => $response, 'payment_date' => date("Y-m-d H:i:s"), 'modified' => date("Y-m-d H:i:s")), ['id' => $id]);
+  }
+
+  public function updateFailedScheduledPayment($id, $attempts) {
+    return $this->db->update($this->schedulePaymentTable, array('attempts' => $attempts, "status" => "FAILED", 'payment_date' => date("Y-m-d H:i:s"), 'modified' => date("Y-m-d H:i:s")), ['id' => $id]);
+  }
+
+
   public function fetchAllRunningPardnas($limit)
   {
     return $this->db->fetchAll("SELECT * FROM {$this->table} LIMIT " . $limit);
@@ -474,14 +513,22 @@ class PardnaGroupService extends BaseService
     return $data ? $data : array();
   }
 
+  public function getSlot($id)
+  {
+    $data = $this->db->fetchAssoc("SELECT * FROM {$this->slotTable} WHERE id = ?", array($id));
+    return $data ? $data : array();
+  }
+
   public function getMember($groupId, $userId)
   {
     return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE user_id = ? AND group_id = ?  LIMIT 1", array($userId, $groupId));
   }
 
+
+
   public function getMemberByMemberId($member_id)
   {
-    return $this->db->fetchAll("SELECT * FROM {$this->memberTable} WHERE id = ?  LIMIT 1", array($member_id));
+    return $this->db->fetchAssoc("SELECT * FROM {$this->memberTable} WHERE id = ?  LIMIT 1", array($member_id));
   }
 
 

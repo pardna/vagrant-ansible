@@ -13,6 +13,8 @@ class CollectPardnaPaymentsCommand extends Command
 
   private $app;
 
+  private $output;
+
   public function __construct(\Silex\Application $app) {
     $this->app = $app;
     parent::__construct();
@@ -30,17 +32,76 @@ class CollectPardnaPaymentsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+      $this->output = $output;
       $groupService = $this->app['pardna.group.service'];
-      $groups = $groupService->fetchAllRunningPardnas(100);
+      $paymentSetupService = $this->app['payments.setup.service'];
+      $notificationService = $this->app['notification.service'];
+
+      $date = date("Y-m-d");
+
+
+      $scheduledPayments = $groupService->getDueScheduledPayments($date, 100);
+      $failedScheduledPayments = $groupService->getFailedDueScheduledPayments($date, 100);
+
+      $output->writeln(array(
+        '<info> Date : ' . $date . '</info>'
+      ));
       // print_r($groups);
       $output->writeln(array(
-          '<info>Collection Pardna Parments</>',
-          '<info>' . count($groups) . ' Groups Found</>',
+          '<info>Collect Scheduled Pardna Payments</>',
+          '<info>' . count($scheduledPayments) . ' Payments Found</>',
           '',
       ));
+      $this->collectPayments($groupService, $paymentSetupService, $notificationService, $scheduledPayments);
 
-      foreach ($groups as $key => $group) {
-          // $groupService->collectPayments($group);
+
+      $output->writeln(array(
+          '<info>Collect
+           Failed Scheduled Pardna Payments</>',
+          '<info>' . count($failedScheduledPayments) . ' Payments Found</>',
+          '',
+      ));
+      $this->collectPayments($groupService, $paymentSetupService, $notificationService, $failedScheduledPayments);
+
+    }
+
+    protected function collectPayments($groupService, $paymentSetupService, $notificationService, $scheduledPayments) {
+
+      foreach ($scheduledPayments as $key => $payment) {
+        try {
+          $member = $groupService->getMemberByMemberId($payment['pardna_group_member_id']);
+          $group = $groupService->findById($member['group_id']);
+
+          // Not all will pay monthly amount because of interest payments
+          $group['amount'] = $payment['amount'];
+
+          $paymentResult = $paymentSetupService->createPayment($group, $member, '2017-10-23');
+          $groupService->updateSuccessScheduledPayment(
+            $payment['id'],
+            $paymentResult->getId(),
+            serialize($paymentResult),
+            $payment['attempts'] + 1
+          );
+
+          $message = array(
+            "message" => "Payment Request Successful",
+            "target_type" => "SCHEDULEPARDNAPAYMENT",
+            "target_id" => $payment['id']
+          );
+
+          $notificationService->log($message);
+          // print_r(serialize($paymentResult));
+          // PM0005Y532ZFHQ
+        } catch(Exception $e) {
+          $groupService->updateFailedScheduledPayment($payment['id'], $payment['attempts'] + 1);
+          $message = array(
+            "message" => "Payment Request Failed",
+            "target_type" => "SCHEDULEPARDNAPAYMENT",
+            "target_id" => $payment['id']
+          );
+
+          $notificationService->log($message);
+        }
       }
 
     }

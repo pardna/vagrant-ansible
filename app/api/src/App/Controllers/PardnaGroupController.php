@@ -35,6 +35,18 @@ class PardnaGroupController extends AppController
         }
     }
 
+    public function changeSlot(Request $request)
+    {
+      $data = $request->request->all();
+      $user = $this->getUser();
+
+      try {
+        return $this->service->changeSlot($data, $user);
+      } catch(\Exception $e) {
+        throw new HttpException(409,"Cannot claim slot : " . $e->getMessage());
+      }
+    }
+
     public function edit($id, Request $request)
     {
         $data = $request->request->all();
