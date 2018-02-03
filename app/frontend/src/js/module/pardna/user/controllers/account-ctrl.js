@@ -8,11 +8,15 @@ function AccountCtrl($scope, $window, $state, $mdToast, userService, localStorag
 		{title: 'Bank Accounts - Direct Debits', id: "account-direct-debit", content: "You can swipe left and right on a mobile device to change tabs."},
 		{title: 'Bank Accounts - Pay Outs', id: "account-payout", content: "You can bind the selected tab via the selected attribute on the md-tabs element."}
 	];
-	
+
 	var selected = null;
 	var previous = null;
 	$scope.tabs = tabs;
 	$scope.selectedIndex = 2;
+	$scope.data = {};
+	$scope.data.updatePayoutAccount = {};
+	$scope.data.updatePayoutAccount.account = '';
+	$scope.data.updatePayoutAccount.sort_code = '';
 	$scope.$watch('selectedIndex', function(current, old) {
 		previous = selected;
 		selected = tabs[current];
@@ -27,5 +31,10 @@ function AccountCtrl($scope, $window, $state, $mdToast, userService, localStorag
 		var index = tabs.indexOf(tab);
 		tabs.splice(index, 1);
 	};
+
+	$scope.updatePayoutAccount = function() {
+
+		userService.updatePayoutAccount($scope.data.updatePayoutAccount);
+	}
 
 }

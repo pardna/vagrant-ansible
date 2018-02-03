@@ -469,9 +469,50 @@ class PardnaGroupService extends BaseService
       return $this->db->fetchAll("SELECT * FROM {$this->schedulePaymentTable} WHERE status = ? AND scheduled_date <= ? LIMIT " . $limit, array('SCHEDULED', $date));
   }
 
+  public function getConfirmedPardnasToSetup($limit) {
+    return  $this->db->fetchAll("SELECT * FROM pardnagroup_confirmed LIMIT " .  $limit);
+  }
+
+  public function confirmPardnaPaymentSetup($id) {
+    return $this->db->update('pardnagroup_confirmed', array('setup' => 1), ['id' => $id]);
+  }
+
+  public function getPardnaPaymentSetupList($id) {
+
+    $query = "SELECT p.id AS pardnagroup_id, p.slots, p.name, p.amount, ps.pay_amount, ps.pay_date, u.id AS user_id, pm.id AS member_id
+    FROM pardnagroup_confirmed pc
+    LEFT JOIN pardnagroups p ON p.id = pc.pardnagroup_id
+    LEFT JOIN pardnagroup_slots ps ON p.id = ps.pardnagroup_id
+    LEFT JOIN users u ON ps.claimant = u.membership_number
+    LEFT JOIN pardnagroup_members pm ON pm.user_id = u.id
+    WHERE  pc.id = ? AND (pc.setup IS NULL OR pc.setup < 1) AND pm.group_id = p.id";
+    return  $this->db->fetchAll($query, array($id));
+
+
+  }
+
+  public function addSchedulePardnaPayment($data) {
+    $this->db->insert($this->schedulePaymentTable, $data);
+    return $this->findById($this->db->lastInsertId());
+  }
+
   public function getFailedDueScheduledPayments($date, $limit) {
       return $this->db->fetchAll("SELECT * FROM {$this->schedulePaymentTable} WHERE status = ? AND scheduled_date <= ? LIMIT " . $limit, array('FAILED', $date));
   }
+
+  public function beginTransaction() {
+    $this->db->beginTransaction();
+  }
+
+  public function commit() {
+    $this->db->commit();
+  }
+
+  public function rollBack() {
+    $this->db->rollBack();
+  }
+
+
 
   public function updateSuccessScheduledPayment($id, $reference, $response, $attempts) {
     return $this->db->update($this->schedulePaymentTable, array('attempts' => $attempts, "status" => "SUCCESS", 'reference' => $reference, 'response' => $response, 'payment_date' => date("Y-m-d H:i:s"), 'modified' => date("Y-m-d H:i:s")), ['id' => $id]);

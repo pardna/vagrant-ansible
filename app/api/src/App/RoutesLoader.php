@@ -32,6 +32,17 @@ class RoutesLoader
             return $controller;
         });
 
+        $this->app['direct-debit.controller'] = $this->app->share(function () {
+            $controller = new Controllers\DirectDebitController($this->app['direct-debit.service']);
+            $controller->setApp($this->app);
+            if($this->app['security.token_storage']->getToken()->getUser()) {
+              $controller->setUser($this->app['security.token_storage']->getToken()->getUser());
+            }
+            return $controller;
+        });
+
+
+
         $this->app['pardna.group.controller'] = $this->app->share(function () {
             $controller = new Controllers\PardnaGroupController($this->app['pardna.group.service']);
             //$controller->setPaymentsService($this->app['gocardless.payments.service']);
@@ -165,6 +176,9 @@ class RoutesLoader
          *  )
          */
         $api->post('/signup', "users.controller:signup");
+
+
+        $api->post('/direct-debit', "direct-debit.controller:save");
 
         /**
          *  @SWG\Definition(

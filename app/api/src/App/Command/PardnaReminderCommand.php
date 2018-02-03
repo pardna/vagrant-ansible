@@ -4,6 +4,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use App\Entity\UserEntity;
 
 class PardnaReminderCommand extends Command
 {
@@ -24,5 +25,9 @@ class PardnaReminderCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+      $directDebitService = $this->app['direct-debit.service'];
+      $user = new UserEntity();
+      $user->setId(31);
+      $directDebitService->create("2089879", "789398873", $user);
     }
 }

@@ -32,6 +32,11 @@ function UserService($http, env, localStorageService, jwtHelper) {
 		return $http.post(urlBase + '/login', params);
 	};
 
+	dataFactory.updatePayoutAccount = function(params) {
+		console.log(params);
+		return $http.post(urlBase + '/direct-debit', params);
+	};
+
 	dataFactory.sendCode = function(params) {
 		return $http.post(urlBase + '/user/send-code', params);
 	};

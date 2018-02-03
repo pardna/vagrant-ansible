@@ -37,7 +37,7 @@ class CollectPardnaPaymentsCommand extends Command
       $paymentSetupService = $this->app['payments.setup.service'];
       $notificationService = $this->app['notification.service'];
 
-      $date = date("Y-m-d");
+      $date = date("Y-m-d", strtotime('+40 days'));
 
 
       $scheduledPayments = $groupService->getDueScheduledPayments($date, 100);
@@ -67,15 +67,18 @@ class CollectPardnaPaymentsCommand extends Command
 
     protected function collectPayments($groupService, $paymentSetupService, $notificationService, $scheduledPayments) {
 
+      echo "collecting payments \n";
       foreach ($scheduledPayments as $key => $payment) {
         try {
+          echo "collecting payment \n";
+
           $member = $groupService->getMemberByMemberId($payment['pardna_group_member_id']);
           $group = $groupService->findById($member['group_id']);
 
           // Not all will pay monthly amount because of interest payments
           $group['amount'] = $payment['amount'];
 
-          $paymentResult = $paymentSetupService->createPayment($group, $member, '2017-10-23');
+          $paymentResult = $paymentSetupService->createPayment($group, $member, $payment["scheduled_date"]);
           $groupService->updateSuccessScheduledPayment(
             $payment['id'],
             $paymentResult->getId(),

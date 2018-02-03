@@ -347,3 +347,14 @@ INSERT INTO `users` (`id`, `verified`, `verification_code`, `membership_number`,
 (31,	0,	NULL,	'S89190202',	NULL,	'Pa Essa Jabang',	'Pa Essa',	'Jabang',	'pjabang@gmail.com',	'd54a8f52f2a8332978cee0ab4b8c9bbb7b974ef3c783c89c239e2a45d6cf3ed2',	'bDvWImBlZ0eIN4LNbeCqwm0U5eNl0RfW',	NULL,	1,	'2016-07-09 12:00:45',	'2016-07-09 12:00:45');
 
 -- 2016-07-09 11:03:38
+DROP TABLE IF EXISTS `directdebits`;
+CREATE TABLE `directdebits` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `account` longtext NOT NULL,
+  `sortcode` longtext NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

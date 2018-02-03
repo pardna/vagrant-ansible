@@ -22,6 +22,12 @@ class ServicesLoader
         return $emailValidatorService;
       });
 
+      $this->app['direct-debit.service'] = $this->app->share(function (){
+        $service = new Services\DirectDebitService($this->app["db"]);
+        $service->setKeyString($this->app['key']);
+        return $service;
+      });
+
       $this->app['users.service'] = $this->app->share(function () {
         $twillioClient = new \Services_Twilio($this->app["twillio"]["account_sid"], $this->app["twillio"]["account_token"]);
         $service = new Services\UsersService($this->app["db"]);
