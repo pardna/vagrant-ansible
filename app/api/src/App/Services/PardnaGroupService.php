@@ -23,8 +23,8 @@ class PardnaGroupService extends BaseService
   protected $invitationService;
   protected $paymentsManageService;
   protected $maximumSlots = 12;
-  protected $minimumSlots = 4;
-  protected $minimumAmount = 10;
+  protected $minimumSlots = 3;
+  protected $minimumAmount = 5;
   protected $maximumAmount = 500;
   protected $charges = array(
     1 => 6,
@@ -596,7 +596,7 @@ class PardnaGroupService extends BaseService
 
   public function findByMemberId($id)
   {
-    $groups = $this->db->fetchAll("SELECT g.*, m.user_id FROM {$this->table} g RIGHT JOIN {$this->memberTable} m ON g.id = m.group_id WHERE m.user_id = ?", array($id));
+    $groups = $this->db->fetchAll("SELECT g.*, m.user_id FROM {$this->table} g RIGHT JOIN {$this->memberTable} m ON g.id = m.group_id WHERE m.user_id = ? AND g.status = 'ACTIVE' ORDER BY g.modified DESC", array($id));
     foreach ($groups as $key => $value) {
       $groups[$key]["editable"] = $value["admin"] === $value["user_id"] ? true : false;
     }

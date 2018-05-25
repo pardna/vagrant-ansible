@@ -160,9 +160,11 @@ CREATE TABLE `pardnagroups` (
   `startdate` date NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
+  `status` varchar(25) DEFAULT 'ACTIVE',
   `currency` varchar(3) NOT NULL DEFAULT 'GBP',
   PRIMARY KEY (`id`),
-  KEY `admin` (`admin`)
+  KEY `admin` (`admin`),
+  KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
